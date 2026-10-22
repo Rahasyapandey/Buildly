@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import Canvas from '../components/Canvas/Canvas'
 import Toolbar from '../components/Toolbar/Toolbar'
 import { useBoardState } from '../hooks/useBoardState'
@@ -9,14 +9,6 @@ import './Board.css'
 
 // ============================================================
 // Board — the main workspace page (/board)
-//
-// This component:
-//  1. Owns all drawing state (elements, history, selection) via
-//     the useBoardState hook.
-//  2. Owns toolbar state (active tool, colour, strokeWidth).
-//  3. Renders the sidebar, toolbar, and canvas in the correct layout.
-//  4. Will connect to the REST API (Phase 3) and WebSockets (Phase 4)
-//     from this component via additional hooks.
 // ============================================================
 
 const MODES = [
@@ -26,6 +18,9 @@ const MODES = [
 ]
 
 export default function Board() {
+  const [searchParams] = useSearchParams()
+  const boardName = searchParams.get('title') || 'Untitled Board'
+
   // ── Toolbar state ─────────────────────────────────────────
   const [tool, setTool] = useState<Tool>('pen')
   const [color, setColor] = useState<HexColor>('#ffffff')
@@ -52,8 +47,8 @@ export default function Board() {
     <div className="board-layout">
       {/* ── Sidebar ──────────────────────────────────────── */}
       <aside className="sidebar">
-        {/* Logo / home link */}
-        <Link to="/" className="sidebar__header">
+        {/* Logo / home link back to Workspace Overview */}
+        <Link to="/overview" className="sidebar__header" title="Back to Workspace Overview">
           <img src="/logo.png" alt="Buildly logo" className="sidebar__logo-img" />
           <span className="sidebar__logo-name">Buildly</span>
         </Link>
@@ -76,11 +71,19 @@ export default function Board() {
         </nav>
 
         {/* Boards */}
-        <span className="sidebar__section-label">Boards</span>
+        <span className="sidebar__section-label">Current Board</span>
         <div className="sidebar__boards">
           <button className="sidebar__board-item">
-            📄 Untitled Board
+            📄 {boardName}
           </button>
+          <Link
+            to="/overview"
+            className="sidebar__mode"
+            style={{ marginTop: '8px', textDecoration: 'none' }}
+          >
+            <span className="sidebar__mode-icon">←</span>
+            <span>All Boards</span>
+          </Link>
         </div>
 
         <div className="sidebar__footer">
@@ -100,7 +103,7 @@ export default function Board() {
           strokeWidth={strokeWidth}
           canUndo={canUndo}
           canRedo={canRedo}
-          boardName="Untitled Board"
+          boardName={boardName}
           onToolChange={setTool}
           onColorChange={setColor}
           onStrokeWidthChange={setStrokeWidth}
