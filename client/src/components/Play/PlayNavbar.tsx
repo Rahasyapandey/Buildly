@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
+import UserMenu from '../Auth/UserMenu'
 import './PlayNavbar.css'
 
 interface PlayNavbarProps {
@@ -82,6 +83,7 @@ export default function PlayNavbar({
 
       <div className="play-navbar__right">
         <ThemeToggle variant="icon" />
+        <UserMenu variant="compact" />
 
         <button
           className="play-leave-btn"

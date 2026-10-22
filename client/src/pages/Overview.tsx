@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
+import UserMenu from '../components/Auth/UserMenu'
+import { useAuth } from '../hooks/useAuth'
+import { api, type BoardRead } from '../utils/api'
 import {
   IconHome,
   IconFolder,
@@ -60,6 +63,46 @@ export default function Overview() {
     { id: '2', title: 'Kavya invited you to Play Mode room BUILD-4892', time: '40m ago', unread: true, icon: '🎮' },
     { id: '3', title: 'Buildly 2.0 active: Vector PDF export & WebRTC', time: '2h ago', unread: false, icon: '⚡' },
   ])
+
+  const { user } = useAuth()
+  const [cloudBoards, setCloudBoards] = useState<BoardRead[]>([])
+  const [isLoadingBoards, setIsLoadingBoards] = useState(true)
+
+  useEffect(() => {
+    api.boards
+      .list()
+      .then((data) => {
+        setCloudBoards(data)
+      })
+      .catch((err) => {
+        console.warn('Backend boards list unavailable:', err)
+      })
+      .finally(() => {
+        setIsLoadingBoards(false)
+      })
+  }, [user])
+
+  const handleCreateCloudBoard = async () => {
+    try {
+      const title = window.prompt('Enter new board title:', 'Untitled Architecture') || 'Untitled Architecture'
+      const newBoard = await api.boards.create(title)
+      setCloudBoards((prev) => [newBoard, ...prev])
+      navigate(`/board?id=${newBoard.id}&title=${encodeURIComponent(newBoard.title)}`)
+    } catch {
+      navigate('/board?title=New%20Whiteboard')
+    }
+  }
+
+  const handleDeleteCloudBoard = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!window.confirm('Delete this cloud board from the database?')) return
+    try {
+      await api.boards.delete(id)
+      setCloudBoards((prev) => prev.filter((b) => b.id !== id))
+    } catch (err) {
+      console.error('Delete board error:', err)
+    }
+  }
 
   // Voice & Video interactive widget state
   const [isVoiceConnected, setIsVoiceConnected] = useState(true)
@@ -420,9 +463,8 @@ export default function Overview() {
             {/* Theme Toggle in Topbar */}
             <ThemeToggle variant="icon" />
 
-            <div className="ov-top-profile" title="Alex Morgan (Workspace Admin)">
-              AM
-            </div>
+            {/* Google OAuth Profile Menu */}
+            <UserMenu />
           </div>
         </header>
 
@@ -552,6 +594,65 @@ export default function Overview() {
                 </svg>
               </div>
             </div>
+          </section>
+
+          {/* Cloud Whiteboards Section (FastAPI + PostgreSQL DB) */}
+          <section className="ov-cloud-boards-section">
+            <div className="ov-section-header">
+              <div>
+                <span className="ov-section-tag">
+                  {user ? `CLOUD BOARDS (${user.name})` : 'CLOUD DATABASE'}
+                </span>
+                <h2 className="ov-section-title">Your Cloud Whiteboards</h2>
+                <p className="ov-section-desc">
+                  Persisted to PostgreSQL with real-time WebSocket synchronization across tabs and devices.
+                </p>
+              </div>
+
+              <button
+                className="ov-btn-primary"
+                onClick={handleCreateCloudBoard}
+                title="Create a new cloud-synced whiteboard"
+              >
+                <span>➕</span> New Cloud Board
+              </button>
+            </div>
+
+            {isLoadingBoards ? (
+              <div className="ov-boards-loading">
+                <span>Loading cloud boards...</span>
+              </div>
+            ) : cloudBoards.length > 0 ? (
+              <div className="ov-cloud-boards-grid">
+                {cloudBoards.map((b) => (
+                  <div
+                    key={b.id}
+                    className="ov-cloud-board-card"
+                    onClick={() => navigate(`/board?id=${b.id}&title=${encodeURIComponent(b.title)}`)}
+                  >
+                    <div className="ov-cbc-top">
+                      <span className="ov-cbc-icon">📐</span>
+                      <button
+                        className="ov-cbc-delete-btn"
+                        onClick={(e) => handleDeleteCloudBoard(b.id, e)}
+                        title="Delete cloud board"
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                    <h3 className="ov-cbc-title">{b.title}</h3>
+                    <div className="ov-cbc-meta">
+                      <span>Cloud ID: {b.id.slice(0, 8)}...</span>
+                      <span className="ov-cbc-dot">● Synced</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="ov-cloud-boards-empty">
+                <p>No cloud boards created yet. Click "+ New Cloud Board" or open any template below to save it to your cloud database!</p>
+              </div>
+            )}
           </section>
 
           {/* Explore Templates Section */}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
+import UserMenu from '../components/Auth/UserMenu'
 import './Landing.css'
 
 export default function Landing() {
@@ -54,6 +55,7 @@ export default function Landing() {
 
           <div className="landing-nav__actions">
             <ThemeToggle variant="pill" />
+            <UserMenu />
             <Link to="/overview" className="landing-nav__cta">
               Launch Studio →
             </Link>

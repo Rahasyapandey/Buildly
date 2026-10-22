@@ -10,15 +10,35 @@
 // ============================================================
 
 import type { CanvasElement } from '../types/canvas'
+import type { AuthResponse, User } from '../types/auth'
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+
+export function getAuthToken(): string | null {
+  return localStorage.getItem('buildly_auth_token')
+}
+
+export function setAuthToken(token: string | null): void {
+  if (token) {
+    localStorage.setItem('buildly_auth_token', token)
+  } else {
+    localStorage.removeItem('buildly_auth_token')
+  }
+}
 
 // ── Generic fetch wrapper ─────────────────────────────────────
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = getAuthToken()
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(init?.headers as Record<string, string> | undefined),
+  }
+
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...init?.headers },
     ...init,
+    headers,
   })
   if (!res.ok) {
     const text = await res.text().catch(() => 'Unknown error')
@@ -114,6 +134,51 @@ export const api = {
       return request(`/api/boards/${boardId}/elements/${elementId}`, {
         method: 'DELETE',
       })
+    },
+  },
+
+  auth: {
+    /** Authenticate with Google ID credential token */
+    google(credential: string, clientId?: string): Promise<AuthResponse> {
+      return request('/api/auth/google', {
+        method: 'POST',
+        body: JSON.stringify({ credential, client_id: clientId }),
+      })
+    },
+
+    /** Instant developer/guest login for quick testing */
+    demoLogin(email?: string, name?: string, avatarUrl?: string): Promise<AuthResponse> {
+      return request('/api/auth/demo-login', {
+        method: 'POST',
+        body: JSON.stringify({ email, name, avatar_url: avatarUrl }),
+      })
+    },
+
+    /** Fetch profile of currently authenticated user */
+    async me(): Promise<User> {
+      const res = await request<{
+        id: string
+        email: string
+        name: string
+        avatar_url?: string
+        google_id?: string
+        created_at?: string
+        last_login?: string
+      }>('/api/auth/me')
+      return {
+        id: res.id,
+        email: res.email,
+        name: res.name,
+        avatarUrl: res.avatar_url,
+        googleId: res.google_id,
+        createdAt: res.created_at,
+        lastLogin: res.last_login,
+      }
+    },
+
+    /** Log out */
+    logout(): Promise<{ message: string }> {
+      return request('/api/auth/logout', { method: 'POST' })
     },
   },
 }

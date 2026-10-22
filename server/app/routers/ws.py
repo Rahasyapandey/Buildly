@@ -20,6 +20,8 @@ The server does NOT persist WebSocket messages.  Persistence is handled by
 the REST API.  WebSocket is purely for live, low-latency broadcasting.
 """
 
+from __future__ import annotations
+
 import logging
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect

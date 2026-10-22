@@ -9,14 +9,18 @@ Endpoints:
   DELETE /api/boards/{id}      → delete board and cascade its elements
 """
 
+from __future__ import annotations
+
 import uuid
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
+from app.auth import get_optional_current_user
 from app.database import get_db
-from app.models import Board
+from app.models import Board, User
 from app.schemas import BoardCreate, BoardDetail, BoardRead, BoardUpdate
 
 router = APIRouter(prefix="/api/boards", tags=["boards"])
@@ -36,26 +40,45 @@ def _get_board_or_404(board_id: uuid.UUID, db: Session) -> Board:
 # ---------------------------------------------------------------------------
 # List
 # ---------------------------------------------------------------------------
+@router.get("", response_model=list[BoardRead])
 @router.get("/", response_model=list[BoardRead])
-def list_boards(db: Session = Depends(get_db)) -> list[Board]:
+def list_boards(
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db),
+) -> list[Board]:
     """
-    Return all boards ordered by creation time (newest first).
-    Elements are NOT included in this response to keep payloads small.
+    Return boards ordered by creation time (newest first).
+    If authenticated, returns boards owned by the user or shared boards.
     """
+    if current_user:
+        return (
+            db.query(Board)
+            .filter((Board.owner_id == current_user.id) | (Board.owner_id.is_(None)))
+            .order_by(Board.created_at.desc())
+            .all()
+        )
     return db.query(Board).order_by(Board.created_at.desc()).all()
 
 
 # ---------------------------------------------------------------------------
 # Create
 # ---------------------------------------------------------------------------
+@router.post("", response_model=BoardRead, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=BoardRead, status_code=status.HTTP_201_CREATED)
-def create_board(payload: BoardCreate, db: Session = Depends(get_db)) -> Board:
+def create_board(
+    payload: BoardCreate,
+    current_user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db),
+) -> Board:
     """
     Create a new board.
-
     - **title**: optional; defaults to ``"Untitled Board"``
+    - Associates board with authenticated user if logged in.
     """
-    board = Board(title=payload.title)
+    board = Board(
+        title=payload.title,
+        owner_id=current_user.id if current_user else None,
+    )
     db.add(board)
     db.commit()
     db.refresh(board)
@@ -99,8 +122,8 @@ def update_board(
 # ---------------------------------------------------------------------------
 # Delete
 # ---------------------------------------------------------------------------
-@router.delete("/{board_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_board(board_id: uuid.UUID, db: Session = Depends(get_db)) -> None:
+@router.delete("/{board_id}", status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
+def delete_board(board_id: uuid.UUID, db: Session = Depends(get_db)) -> Response:
     """
     Permanently delete a board.  All associated elements are deleted via the
     ``ON DELETE CASCADE`` foreign-key constraint.
@@ -108,3 +131,4 @@ def delete_board(board_id: uuid.UUID, db: Session = Depends(get_db)) -> None:
     board = _get_board_or_404(board_id, db)
     db.delete(board)
     db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

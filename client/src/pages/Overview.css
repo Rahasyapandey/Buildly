@@ -924,6 +924,120 @@
   gap: 3px;
 }
 
+/* Cloud Whiteboards Section */
+.ov-cloud-boards-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ov-cloud-boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.ov-cloud-board-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme='dark'] .ov-cloud-board-card {
+  background: #141724;
+  border-color: #24283b;
+}
+
+.ov-cloud-board-card:hover {
+  transform: translateY(-2px);
+  border-color: #2563eb;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+}
+
+.ov-cbc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ov-cbc-icon {
+  font-size: 20px;
+}
+
+.ov-cbc-delete-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.15s ease;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.ov-cbc-delete-btn:hover {
+  opacity: 1;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.ov-cbc-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+[data-theme='dark'] .ov-cbc-title {
+  color: #ffffff;
+}
+
+.ov-cbc-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: auto;
+}
+
+[data-theme='dark'] .ov-cbc-meta {
+  color: #94a3b8;
+}
+
+.ov-cbc-dot {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.ov-cloud-boards-empty {
+  padding: 24px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+[data-theme='dark'] .ov-cloud-boards-empty {
+  background: #141624;
+  border-color: #272c40;
+  color: #94a3b8;
+}
+
+.ov-boards-loading {
+  padding: 20px;
+  color: #64748b;
+  font-size: 13px;
+}
+
 /* Explore Templates Section */
 .ov-templates-section {
   display: flex;

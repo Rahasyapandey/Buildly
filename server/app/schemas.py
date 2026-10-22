@@ -8,9 +8,11 @@ Naming convention:
   <Model>Read / <Model>Detail  → shapes returned to the client
 """
 
+from __future__ import annotations
+
 import uuid
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -23,13 +25,35 @@ class _ORMBase(BaseModel):
 
 
 # ===========================================================================
-# User
+# User & Auth
 # ===========================================================================
 class UserRead(_ORMBase):
     id: uuid.UUID
     email: str
     name: str
+    avatar_url: Optional[str] = None
+    google_id: Optional[str] = None
     created_at: datetime
+    last_login: Optional[datetime] = None
+
+
+class GoogleAuthRequest(BaseModel):
+    """Payload received from Google Sign-In on client."""
+    credential: str
+    client_id: Optional[str] = None
+
+
+class DemoLoginRequest(BaseModel):
+    """Payload for instant 1-click test/dev login."""
+    email: Optional[str] = None
+    name: Optional[str] = None
+    avatar_url: Optional[str] = None
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserRead
 
 
 # ===========================================================================
@@ -46,13 +70,14 @@ class BoardCreate(BoardBase):
 
 class BoardUpdate(BaseModel):
     """Body for PATCH /api/boards/{id} — every field is optional."""
-    title: str | None = Field(default=None, min_length=1, max_length=255)
+    title: Optional[str] = Field(default=None, min_length=1, max_length=255)
 
 
 class BoardRead(_ORMBase):
     """Lightweight board representation (no elements) used in list responses."""
     id: uuid.UUID
     title: str
+    owner_id: Optional[uuid.UUID] = None
     created_at: datetime
     updated_at: datetime
 
@@ -68,7 +93,7 @@ class BoardDetail(BoardRead):
 class BoardElementBase(BaseModel):
     """Fields shared between create and read schemas."""
     id: uuid.UUID  # provided by the frontend
-    type: str = Field(..., pattern=r"^(pen|line|rectangle|circle)$")
+    type: str = Field(..., pattern=r"^(pen|line|rectangle|circle|sticky|text)$")
     data: dict[str, Any]
     color: str
     stroke_width: float = Field(default=2.0, ge=0.1, le=100.0)

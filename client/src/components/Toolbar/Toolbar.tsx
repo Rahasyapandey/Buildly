@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import type { HexColor, Tool } from '../../types/canvas'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
+import UserMenu from '../Auth/UserMenu'
 import './Toolbar.css'
 
 // ============================================================
@@ -54,6 +55,10 @@ interface ToolbarProps {
   canUndo: boolean
   canRedo: boolean
   boardName: string
+  isCloudSynced?: boolean
+  isSaving?: boolean
+  isLiveConnected?: boolean
+  onSaveToCloud?: () => void
   onToolChange: (tool: Tool) => void
   onColorChange: (color: HexColor) => void
   onStrokeWidthChange: (w: number) => void
@@ -71,6 +76,10 @@ export default function Toolbar({
   canUndo,
   canRedo,
   boardName,
+  isCloudSynced = false,
+  isSaving = false,
+  isLiveConnected = false,
+  onSaveToCloud,
   onToolChange,
   onColorChange,
   onStrokeWidthChange,
@@ -268,6 +277,25 @@ export default function Toolbar({
 
       <div className="toolbar__divider" />
 
+      {/* ── Cloud Sync Status / Action ───────────────────── */}
+      {isCloudSynced ? (
+        <div className={`toolbar__sync-badge ${isSaving ? 'toolbar__sync-badge--saving' : 'toolbar__sync-badge--synced'}`} title={isLiveConnected ? "Real-time WebSocket & Cloud DB Connected" : "PostgreSQL Cloud DB Synced"}>
+          <span className="tb-sync-dot" />
+          <span>{isSaving ? 'Saving...' : (isLiveConnected ? 'Live Sync' : 'Cloud Synced')}</span>
+        </div>
+      ) : (
+        onSaveToCloud && (
+          <button
+            className="toolbar__save-btn"
+            onClick={onSaveToCloud}
+            title="Save board to cloud database for cross-device access"
+          >
+            <span>☁️</span>
+            <span>Save Cloud</span>
+          </button>
+        )
+      )}
+
       {/* ── Export Button ─────────────────────────────────── */}
       <button
         className="toolbar__action"
@@ -280,10 +308,11 @@ export default function Toolbar({
         <span>Export</span>
       </button>
 
-      {/* ── Board name & Theme Toggle ────────────────────── */}
+      {/* ── Board name, Theme Toggle & User Menu ─────────── */}
       <span className="toolbar__board-name">{boardName}</span>
       <div className="toolbar__divider" />
       <ThemeToggle variant="icon" />
+      <UserMenu variant="compact" />
     </header>
   )
 }

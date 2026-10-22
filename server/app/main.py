@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import Base, engine
+from app.routers import auth as auth_router
 from app.routers import boards, elements
 from app.routers import ws as ws_router
 
@@ -44,6 +45,7 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 # Routers
 # ---------------------------------------------------------------------------
+app.include_router(auth_router.router)
 app.include_router(boards.router)
 app.include_router(elements.router)
 app.include_router(ws_router.router)

@@ -8,10 +8,12 @@ Endpoints:
   DELETE /api/boards/{board_id}/elements/{element_id} → delete one element
 """
 
+from __future__ import annotations
+
 import uuid
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -171,12 +173,13 @@ def batch_replace_elements(
 @router.delete(
     "/{element_id}",
     status_code=status.HTTP_204_NO_CONTENT,
+    response_class=Response,
 )
 def delete_element(
     board_id: uuid.UUID,
     element_id: uuid.UUID,
     db: Session = Depends(get_db),
-) -> None:
+) -> Response:
     """
     Delete a single element from a board.
     Returns HTTP 204 on success, HTTP 404 if board or element is not found.
@@ -184,3 +187,4 @@ def delete_element(
     element = _get_element_or_404(board_id, element_id, db)
     db.delete(element)
     db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Canvas from '../components/Canvas/Canvas'
 import Toolbar from '../components/Toolbar/Toolbar'
@@ -7,19 +7,33 @@ import VoiceHuddle from '../components/VoiceHuddle/VoiceHuddle'
 import { useBoardState } from '../hooks/useBoardState'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import { useTheme } from '../context/useTheme'
+import { useAuth } from '../hooks/useAuth'
+import { useCollaboration } from '../hooks/useCollaboration'
+import { api, toCanvasElement } from '../utils/api'
+import { nanoid } from '../utils/nanoid'
 import { getTemplateElements } from '../utils/boardTemplates'
-import type { HexColor, Tool } from '../types/canvas'
+import type { CanvasElement, HexColor, NewCanvasElement, Tool } from '../types/canvas'
 import './Board.css'
 
 // ============================================================
 // Board — the main workspace page (/board)
+// Fully integrated with FastAPI PostgreSQL backend + WebSockets
 // ============================================================
 
 export default function Board() {
   const { theme } = useTheme()
+  const { user } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const boardName = searchParams.get('title') || 'Untitled Board'
+  const initialBoardId = searchParams.get('id')
+
+  // ── Cloud Database & Real-Time Sync State ─────────────────
+  const [cloudBoardId, setCloudBoardId] = useState<string | null>(initialBoardId)
+  const [isSaving, setIsSaving] = useState(false)
+  const isInitialLoad = useRef(true)
+  const [anonymousUserId] = useState(() => `dev-${nanoid(5)}`)
+  const currentUserId = user?.id || anonymousUserId
 
   // ── Active mode (Build vs Connect Voice) ──────────────────
   const [activeMode, setActiveMode] = useState<'build' | 'connect'>('build')
@@ -29,7 +43,6 @@ export default function Board() {
 
   // ── Toolbar state ─────────────────────────────────────────
   const [tool, setTool] = useState<Tool>('pen')
-  // userColor is null if using theme default, or a specific hex chosen by the user
   const [userColor, setUserColor] = useState<HexColor | null>(null)
   const color = userColor ?? (theme === 'light' ? '#0f172a' : '#ffffff')
   const [strokeWidth, setStrokeWidth] = useState(2)
@@ -50,8 +63,25 @@ export default function Board() {
     setSelected,
   } = useBoardState()
 
-  // Load template if specified in query params
+  // 1. Load board from cloud if board ID is in URL
   useEffect(() => {
+    if (!cloudBoardId) return
+    api.boards
+      .get(cloudBoardId)
+      .then((detail) => {
+        if (detail.elements && detail.elements.length > 0) {
+          loadElements(detail.elements.map(toCanvasElement))
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not load board from backend, staying in local mode:', err)
+      })
+  }, [cloudBoardId, loadElements])
+
+  // 2. Load template if specified in query params (and no cloud ID)
+  useEffect(() => {
+    if (cloudBoardId) return
+
     const templateParam = searchParams.get('template')
     if (templateParam) {
       const templateData = getTemplateElements(templateParam)
@@ -71,7 +101,96 @@ export default function Board() {
     } else if (lowerTitle.includes('flowchart')) {
       loadElements(getTemplateElements('flowchart'))
     }
-  }, [searchParams, boardName, loadElements])
+  }, [searchParams, boardName, cloudBoardId, loadElements])
+
+  // 3. WebSocket Real-Time Collaboration
+  const {
+    connected: isLiveConnected,
+    cursors,
+    broadcastAdd,
+    broadcastRemove,
+    broadcastClear,
+    broadcastCursor,
+  } = useCollaboration({
+    boardId: cloudBoardId,
+    userId: currentUserId,
+    onRemoteAdd: (el) => addElement(el),
+    onRemoteRemove: (id) => removeElement(id),
+    onRemoteClear: () => clearAll(),
+  })
+
+  // 4. Wrapped Element Actions for WebSocket broadcast
+  const handleAdd = useCallback(
+    (el: NewCanvasElement) => {
+      addElement(el)
+      if (cloudBoardId) {
+        broadcastAdd(el as CanvasElement)
+      }
+    },
+    [addElement, cloudBoardId, broadcastAdd],
+  )
+
+  const handleUpdate = useCallback(
+    (id: string, updates: Partial<CanvasElement>) => {
+      updateElement(id, updates)
+    },
+    [updateElement],
+  )
+
+  const handleRemove = useCallback(
+    (id: string) => {
+      removeElement(id)
+      if (cloudBoardId) {
+        broadcastRemove(id)
+      }
+    },
+    [removeElement, cloudBoardId, broadcastRemove],
+  )
+
+  const handleClear = useCallback(() => {
+    clearAll()
+    if (cloudBoardId) {
+      broadcastClear()
+    }
+  }, [clearAll, cloudBoardId, broadcastClear])
+
+  // 5. Debounced auto-save to PostgreSQL REST API
+  useEffect(() => {
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false
+      return
+    }
+    if (!cloudBoardId) return
+
+    const timer = setTimeout(() => {
+      setIsSaving(true)
+      api.elements
+        .saveAll(cloudBoardId, elements)
+        .then(() => setIsSaving(false))
+        .catch(() => setIsSaving(false))
+    }, 1200)
+
+    return () => clearTimeout(timer)
+  }, [elements, cloudBoardId])
+
+  // 6. Save to cloud handler
+  const handleSaveToCloud = async () => {
+    try {
+      setIsSaving(true)
+      const newBoard = await api.boards.create(boardName)
+      setCloudBoardId(newBoard.id)
+      navigate(`/board?id=${newBoard.id}&title=${encodeURIComponent(newBoard.title)}`, {
+        replace: true,
+      })
+      if (elements.length > 0) {
+        await api.elements.saveAll(newBoard.id, elements)
+      }
+      setIsSaving(false)
+    } catch (e) {
+      setIsSaving(false)
+      console.error('Error saving board to cloud:', e)
+    }
+  }
 
   // ── Keyboard shortcuts ────────────────────────────────────
   useKeyboardShortcuts({ onToolChange: setTool, onUndo: undo, onRedo: redo })
@@ -92,7 +211,15 @@ export default function Board() {
   ]
 
   return (
-    <div className="board-layout">
+    <div
+      className="board-layout"
+      onPointerMove={(e) => {
+        if (cloudBoardId && isLiveConnected) {
+          const rect = e.currentTarget.getBoundingClientRect()
+          broadcastCursor(e.clientX - rect.left, e.clientY - rect.top)
+        }
+      }}
+    >
       {/* ── Sidebar ──────────────────────────────────────── */}
       <aside className="sidebar">
         {/* Logo / home link back to Workspace Overview */}
@@ -130,7 +257,7 @@ export default function Board() {
           ))}
         </nav>
 
-        {/* Boards */}
+        {/* Current Board & Cloud sync info */}
         <span className="sidebar__section-label">Current Board</span>
         <div className="sidebar__boards">
           <button className="sidebar__board-item">
@@ -156,6 +283,12 @@ export default function Board() {
 
         <div className="sidebar__footer">
           <p className="sidebar__footer-text">
+            {cloudBoardId ? (
+              <span>☁️ Cloud Board: <strong>Active</strong></span>
+            ) : (
+              <span>💾 Local Workspace</span>
+            )}
+            <br />
             Connect Mode: 🎙️ Voice Huddle active<br />
             <span style={{ opacity: 0.7 }}>Audio-only low latency</span>
           </p>
@@ -172,12 +305,16 @@ export default function Board() {
           canUndo={canUndo}
           canRedo={canRedo}
           boardName={boardName}
+          isCloudSynced={!!cloudBoardId}
+          isSaving={isSaving}
+          isLiveConnected={isLiveConnected}
+          onSaveToCloud={handleSaveToCloud}
           onToolChange={setTool}
           onColorChange={setUserColor}
           onStrokeWidthChange={setStrokeWidth}
           onUndo={undo}
           onRedo={redo}
-          onClear={clearAll}
+          onClear={handleClear}
           onOpenExport={() => setIsExportOpen(true)}
           onLoadTemplate={(id) => loadElements(getTemplateElements(id))}
         />
@@ -189,11 +326,25 @@ export default function Board() {
           tool={tool}
           color={color}
           strokeWidth={strokeWidth}
-          onAdd={addElement}
-          onUpdate={updateElement}
-          onRemove={removeElement}
+          onAdd={handleAdd}
+          onUpdate={handleUpdate}
+          onRemove={handleRemove}
           onSelect={setSelected}
         />
+
+        {/* Remote Cursors Overlay */}
+        {Object.values(cursors).map((c) => (
+          <div
+            key={c.userId}
+            className="remote-cursor-tag"
+            style={{ left: c.x, top: c.y }}
+          >
+            <span className="remote-cursor-dot" />
+            <span className="remote-cursor-label">
+              {c.userId.slice(0, 8)}
+            </span>
+          </div>
+        ))}
 
         {/* Floating Voice Huddle (Connect Mode - Voice Only) */}
         <VoiceHuddle />
