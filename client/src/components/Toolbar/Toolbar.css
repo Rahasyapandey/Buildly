@@ -1,0 +1,192 @@
+/* ============================================================
+   Toolbar styles
+   ============================================================ */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-3);
+  height: 52px;
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Section divider ────────────────────────────────────────── */
+.toolbar__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--color-border);
+  flex-shrink: 0;
+  margin: 0 var(--space-1);
+}
+
+/* ── Tool buttons ───────────────────────────────────────────── */
+.toolbar__tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 44px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  font-size: 18px;
+  color: var(--color-text-muted);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.toolbar__tool:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+.toolbar__tool--active {
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-hover);
+}
+
+.toolbar__tool-label {
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ── Colour swatches ────────────────────────────────────────── */
+.toolbar__colors {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.toolbar__swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.toolbar__swatch:hover {
+  transform: scale(1.15);
+}
+
+.toolbar__swatch--active {
+  border-color: #ffffff;
+  transform: scale(1.15);
+}
+
+/* Custom colour input (native colour picker) */
+.toolbar__color-input {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+}
+
+.toolbar__color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+.toolbar__color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* ── Stroke-width buttons ───────────────────────────────────── */
+.toolbar__widths {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.toolbar__width-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.toolbar__width-btn:hover {
+  background: var(--color-surface-2);
+}
+
+.toolbar__width-btn--active {
+  background: var(--color-accent-subtle);
+}
+
+.toolbar__width-dot {
+  border-radius: 50%;
+  background: var(--color-text);
+  transition: background var(--transition-fast);
+}
+
+.toolbar__width-btn--active .toolbar__width-dot {
+  background: var(--color-accent-hover);
+}
+
+/* ── Action buttons (undo/redo/clear) ───────────────────────── */
+.toolbar__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  color: var(--color-text-muted);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.toolbar__action:hover:not(:disabled) {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+.toolbar__action:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.toolbar__action--danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--color-danger);
+}
+
+/* Board name display (right side) */
+.toolbar__board-name {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  padding-left: var(--space-4);
+  flex-shrink: 0;
+}

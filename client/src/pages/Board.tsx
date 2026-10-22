@@ -1,75 +1,125 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Canvas from '../components/Canvas/Canvas'
+import Toolbar from '../components/Toolbar/Toolbar'
+import { useBoardState } from '../hooks/useBoardState'
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
+import type { HexColor, Tool } from '../types/canvas'
 import './Board.css'
 
-// Sidebar navigation items.
-// Each entry has an icon, a label, and an optional "coming soon" flag.
-// As new tools are built, they get added here.
-const NAV_ITEMS = [
-  { icon: '✏️', label: 'Draw',       active: true,  comingSoon: false },
-  { icon: '▭',  label: 'Shapes',     active: false, comingSoon: false },
-  { icon: '⬡',  label: 'UML',        active: false, comingSoon: true  },
-  { icon: '🗃️', label: 'ERD',        active: false, comingSoon: true  },
-  { icon: '⤵',  label: 'Flowchart',  active: false, comingSoon: true  },
+// ============================================================
+// Board — the main workspace page (/board)
+//
+// This component:
+//  1. Owns all drawing state (elements, history, selection) via
+//     the useBoardState hook.
+//  2. Owns toolbar state (active tool, colour, strokeWidth).
+//  3. Renders the sidebar, toolbar, and canvas in the correct layout.
+//  4. Will connect to the REST API (Phase 3) and WebSockets (Phase 4)
+//     from this component via additional hooks.
+// ============================================================
+
+const MODES = [
+  { id: 'build',   icon: '🏗️', label: 'Build',   active: true  },
+  { id: 'connect', icon: '📡', label: 'Connect', active: false },
+  { id: 'play',    icon: '🎮', label: 'Play',    active: false },
 ]
 
 export default function Board() {
+  // ── Toolbar state ─────────────────────────────────────────
+  const [tool, setTool] = useState<Tool>('pen')
+  const [color, setColor] = useState<HexColor>('#ffffff')
+  const [strokeWidth, setStrokeWidth] = useState(2)
+
+  // ── Board / elements state ────────────────────────────────
+  const {
+    elements,
+    selectedId,
+    canUndo,
+    canRedo,
+    addElement,
+    removeElement,
+    clearAll,
+    undo,
+    redo,
+    setSelected,
+  } = useBoardState()
+
+  // ── Keyboard shortcuts ────────────────────────────────────
+  useKeyboardShortcuts({ onToolChange: setTool, onUndo: undo, onRedo: redo })
+
   return (
     <div className="board-layout">
-      {/* ── Left Sidebar ───────────────────────────────────── */}
+      {/* ── Sidebar ──────────────────────────────────────── */}
       <aside className="sidebar">
-        {/* Logo / back to landing */}
-        <div className="sidebar__header">
-          <div className="sidebar__logo-icon">⚡</div>
-          <Link to="/" className="sidebar__logo-name" style={{ color: 'inherit', textDecoration: 'none' }}>
-            Buildly
-          </Link>
-        </div>
+        {/* Logo / home link */}
+        <Link to="/" className="sidebar__header">
+          <img src="/logo.png" alt="Buildly logo" className="sidebar__logo-img" />
+          <span className="sidebar__logo-name">Buildly</span>
+        </Link>
 
-        {/* Tool navigation */}
-        <span className="sidebar__section-label">Tools</span>
-        <nav className="sidebar__nav">
-          {NAV_ITEMS.map((item) => (
+        {/* Mode switcher */}
+        <span className="sidebar__section-label">Modes</span>
+        <nav className="sidebar__modes">
+          {MODES.map((m) => (
             <button
-              key={item.label}
-              className={`sidebar__nav-item${item.active ? ' sidebar__nav-item--active' : ''}`}
-              disabled={item.comingSoon}
-              title={item.comingSoon ? 'Coming soon' : item.label}
+              key={m.id}
+              className={`sidebar__mode${m.active ? ' sidebar__mode--active' : ''}`}
+              disabled={!m.active}
+              title={!m.active ? 'Coming soon' : m.label}
             >
-              <span className="sidebar__nav-icon">{item.icon}</span>
-              {item.label}
-              {item.comingSoon && (
-                <span style={{ marginLeft: 'auto', fontSize: '10px', opacity: 0.5 }}>
-                  soon
-                </span>
-              )}
+              <span className="sidebar__mode-icon">{m.icon}</span>
+              {m.label}
+              {!m.active && <span className="sidebar__mode-soon">Soon</span>}
             </button>
           ))}
         </nav>
 
+        {/* Boards */}
+        <span className="sidebar__section-label">Boards</span>
+        <div className="sidebar__boards">
+          <button className="sidebar__board-item">
+            📄 Untitled Board
+          </button>
+        </div>
+
         <div className="sidebar__footer">
-          <p className="sidebar__footer-text">Phase 1 — Foundation</p>
+          <p className="sidebar__footer-text">
+            Phase 2 — Drawing Canvas<br />
+            <span style={{ opacity: 0.6 }}>Phase 3: Save to DB →</span>
+          </p>
         </div>
       </aside>
 
-      {/* ── Main content area ──────────────────────────────── */}
+      {/* ── Main content ──────────────────────────────────── */}
       <div className="board-main">
-        {/* Top toolbar */}
-        <header className="toolbar">
-          <span className="toolbar__board-name">Untitled Board</span>
-          <span className="toolbar__badge">Canvas coming in Phase 2</span>
-        </header>
+        {/* Toolbar */}
+        <Toolbar
+          tool={tool}
+          color={color}
+          strokeWidth={strokeWidth}
+          canUndo={canUndo}
+          canRedo={canRedo}
+          boardName="Untitled Board"
+          onToolChange={setTool}
+          onColorChange={setColor}
+          onStrokeWidthChange={setStrokeWidth}
+          onUndo={undo}
+          onRedo={redo}
+          onClear={clearAll}
+        />
 
-        {/* Canvas area — will be replaced by a real <canvas> in Phase 2 */}
-        <div className="canvas-area">
-          <div className="canvas-placeholder">
-            <div className="canvas-placeholder__icon">🎨</div>
-            <p className="canvas-placeholder__title">Canvas</p>
-            <p className="canvas-placeholder__desc">
-              The drawing canvas will be built in Phase 2.
-              This is the workspace where you'll draw, design, and collaborate.
-            </p>
-          </div>
-        </div>
+        {/* Canvas */}
+        <Canvas
+          elements={elements}
+          selectedId={selectedId}
+          tool={tool}
+          color={color}
+          strokeWidth={strokeWidth}
+          onAdd={addElement}
+          onRemove={removeElement}
+          onSelect={setSelected}
+        />
       </div>
     </div>
   )

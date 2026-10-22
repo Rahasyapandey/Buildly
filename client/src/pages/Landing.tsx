@@ -26,7 +26,7 @@ export default function Landing() {
     <main className="landing">
       {/* Logo */}
       <div className="landing__logo">
-        <div className="landing__logo-icon">⚡</div>
+        <img src="/logo.png" alt="Buildly logo" className="landing__logo-img" />
         <span className="landing__logo-name">Buildly</span>
       </div>
 
