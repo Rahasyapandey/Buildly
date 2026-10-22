@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import type { HexColor, Tool } from '../../types/canvas'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import './Toolbar.css'
@@ -280,16 +279,6 @@ export default function Toolbar({
         <span>📥</span>
         <span>Export</span>
       </button>
-
-      {/* ── Generative UI Showcase Launcher ──────────────── */}
-      <Link
-        to="/showcase"
-        className="toolbar__showcase-btn"
-        title="Open Buildly Generative UI Showcase"
-      >
-        <span className="tb-sparkle-dot" />
-        <span>Generative UI</span>
-      </Link>
 
       {/* ── Board name & Theme Toggle ────────────────────── */}
       <span className="toolbar__board-name">{boardName}</span>

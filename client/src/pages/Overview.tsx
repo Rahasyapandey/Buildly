@@ -257,16 +257,6 @@ export default function Overview() {
               <span className="ov-badge-pill ov-badge-pill--voice">VOICE</span>
             </button>
 
-            <Link
-              to="/showcase"
-              className="ov-nav-item ov-nav-item--glow"
-              title="Interactive Generative UI Architecture Suite"
-            >
-              <span className="ov-nav-icon"><IconSparkle /></span>
-              <span>Generative UI</span>
-              <span className="ov-badge-pill ov-badge-pill--sparkle">PRO</span>
-            </Link>
-
             <button className="ov-nav-item" onClick={handleCopyInvite}>
               <span className="ov-nav-icon"><IconTeam /></span>
               <span>Team</span>
@@ -357,18 +347,8 @@ export default function Overview() {
             <span className="ov-search-kbd">⌘ K</span>
           </div>
 
-          {/* Top Actions: Avatar Stack, Notifications, Theme, Generative UI, Profile */}
+          {/* Top Actions: Avatar Stack, Notifications, Theme, Profile */}
           <div className="ov-topbar__right">
-            {/* Generative UI Top Button */}
-            <Link
-              to="/showcase"
-              className="ov-topbar-showcase-btn"
-              title="Launch Standalone Generative UI Suite"
-            >
-              <span className="ov-sparkle-dot" />
-              <span>Generative UI</span>
-            </Link>
-
             {/* Team stack */}
             <div className="ov-avatar-stack" title="Active Teammates">
               <img
@@ -471,12 +451,6 @@ export default function Overview() {
                 >
                   <span>🎮</span> Play Mode Room
                 </button>
-                <Link
-                  to="/showcase"
-                  className="ov-hero-btn-showcase"
-                >
-                  <span>✨</span> Generative UI Suite
-                </Link>
               </div>
             </div>
 
@@ -631,8 +605,8 @@ export default function Overview() {
 
           {/* Dual Section: Play Mode & Team Activity */}
           <section className="ov-dual-grid">
-            {/* Left Big Card: Play Mode Showcase */}
-            <div className="ov-play-showcase-card">
+            {/* Left Big Card: Play Mode Party */}
+            <div className="ov-play-hero-card">
               <div className="ov-play-card-header">
                 <div className="ov-play-badge">
                   <span className="ov-play-badge-icon">🎮</span>
@@ -999,15 +973,14 @@ export default function Overview() {
             </button>
 
             {/* Action 3 */}
-            <Link
-              to="/showcase"
+            <button
               className="ov-quick-action-btn"
-              style={{ textDecoration: 'none' }}
+              onClick={() => handleOpenBoard('Cloud Architecture')}
             >
-              <span className="ov-qa-icon">✨</span>
-              <span className="ov-qa-title">Generative UI</span>
-              <span className="ov-qa-sub">Live suite demo</span>
-            </Link>
+              <span className="ov-qa-icon">📐</span>
+              <span className="ov-qa-title">Diagrams</span>
+              <span className="ov-qa-sub">UML & Architecture</span>
+            </button>
 
             {/* Action 4 */}
             <button
@@ -1021,27 +994,7 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* Widget 4: Generative UI Showcase Card */}
-        <div
-          className="ov-showcase-card"
-          onClick={() => navigate('/showcase')}
-          title="Open Standalone Generative UI Suite"
-        >
-          <div className="ov-showcase-header">
-            <span className="ov-showcase-badge">GENERATIVE UI SUITE</span>
-            <span className="ov-sparkle-dot" />
-          </div>
-          <h4 className="ov-showcase-title">Architecture Studio &amp; Labs</h4>
-          <p className="ov-showcase-desc">
-            Explore interactive cloud topologies, multiplayer game previews, and WebRTC audio synthesis.
-          </p>
-          <div className="ov-showcase-footer">
-            <span>Launch Suite</span>
-            <span>→</span>
-          </div>
-        </div>
-
-        {/* Widget 5: Inspirational Gradient Card with Glowing 3D Glass Spheres */}
+        {/* Widget 4: Inspirational Gradient Card with Glowing 3D Glass Spheres */}
         <div className="ov-inspire-card">
           <div className="ov-inspire-spheres">
             <div className="ov-3d-glass-sphere ov-3d-glass-sphere--1" />

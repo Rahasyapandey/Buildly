@@ -1060,8 +1060,8 @@
   gap: 16px;
 }
 
-/* Left Big Card: Play Mode Showcase */
-.ov-play-showcase-card {
+/* Left Big Card: Play Mode Party */
+.ov-play-hero-card {
   background: #ffffff;
   border: 1px solid #eef2f6;
   border-radius: 20px;
@@ -1072,7 +1072,7 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
 }
 
-[data-theme='dark'] .ov-play-showcase-card {
+[data-theme='dark'] .ov-play-hero-card {
   background: #12141f;
   border-color: #1e2235;
 }
@@ -2062,62 +2062,6 @@
   flex-shrink: 0;
 }
 
-/* ── Topbar Generative UI Button ───────────────────────────── */
-.ov-topbar-showcase-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(139, 92, 246, 0.18));
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: #7c3aed;
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-[data-theme='dark'] .ov-topbar-showcase-btn {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(139, 92, 246, 0.3));
-  border-color: rgba(139, 92, 246, 0.5);
-  color: #c4b5fd;
-}
-
-.ov-topbar-showcase-btn:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(135deg, #2563eb, #8b5cf6);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
-}
-
-.ov-sparkle-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #8b5cf6;
-  box-shadow: 0 0 8px #8b5cf6;
-  animation: tbPulseDot 1.8s infinite;
-}
-
-/* ── Sidebar Generative UI Item ────────────────────────────── */
-.ov-nav-item--glow {
-  position: relative;
-  border: 1px solid rgba(139, 92, 246, 0.2);
-}
-
-.ov-nav-item--glow:hover {
-  border-color: rgba(139, 92, 246, 0.4);
-  background: rgba(139, 92, 246, 0.08);
-}
-
-.ov-badge-pill--sparkle {
-  background: linear-gradient(135deg, #2563eb, #8b5cf6);
-  color: #ffffff;
-}
-
 /* ── Hero Quick Actions ────────────────────────────────────── */
 .ov-hero-quick-actions {
   display: flex;
@@ -2172,32 +2116,6 @@
 .ov-hero-btn-secondary:hover {
   background: #f8fafc;
   border-color: #cbd5e1;
-}
-
-.ov-hero-btn-showcase {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.15));
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: #7c3aed;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 8px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-[data-theme='dark'] .ov-hero-btn-showcase {
-  color: #c4b5fd;
-  border-color: rgba(139, 92, 246, 0.4);
-}
-
-.ov-hero-btn-showcase:hover {
-  background: linear-gradient(135deg, #2563eb, #8b5cf6);
-  color: #ffffff;
 }
 
 /* ── Sparklines on Metric Cards ────────────────────────────── */
@@ -2330,81 +2248,5 @@
   font-size: 12px;
   font-weight: 600;
   color: #10b981;
-}
-
-/* ── Generative UI Showcase Card (Right Sidebar) ──────────── */
-.ov-showcase-card {
-  position: relative;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(139, 92, 246, 0.15) 100%);
-  border: 1.5px solid rgba(139, 92, 246, 0.35);
-  border-radius: 14px;
-  padding: 14px 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  overflow: hidden;
-}
-
-[data-theme='dark'] .ov-showcase-card {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(139, 92, 246, 0.25) 100%);
-  border-color: rgba(139, 92, 246, 0.5);
-}
-
-.ov-showcase-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
-  border-color: #8b5cf6;
-}
-
-.ov-showcase-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.ov-showcase-badge {
-  font-size: 9.5px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  background: linear-gradient(135deg, #2563eb, #8b5cf6);
-  color: #ffffff;
-  padding: 2px 7px;
-  border-radius: 4px;
-}
-
-.ov-showcase-title {
-  font-size: 14px;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 4px;
-}
-
-[data-theme='dark'] .ov-showcase-title {
-  color: #ffffff;
-}
-
-.ov-showcase-desc {
-  font-size: 12px;
-  color: #64748b;
-  line-height: 1.45;
-  margin-bottom: 10px;
-}
-
-[data-theme='dark'] .ov-showcase-desc {
-  color: #94a3b8;
-}
-
-.ov-showcase-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 700;
-  color: #7c3aed;
-}
-
-[data-theme='dark'] .ov-showcase-footer {
-  color: #c4b5fd;
 }
 

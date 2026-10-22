@@ -12,8 +12,8 @@ export default function Landing() {
   const [zoomLevel, setZoomLevel] = useState(100)
   const [interactiveReactions, setInteractiveReactions] = useState<Array<{ id: number; x: number; y: number; emoji: string }>>([])
 
-  // Interactive Diagram Tab Showcase
-  const [showcaseTab, setShowcaseTab] = useState<'arch' | 'uml' | 'erd' | 'flow'>('arch')
+  // Interactive Diagram Tabs
+  const [diagramTab, setDiagramTab] = useState<'arch' | 'uml' | 'erd' | 'flow'>('arch')
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -42,9 +42,6 @@ export default function Landing() {
             <Link to="/overview" className="landing-nav__link">Workspace</Link>
             <Link to="/board" className="landing-nav__link">Whiteboard</Link>
             <Link to="/play" className="landing-nav__link">Play Mode</Link>
-            <Link to="/showcase" className="landing-nav__link landing-nav__link--sparkle">
-              Generative UI ✨
-            </Link>
             <a
               href="https://github.com/Rahasyapandey/Buildly"
               target="_blank"
@@ -69,9 +66,9 @@ export default function Landing() {
           ───────────────────────────────────────────────────────────── */}
       <header className="landing-hero">
         {/* Animated Announcement Pill */}
-        <div className="landing-announcement" onClick={() => navigate('/showcase')}>
+        <div className="landing-announcement" onClick={() => navigate('/overview')}>
           <span className="landing-announcement__pill">BUILDLY 2.0</span>
-          <span>Ultra-Responsive Collaborative Canvas &amp; Generative UI Suite</span>
+          <span>Ultra-Responsive Collaborative Canvas &amp; Multiplayer Party Mode</span>
           <span className="landing-announcement__arrow">→</span>
         </div>
 
@@ -109,9 +106,6 @@ export default function Landing() {
           >
             🎮 Play Mode (Live)
           </button>
-          <Link to="/showcase" className="cta-showcase">
-            ✨ Generative UI Showcase
-          </Link>
         </div>
       </header>
 
@@ -184,7 +178,7 @@ export default function Landing() {
           </span>
         </div>
 
-        {/* ── Mockup Window Showcase ──────────────────────────────── */}
+        {/* ── Mockup Window Interactive Preview ─────────────────── */}
         <div className="mockup-window">
           {/* Window Top Bar */}
           <div className="mockup-topbar">
@@ -301,9 +295,6 @@ export default function Landing() {
               </button>
               <button className="mockup-nav-item" onClick={() => navigate('/play')}>
                 <span>🎮</span> Play
-              </button>
-              <button className="mockup-nav-item" onClick={() => navigate('/showcase')}>
-                <span>✨</span> Showcase
               </button>
               <button className="mockup-nav-item" onClick={() => navigate('/overview')}>
                 <span>⚙</span> Settings
@@ -633,7 +624,7 @@ export default function Landing() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          INTERACTIVE ARCHITECTURE SHOWCASE SECTION
+          INTERACTIVE ENGINEERING DIAGRAMS SECTION
           ───────────────────────────────────────────────────────────── */}
       <section className="diagram-deepdive-section">
         <div className="deepdive-header">
@@ -645,26 +636,26 @@ export default function Landing() {
 
           <div className="deepdive-tabs">
             <button
-              className={`deepdive-tab ${showcaseTab === 'arch' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setShowcaseTab('arch')}
+              className={`deepdive-tab ${diagramTab === 'arch' ? 'deepdive-tab--active' : ''}`}
+              onClick={() => setDiagramTab('arch')}
             >
               ☁️ Cloud Architecture
             </button>
             <button
-              className={`deepdive-tab ${showcaseTab === 'uml' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setShowcaseTab('uml')}
+              className={`deepdive-tab ${diagramTab === 'uml' ? 'deepdive-tab--active' : ''}`}
+              onClick={() => setDiagramTab('uml')}
             >
               📦 UML Domain Model
             </button>
             <button
-              className={`deepdive-tab ${showcaseTab === 'erd' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setShowcaseTab('erd')}
+              className={`deepdive-tab ${diagramTab === 'erd' ? 'deepdive-tab--active' : ''}`}
+              onClick={() => setDiagramTab('erd')}
             >
               🗄️ Database ERD
             </button>
             <button
-              className={`deepdive-tab ${showcaseTab === 'flow' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setShowcaseTab('flow')}
+              className={`deepdive-tab ${diagramTab === 'flow' ? 'deepdive-tab--active' : ''}`}
+              onClick={() => setDiagramTab('flow')}
             >
               ⚡ Auth Flowchart
             </button>
@@ -672,7 +663,7 @@ export default function Landing() {
         </div>
 
         <div className="deepdive-content-card">
-          {showcaseTab === 'arch' && (
+          {diagramTab === 'arch' && (
             <div className="deepdive-grid">
               <div className="deepdive-info">
                 <h3>Cloud Microservices Topology</h3>
@@ -704,7 +695,7 @@ export default function Landing() {
             </div>
           )}
 
-          {showcaseTab === 'uml' && (
+          {diagramTab === 'uml' && (
             <div className="deepdive-grid">
               <div className="deepdive-info">
                 <h3>Object-Oriented Domain Models</h3>
@@ -741,7 +732,7 @@ export default function Landing() {
             </div>
           )}
 
-          {showcaseTab === 'erd' && (
+          {diagramTab === 'erd' && (
             <div className="deepdive-grid">
               <div className="deepdive-info">
                 <h3>Relational Database Schema (ERD)</h3>
@@ -776,7 +767,7 @@ export default function Landing() {
             </div>
           )}
 
-          {showcaseTab === 'flow' && (
+          {diagramTab === 'flow' && (
             <div className="deepdive-grid">
               <div className="deepdive-info">
                 <h3>Production Auth &amp; Logic Flowcharts</h3>
@@ -861,16 +852,6 @@ export default function Landing() {
           </div>
         </div>
 
-        <Link
-          to="/showcase"
-          className="feature-pill-card feature-pill-card--showcase"
-        >
-          <div className="feature-pill-icon feature-pill-icon--purple">✨</div>
-          <div>
-            <div className="feature-pill-title">Generative UI Suite</div>
-            <div className="feature-pill-desc">Interactive executive studio &amp; simulators</div>
-          </div>
-        </Link>
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
@@ -892,7 +873,6 @@ export default function Landing() {
           <Link to="/overview" className="landing-footer__link">Workspace</Link>
           <Link to="/board" className="landing-footer__link">Whiteboard</Link>
           <Link to="/play" className="landing-footer__link">Play Mode</Link>
-          <Link to="/showcase" className="landing-footer__link">Generative UI</Link>
         </div>
       </footer>
     </div>
