@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import Canvas from '../components/Canvas/Canvas'
 import Toolbar from '../components/Toolbar/Toolbar'
+import ExportModal from '../components/ExportModal/ExportModal'
+import VoiceHuddle from '../components/VoiceHuddle/VoiceHuddle'
 import { useBoardState } from '../hooks/useBoardState'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import { useTheme } from '../context/useTheme'
@@ -12,16 +14,16 @@ import './Board.css'
 // Board — the main workspace page (/board)
 // ============================================================
 
-const MODES = [
-  { id: 'build',   icon: '🏗️', label: 'Build',   active: true  },
-  { id: 'connect', icon: '📡', label: 'Connect', active: false },
-  { id: 'play',    icon: '🎮', label: 'Play',    active: false },
-]
-
 export default function Board() {
   const { theme } = useTheme()
   const [searchParams] = useSearchParams()
   const boardName = searchParams.get('title') || 'Untitled Board'
+
+  // ── Active mode (Build vs Connect Voice) ──────────────────
+  const [activeMode, setActiveMode] = useState<'build' | 'connect'>('build')
+
+  // ── Export Modal state ───────────────────────────────────
+  const [isExportOpen, setIsExportOpen] = useState(false)
 
   // ── Toolbar state ─────────────────────────────────────────
   const [tool, setTool] = useState<Tool>('pen')
@@ -47,6 +49,12 @@ export default function Board() {
   // ── Keyboard shortcuts ────────────────────────────────────
   useKeyboardShortcuts({ onToolChange: setTool, onUndo: undo, onRedo: redo })
 
+  const modes = [
+    { id: 'build',   icon: '🏗️', label: 'Build',   active: activeMode === 'build'   },
+    { id: 'connect', icon: '🎙️', label: 'Connect', active: activeMode === 'connect', subtitle: 'Voice Only' },
+    { id: 'play',    icon: '🎮', label: 'Play',    active: false, comingSoon: true },
+  ]
+
   return (
     <div className="board-layout">
       {/* ── Sidebar ──────────────────────────────────────── */}
@@ -60,16 +68,26 @@ export default function Board() {
         {/* Mode switcher */}
         <span className="sidebar__section-label">Modes</span>
         <nav className="sidebar__modes">
-          {MODES.map((m) => (
+          {modes.map((m) => (
             <button
               key={m.id}
               className={`sidebar__mode${m.active ? ' sidebar__mode--active' : ''}`}
-              disabled={!m.active}
-              title={!m.active ? 'Coming soon' : m.label}
+              disabled={m.comingSoon}
+              onClick={() => {
+                if (m.id === 'build' || m.id === 'connect') {
+                  setActiveMode(m.id)
+                }
+              }}
+              title={m.comingSoon ? 'Coming soon' : m.label}
             >
               <span className="sidebar__mode-icon">{m.icon}</span>
-              {m.label}
-              {!m.active && <span className="sidebar__mode-soon">Soon</span>}
+              <span>{m.label}</span>
+              {m.comingSoon && <span className="sidebar__mode-soon">Soon</span>}
+              {m.subtitle && !m.comingSoon && (
+                <span className="sidebar__mode-soon" style={{ color: '#10b981', opacity: 0.9 }}>
+                  LIVE
+                </span>
+              )}
             </button>
           ))}
         </nav>
@@ -80,10 +98,18 @@ export default function Board() {
           <button className="sidebar__board-item">
             📄 {boardName}
           </button>
+          <button
+            className="sidebar__mode"
+            style={{ marginTop: '8px', cursor: 'pointer' }}
+            onClick={() => setIsExportOpen(true)}
+          >
+            <span className="sidebar__mode-icon">📥</span>
+            <span>Export Board (PDF)</span>
+          </button>
           <Link
             to="/overview"
             className="sidebar__mode"
-            style={{ marginTop: '8px', textDecoration: 'none' }}
+            style={{ marginTop: '4px', textDecoration: 'none' }}
           >
             <span className="sidebar__mode-icon">←</span>
             <span>All Boards</span>
@@ -92,14 +118,14 @@ export default function Board() {
 
         <div className="sidebar__footer">
           <p className="sidebar__footer-text">
-            Phase 2 — Drawing Canvas<br />
-            <span style={{ opacity: 0.6 }}>Phase 3: Save to DB →</span>
+            Connect Mode: 🎙️ Voice Huddle active<br />
+            <span style={{ opacity: 0.7 }}>Audio-only low latency</span>
           </p>
         </div>
       </aside>
 
       {/* ── Main content ──────────────────────────────────── */}
-      <div className="board-main">
+      <div className="board-main" style={{ position: 'relative' }}>
         {/* Toolbar */}
         <Toolbar
           tool={tool}
@@ -114,6 +140,7 @@ export default function Board() {
           onUndo={undo}
           onRedo={redo}
           onClear={clearAll}
+          onOpenExport={() => setIsExportOpen(true)}
         />
 
         {/* Canvas */}
@@ -126,6 +153,18 @@ export default function Board() {
           onAdd={addElement}
           onRemove={removeElement}
           onSelect={setSelected}
+        />
+
+        {/* Floating Voice Huddle (Connect Mode - Voice Only) */}
+        <VoiceHuddle />
+
+        {/* Export Diagram Modal (PDF, PNG, SVG, JSON) */}
+        <ExportModal
+          isOpen={isExportOpen}
+          onClose={() => setIsExportOpen(false)}
+          boardName={boardName}
+          elements={elements}
+          theme={theme}
         />
       </div>
     </div>

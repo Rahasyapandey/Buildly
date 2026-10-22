@@ -93,13 +93,20 @@ export default function Overview() {
         <div className="sidebar-section">
           <div className="sidebar-section__title">COLLABORATE</div>
           <div className="sidebar-menu">
-            <button className="sidebar-item">
+            <button
+              className="sidebar-item"
+              onClick={() => handleOpenBoard('Voice Huddle')}
+              title="Start Voice Huddle (Audio-only)"
+            >
               <div className="sidebar-item__left">
-                <span className="sidebar-item__icon">📹</span>
+                <span className="sidebar-item__icon">🎙️</span>
                 <span>Connect</span>
               </div>
-              <span className="sidebar-item__badge sidebar-item__badge--soon">
-                SOON
+              <span
+                className="sidebar-item__badge"
+                style={{ background: '#ecfdf5', color: '#059669', fontWeight: 800, fontSize: '9px' }}
+              >
+                VOICE
               </span>
             </button>
             <button className="sidebar-item">
@@ -300,21 +307,28 @@ export default function Overview() {
           <section className="modes-row">
             <div
               className="mode-banner"
-              onClick={() => alert('Connect Mode (audio, video & screen sharing via WebRTC) is scheduled for Phase 6!')}
+              onClick={() => handleOpenBoard('Voice Huddle Room')}
+              style={{ cursor: 'pointer' }}
             >
               <div className="mode-banner__left">
-                <div className="mode-banner__icon mode-banner__icon--blue">
-                  <span>📹</span>
+                <div
+                  className="mode-banner__icon"
+                  style={{ background: '#ecfdf5', color: '#059669' }}
+                >
+                  <span>🎙️</span>
                 </div>
                 <div>
                   <div className="mode-banner__title-row">
-                    <span className="mode-banner__title">Connect mode</span>
-                    <span className="mode-banner__badge mode-banner__badge--blue">
-                      PLANNED
+                    <span className="mode-banner__title">Connect mode (Voice)</span>
+                    <span
+                      className="mode-banner__badge"
+                      style={{ background: '#ecfdf5', color: '#059669', border: '1px solid #86efac' }}
+                    >
+                      LIVE VOICE
                     </span>
                   </div>
                   <p className="mode-banner__desc">
-                    Bring your team into the room around the board.
+                    Voice-only audio huddle around the board. Talk and design in real time.
                   </p>
                 </div>
               </div>

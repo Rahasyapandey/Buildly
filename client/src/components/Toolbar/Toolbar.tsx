@@ -57,6 +57,7 @@ interface ToolbarProps {
   onUndo: () => void
   onRedo: () => void
   onClear: () => void
+  onOpenExport?: () => void
 }
 
 export default function Toolbar({
@@ -72,6 +73,7 @@ export default function Toolbar({
   onUndo,
   onRedo,
   onClear,
+  onOpenExport,
 }: ToolbarProps) {
   return (
     <header className="toolbar" role="toolbar" aria-label="Drawing tools">
@@ -169,6 +171,20 @@ export default function Toolbar({
         aria-label="Clear all"
       >
         🗑
+      </button>
+
+      <div className="toolbar__divider" />
+
+      {/* ── Export Button ─────────────────────────────────── */}
+      <button
+        className="toolbar__action"
+        onClick={onOpenExport}
+        title="Download Diagram (PDF, PNG, SVG, JSON)"
+        aria-label="Export Diagram"
+        style={{ width: 'auto', padding: '0 10px', gap: '5px', fontSize: '13px', fontWeight: 600 }}
+      >
+        <span>📥</span>
+        <span>Export</span>
       </button>
 
       {/* ── Board name & Theme Toggle ────────────────────── */}
