@@ -1,0 +1,243 @@
+.play-podium-container {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 150;
+  overflow: hidden;
+  animation: fadeIn 250ms ease;
+}
+
+.play-podium-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+.play-podium-modal {
+  width: 90%;
+  max-width: 680px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  padding: 36px 32px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.play-podium-header {
+  margin-bottom: 24px;
+}
+
+.play-podium-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #b45309;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid #fde68a;
+  margin-bottom: 12px;
+}
+
+[data-theme='dark'] .play-podium-badge {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.play-podium-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--color-heading);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.play-podium-subtitle {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+/* Stage & Pedestals */
+.play-podium-stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16px;
+  margin: 28px 0 32px;
+  height: 220px;
+}
+
+.play-podium-pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+}
+
+.play-podium-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.4rem;
+  position: relative;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.play-podium-avatar--winner {
+  width: 60px;
+  height: 60px;
+  font-size: 1.8rem;
+  border: 3px solid #f59e0b;
+}
+
+.play-podium-medal {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  font-size: 1.2rem;
+}
+
+.play-podium-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-podium-name--winner {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #2563eb;
+}
+
+.play-podium-score {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.play-podium-pedestal {
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-podium-pedestal--1 {
+  height: 120px;
+  background: linear-gradient(18deg, #f59e0b, #fbbf24);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+}
+
+.play-podium-pedestal--2 {
+  height: 85px;
+  background: linear-gradient(180deg, #94a3b8, #cbd5e1);
+}
+
+.play-podium-pedestal--3 {
+  height: 60px;
+  background: linear-gradient(180deg, #d97706, #b45309);
+}
+
+.play-pedestal-number {
+  font-size: 2rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-mono);
+}
+
+/* Rewards Grid */
+.play-podium-rewards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.play-reward-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.play-reward-icon {
+  font-size: 1.4rem;
+}
+
+.play-reward-val {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--color-heading);
+}
+
+.play-reward-label {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
+
+/* Action buttons */
+.play-podium-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.play-podium-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.play-podium-btn--again {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.play-podium-btn--again:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.play-podium-btn--exit {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.play-podium-btn--exit:hover {
+  background: var(--color-border);
+}

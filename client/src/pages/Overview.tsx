@@ -109,13 +109,20 @@ export default function Overview() {
                 VOICE
               </span>
             </button>
-            <button className="sidebar-item">
+            <button
+              className="sidebar-item"
+              onClick={() => navigate('/play')}
+              title="Launch Play Mode (Multiplayer Drawing & Guessing with Voice Chat)"
+            >
               <div className="sidebar-item__left">
                 <span className="sidebar-item__icon">🎮</span>
                 <span>Play mode</span>
               </div>
-              <span className="sidebar-item__badge sidebar-item__badge--soon">
-                SOON
+              <span
+                className="sidebar-item__badge"
+                style={{ background: '#f5f3ff', color: '#7c3aed', fontWeight: 800, fontSize: '9px' }}
+              >
+                LIVE
               </span>
             </button>
             <button className="sidebar-item">
@@ -337,7 +344,8 @@ export default function Overview() {
 
             <div
               className="mode-banner"
-              onClick={() => alert('Play Mode (lightweight multiplayer games & team quizzes) is scheduled for Phase 7!')}
+              onClick={() => navigate('/play')}
+              style={{ cursor: 'pointer' }}
             >
               <div className="mode-banner__left">
                 <div className="mode-banner__icon mode-banner__icon--purple">
@@ -345,13 +353,16 @@ export default function Overview() {
                 </div>
                 <div>
                   <div className="mode-banner__title-row">
-                    <span className="mode-banner__title">Play mode</span>
-                    <span className="mode-banner__badge mode-banner__badge--purple">
-                      PLANNED
+                    <span className="mode-banner__title">Play mode (Draw & Guess)</span>
+                    <span
+                      className="mode-banner__badge mode-banner__badge--purple"
+                      style={{ background: '#f5f3ff', color: '#7c3aed', border: '1px solid #c4b5fd' }}
+                    >
+                      LIVE GAME
                     </span>
                   </div>
                   <p className="mode-banner__desc">
-                    Make space for the people behind the projects.
+                    Multiplayer drawing & guessing game with integrated voice chat, leaderboards & AI teammates.
                   </p>
                 </div>
               </div>

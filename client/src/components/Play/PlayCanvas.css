@@ -1,0 +1,340 @@
+.play-canvas-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  background: var(--color-surface);
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Top Game Bar */
+.play-canvas-topbar {
+  height: 52px;
+  background: var(--color-surface-2);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.play-topbar-round {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-surface);
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.play-topbar-round__label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+}
+
+.play-topbar-round__val {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #2563eb;
+}
+
+.play-topbar-word {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.play-drawer-word-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 4px 16px;
+  border-radius: 20px;
+}
+
+[data-theme='dark'] .play-drawer-word-pill {
+  background: rgba(37, 99, 235, 0.15);
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.play-drawer-word-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 0.04em;
+}
+
+.play-drawer-word-text {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #1e40af;
+}
+
+[data-theme='dark'] .play-drawer-word-text {
+  color: #93c5fd;
+}
+
+.play-guesser-word-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.play-guesser-hint-text {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  color: var(--color-heading);
+}
+
+.play-guesser-len-text {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.play-topbar-timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.play-timer-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 2px solid #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-timer-number {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--color-heading);
+}
+
+.play-timer-number--urgent {
+  color: #ef4444;
+  animation: pulse-urgent 0.8s infinite;
+}
+
+@keyframes pulse-urgent {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.play-timer-progress {
+  width: 80px;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.play-timer-progress-fill {
+  height: 100%;
+  background: #2563eb;
+  transition: width 1s linear;
+}
+
+.play-timer-progress-fill--urgent {
+  background: #ef4444;
+}
+
+/* Canvas Board Container */
+.play-canvas-board-container {
+  flex: 1;
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.play-canvas-element {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.play-canvas-element--guesser {
+  cursor: default;
+}
+
+.play-guesser-badge {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.play-guesser-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: pulse-dot 1.2s infinite;
+}
+
+/* Bottom Drawing Toolbar */
+.play-drawing-tools {
+  height: 56px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  gap: 12px;
+}
+
+.play-drawing-tools--disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.play-tool-btn-group,
+.play-sizes-group,
+.play-colors-group,
+.play-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.play-tool-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.play-tool-btn:hover {
+  border-color: #2563eb;
+}
+
+.play-tool-btn--active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.play-size-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.play-size-btn--active {
+  border-color: #2563eb;
+  background: var(--color-accent-subtle);
+}
+
+.play-size-dot {
+  border-radius: 50%;
+  background: var(--color-heading);
+}
+
+.play-color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+
+.play-color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.play-color-swatch--active {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px #2563eb;
+}
+
+.play-color-custom-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.play-color-input-hidden {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.play-action-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.play-action-btn:hover:not(:disabled) {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.play-action-btn--clear:hover:not(:disabled) {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.play-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

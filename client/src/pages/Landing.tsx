@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
 import './Landing.css'
 
 export default function Landing() {
+  const navigate = useNavigate()
   return (
     <div className="landing-container">
       {/* ─────────────────────────────────────────────────────────────
@@ -446,13 +447,13 @@ export default function Landing() {
 
         <div
           className="feature-pill-card"
-          onClick={() => alert('Play Mode (multiplayer games & quizzes) planned for Phase 7!')}
+          onClick={() => navigate('/play')}
           style={{ cursor: 'pointer' }}
         >
           <div className="feature-pill-icon feature-pill-icon--orange">🎮</div>
           <div>
-            <div className="feature-pill-title">Play Mode</div>
-            <div className="feature-pill-desc">Multiplayer games</div>
+            <div className="feature-pill-title">Play Mode (Live)</div>
+            <div className="feature-pill-desc">Draw & guess multiplayer game</div>
           </div>
         </div>
 

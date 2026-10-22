@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Canvas from '../components/Canvas/Canvas'
 import Toolbar from '../components/Toolbar/Toolbar'
 import ExportModal from '../components/ExportModal/ExportModal'
@@ -16,6 +16,7 @@ import './Board.css'
 
 export default function Board() {
   const { theme } = useTheme()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const boardName = searchParams.get('title') || 'Untitled Board'
 
@@ -49,10 +50,19 @@ export default function Board() {
   // ── Keyboard shortcuts ────────────────────────────────────
   useKeyboardShortcuts({ onToolChange: setTool, onUndo: undo, onRedo: redo })
 
-  const modes = [
+  interface ModeItem {
+    id: string
+    icon: string
+    label: string
+    active: boolean
+    subtitle?: string
+    comingSoon?: boolean
+  }
+
+  const modes: ModeItem[] = [
     { id: 'build',   icon: '🏗️', label: 'Build',   active: activeMode === 'build'   },
     { id: 'connect', icon: '🎙️', label: 'Connect', active: activeMode === 'connect', subtitle: 'Voice Only' },
-    { id: 'play',    icon: '🎮', label: 'Play',    active: false, comingSoon: true },
+    { id: 'play',    icon: '🎮', label: 'Play',    active: false, subtitle: 'Game Room' },
   ]
 
   return (
@@ -76,6 +86,8 @@ export default function Board() {
               onClick={() => {
                 if (m.id === 'build' || m.id === 'connect') {
                   setActiveMode(m.id)
+                } else if (m.id === 'play') {
+                  navigate('/play')
                 }
               }}
               title={m.comingSoon ? 'Coming soon' : m.label}

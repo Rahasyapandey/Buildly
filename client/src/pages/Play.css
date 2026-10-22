@@ -1,0 +1,90 @@
+.play-root-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+  position: relative;
+}
+
+.play-main-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px 84px; /* extra bottom padding for voice bar */
+  max-width: 1540px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Active Game Room Layout */
+.play-gameroom-layout {
+  display: flex;
+  gap: 16px;
+  height: calc(100vh - 170px);
+  min-height: 540px;
+  width: 100%;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .play-gameroom-layout {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+.play-canvas-center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Round End Reveal Banner */
+.play-round-reveal-banner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-surface);
+  border: 2px solid #2563eb;
+  border-radius: 20px;
+  padding: 28px 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  z-index: 110;
+  animation: bounceIn 220ms ease;
+}
+
+@keyframes bounceIn {
+  from { opacity: 0; transform: translate(-50%, -46%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.play-reveal-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ef4444;
+  letter-spacing: 0.08em;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.play-reveal-word {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-heading);
+  margin-bottom: 8px;
+}
+
+.play-reveal-word strong {
+  color: #2563eb;
+  letter-spacing: 0.06em;
+}
+
+.play-reveal-sub {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
