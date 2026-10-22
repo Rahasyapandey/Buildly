@@ -35,7 +35,7 @@ export default function PlayNavbar({
         <Link to="/overview" className="play-navbar__brand" title="Back to Buildly Workspace">
           <img src="/logo.png" alt="Buildly" className="play-navbar__logo" />
           <span className="play-navbar__title">
-            buildly<span className="play-navbar__tag">PLAY</span>
+            Buildly<span className="play-navbar__tag">PLAY</span>
           </span>
         </Link>
 
