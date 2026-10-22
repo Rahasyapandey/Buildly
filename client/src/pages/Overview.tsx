@@ -1,6 +1,26 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
+import {
+  IconHome,
+  IconFolder,
+  IconGamepad,
+  IconWaveform,
+  IconTeam,
+  IconTemplates,
+  IconMetricBoard,
+  IconMetricPeople,
+  IconMetricLightbulb,
+  IconMetricBolt,
+  IconCloudArch,
+  IconUML,
+  IconERD,
+  IconFlowchart,
+  IconWorkspaceBoard,
+  IconVideoCall,
+  IconSparkle,
+  CatSketchSvg,
+  HeroIllustrationSvg,
+} from '../components/OverviewIcons'
 import './Overview.css'
 
 export default function Overview() {
@@ -10,7 +30,7 @@ export default function Overview() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showPromo, setShowPromo] = useState(true)
 
-  // Quick state for Voice & Video widget in right column
+  // Voice & Video interactive widget state
   const [isVoiceConnected, setIsVoiceConnected] = useState(true)
   const [isMicMuted, setIsMicMuted] = useState(false)
   const [isCamOn, setIsCamOn] = useState(false)
@@ -44,35 +64,36 @@ export default function Overview() {
       id: 'system-architecture',
       title: 'System Architecture',
       desc: 'Plan your cloud architecture',
-      icon: '☁️',
       color: 'blue',
+      icon: <IconCloudArch />,
     },
     {
       id: 'uml-class',
       title: 'UML Class Diagram',
       desc: 'Design class structures',
-      icon: '📐',
       color: 'purple',
+      icon: <IconUML />,
     },
     {
       id: 'erd',
       title: 'ERD',
       desc: 'Model your database',
-      icon: '🗄️',
       color: 'green',
+      icon: <IconERD />,
     },
     {
       id: 'flowchart',
       title: 'Flowchart',
       desc: 'Visualize logic flows',
-      icon: '🔀',
       color: 'amber',
+      icon: <IconFlowchart />,
     },
   ]
 
-  const filteredTemplates = templates.filter((t) =>
-    t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.desc.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredTemplates = templates.filter(
+    (t) =>
+      t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.desc.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
   return (
@@ -81,7 +102,7 @@ export default function Overview() {
           1. LEFT SIDEBAR
           ───────────────────────────────────────────────────────────── */}
       <aside className="ov-sidebar">
-        {/* Brand with Capital B */}
+        {/* Brand Header */}
         <Link to="/" className="ov-brand" title="Buildly Homepage">
           <div className="ov-brand__left">
             <img src="/logo.png" alt="Buildly" className="ov-brand__logo" />
@@ -108,7 +129,7 @@ export default function Overview() {
           <div className="ov-nav-label">MAIN</div>
           <nav className="ov-nav-menu">
             <button className="ov-nav-item ov-nav-item--active">
-              <span className="ov-nav-icon">🏠</span>
+              <span className="ov-nav-icon"><IconHome /></span>
               <span>Home</span>
             </button>
 
@@ -116,7 +137,7 @@ export default function Overview() {
               className="ov-nav-item"
               onClick={() => handleOpenBoard('My Projects')}
             >
-              <span className="ov-nav-icon">📁</span>
+              <span className="ov-nav-icon"><IconFolder /></span>
               <span>Projects</span>
             </button>
 
@@ -125,7 +146,7 @@ export default function Overview() {
               onClick={() => navigate('/play')}
               title="Multiplayer Drawing & Guessing with Voice Chat"
             >
-              <span className="ov-nav-icon">🎮</span>
+              <span className="ov-nav-icon"><IconGamepad /></span>
               <span>Play Mode</span>
               <span className="ov-badge-pill ov-badge-pill--new">NEW</span>
             </button>
@@ -135,16 +156,13 @@ export default function Overview() {
               onClick={() => handleOpenBoard('Voice Huddle Room')}
               title="Voice-only Audio Huddle"
             >
-              <span className="ov-nav-icon">🎙️</span>
+              <span className="ov-nav-icon"><IconWaveform /></span>
               <span>Connect</span>
               <span className="ov-badge-pill ov-badge-pill--voice">VOICE</span>
             </button>
 
-            <button
-              className="ov-nav-item"
-              onClick={handleCopyInvite}
-            >
-              <span className="ov-nav-icon">👥</span>
+            <button className="ov-nav-item" onClick={handleCopyInvite}>
+              <span className="ov-nav-icon"><IconTeam /></span>
               <span>Team</span>
             </button>
 
@@ -155,7 +173,7 @@ export default function Overview() {
                 el?.scrollIntoView({ behavior: 'smooth' })
               }}
             >
-              <span className="ov-nav-icon">⊞</span>
+              <span className="ov-nav-icon"><IconTemplates /></span>
               <span>Templates</span>
             </button>
           </nav>
@@ -179,7 +197,7 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* Promo Banner: Build Better Together */}
+        {/* Promo Card: Build Better Together */}
         {showPromo && (
           <div className="ov-promo-card">
             <button
@@ -200,7 +218,7 @@ export default function Overview() {
           </div>
         )}
 
-        {/* User Profile Bar at bottom of sidebar */}
+        {/* User Profile Bar at bottom */}
         <div className="ov-user-bar">
           <div className="ov-user-bar__left">
             <div className="ov-user-avatar">AM</div>
@@ -233,25 +251,38 @@ export default function Overview() {
             <span className="ov-search-kbd">⌘ K</span>
           </div>
 
-          {/* Top Actions: Team Avatars, Notifications, Theme, Help, Profile */}
+          {/* Top Actions: Avatar Stack, Notifications, Help, Profile */}
           <div className="ov-topbar__right">
             {/* Team stack */}
             <div className="ov-avatar-stack" title="Active Teammates">
-              <div className="ov-stack-img" style={{ backgroundColor: '#bfdbfe' }}>P</div>
-              <div className="ov-stack-img" style={{ backgroundColor: '#fbcfe8' }}>K</div>
-              <div className="ov-stack-img" style={{ backgroundColor: '#fed7aa' }}>A</div>
-              <div className="ov-stack-img" style={{ backgroundColor: '#c7d2fe' }}>S</div>
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop&crop=faces"
+                alt="Priya"
+                className="ov-stack-img"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=64&h=64&fit=crop&crop=faces"
+                alt="Kavya"
+                className="ov-stack-img"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=faces"
+                alt="Arjun"
+                className="ov-stack-img"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=faces"
+                alt="Sneha"
+                className="ov-stack-img"
+              />
               <div className="ov-stack-count">+2</div>
             </div>
 
-            <ThemeToggle variant="icon" />
-
             <button className="ov-icon-btn" title="Notifications">
               <span>🔔</span>
-              <span className="ov-dot-badge" />
             </button>
 
-            <button className="ov-icon-btn" title="Help & Guides">
+            <button className="ov-icon-btn" title="Help & Documentation">
               <span>❔</span>
             </button>
 
@@ -263,7 +294,7 @@ export default function Overview() {
 
         {/* Scrollable Main Body */}
         <div className="ov-body-scroll">
-          {/* Hero Greeting Section */}
+          {/* Hero Greeting Section with Ambient Glow & Better Together Gfx */}
           <section className="ov-hero-section">
             <div className="ov-hero-text">
               <div className="ov-date-tag">TUESDAY, 21 OCTOBER</div>
@@ -279,23 +310,8 @@ export default function Overview() {
               </div>
             </div>
 
-            {/* Whiteboard Illustration with "Better Together" */}
-            <div className="ov-hero-illustration">
-              <div className="ov-whiteboard-card">
-                <div className="ov-wb-inner">
-                  <div className="ov-wb-node ov-wb-node--blue" />
-                  <div className="ov-wb-node ov-wb-node--purple" />
-                  <div className="ov-wb-connector" />
-                  <div className="ov-wb-sticky ov-wb-sticky--yellow" />
-                  <div className="ov-wb-sticky ov-wb-sticky--cyan" />
-                  <div className="ov-wb-node ov-wb-node--green" />
-                </div>
-              </div>
-              <div className="ov-better-together">
-                <span className="ov-cursive-text">Better Together</span>
-                <span className="ov-cursive-arrow">⤹</span>
-              </div>
-            </div>
+            {/* Whiteboard 3D Canvas Illustration */}
+            <HeroIllustrationSvg />
           </section>
 
           {/* 4 Metric / KPI Cards */}
@@ -306,7 +322,9 @@ export default function Overview() {
               onClick={() => handleOpenBoard('Boards Overview')}
             >
               <div className="ov-metric-card__header">
-                <div className="ov-metric-icon ov-metric-icon--blue">🗂️</div>
+                <div className="ov-metric-icon ov-metric-icon--blue">
+                  <IconMetricBoard />
+                </div>
                 <button className="ov-metric-arrow" title="View details">→</button>
               </div>
               <div className="ov-metric-title">Boards in motion</div>
@@ -322,7 +340,9 @@ export default function Overview() {
               onClick={() => handleOpenBoard('Team Presence')}
             >
               <div className="ov-metric-card__header">
-                <div className="ov-metric-icon ov-metric-icon--purple">👥</div>
+                <div className="ov-metric-icon ov-metric-icon--purple">
+                  <IconMetricPeople />
+                </div>
                 <button className="ov-metric-arrow" title="View details">→</button>
               </div>
               <div className="ov-metric-title">People creating</div>
@@ -338,7 +358,9 @@ export default function Overview() {
               onClick={() => handleOpenBoard('Architecture Map')}
             >
               <div className="ov-metric-card__header">
-                <div className="ov-metric-icon ov-metric-icon--cyan">💡</div>
+                <div className="ov-metric-icon ov-metric-icon--cyan">
+                  <IconMetricLightbulb />
+                </div>
                 <button className="ov-metric-arrow" title="View details">→</button>
               </div>
               <div className="ov-metric-title">Ideas connected</div>
@@ -354,7 +376,9 @@ export default function Overview() {
               onClick={() => handleOpenBoard('Analytics Dashboard')}
             >
               <div className="ov-metric-card__header">
-                <div className="ov-metric-icon ov-metric-icon--violet">⚡</div>
+                <div className="ov-metric-icon ov-metric-icon--violet">
+                  <IconMetricBolt />
+                </div>
                 <button className="ov-metric-arrow" title="View details">→</button>
               </div>
               <div className="ov-metric-title">Total activity</div>
@@ -434,7 +458,6 @@ export default function Overview() {
 
               {/* Embedded Live Preview of Drawing Canvas */}
               <div className="ov-play-preview-mockup">
-                {/* Mock Whiteboard */}
                 <div className="ov-mock-canvas">
                   {/* Left color palette dots */}
                   <div className="ov-mock-palette">
@@ -443,26 +466,31 @@ export default function Overview() {
                     <span style={{ backgroundColor: '#10b981' }} />
                     <span style={{ backgroundColor: '#f59e0b' }} />
                     <span style={{ backgroundColor: '#8b5cf6' }} />
+                    <span style={{ backgroundColor: '#0f172a' }} />
                   </div>
 
-                  {/* Center doodle */}
+                  {/* Center cat doodle */}
                   <div className="ov-mock-drawing">
-                    <div className="ov-mock-cat-face">🐱 ?</div>
+                    <CatSketchSvg />
                   </div>
 
                   {/* Right chat bubbles */}
                   <div className="ov-mock-chat">
-                    <div className="ov-mock-bubble ov-mock-bubble--drawer">
-                      <span className="ov-mock-author">Alex:</span> You're drawing...
+                    <div className="ov-mock-bubble">
+                      <span className="ov-bubble-dot" style={{ backgroundColor: '#3b82f6' }} />
+                      <span className="ov-mock-author">Alex</span> You're drawing...
                     </div>
                     <div className="ov-mock-bubble">
-                      <span className="ov-mock-author">Priya:</span> Nice! 👍
+                      <span className="ov-bubble-dot" style={{ backgroundColor: '#ec4899' }} />
+                      <span className="ov-mock-author">Priya</span> Nice! 👍
                     </div>
-                    <div className="ov-mock-bubble ov-mock-bubble--guess">
-                      <span className="ov-mock-author">Kavya:</span> Cat?
+                    <div className="ov-mock-bubble ov-mock-bubble--highlight">
+                      <span className="ov-bubble-dot" style={{ backgroundColor: '#10b981' }} />
+                      <span className="ov-mock-author">Kavya</span> Cat?
                     </div>
                     <div className="ov-mock-bubble">
-                      <span className="ov-mock-author">Arjun:</span> So good!
+                      <span className="ov-bubble-dot" style={{ backgroundColor: '#f59e0b' }} />
+                      <span className="ov-mock-author">Arjun</span> So good!
                     </div>
                   </div>
 
@@ -501,9 +529,11 @@ export default function Overview() {
 
               <div className="ov-activity-list">
                 <div className="ov-activity-item">
-                  <div className="ov-activity-avatar" style={{ backgroundColor: '#bfdbfe' }}>
-                    PM
-                  </div>
+                  <img
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop&crop=faces"
+                    alt="Priya"
+                    className="ov-activity-photo"
+                  />
                   <div className="ov-activity-info">
                     <div className="ov-activity-text">
                       <strong>Priya Menon</strong> created a new board
@@ -513,9 +543,11 @@ export default function Overview() {
                 </div>
 
                 <div className="ov-activity-item">
-                  <div className="ov-activity-avatar" style={{ backgroundColor: '#fbcfe8' }}>
-                    KR
-                  </div>
+                  <img
+                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=64&h=64&fit=crop&crop=faces"
+                    alt="Kavya"
+                    className="ov-activity-photo"
+                  />
                   <div className="ov-activity-info">
                     <div className="ov-activity-text">
                       <strong>Kavya Roy</strong> joined the Play Mode room
@@ -525,9 +557,11 @@ export default function Overview() {
                 </div>
 
                 <div className="ov-activity-item">
-                  <div className="ov-activity-avatar" style={{ backgroundColor: '#fcd34d' }}>
-                    AS
-                  </div>
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=faces"
+                    alt="Arjun"
+                    className="ov-activity-photo"
+                  />
                   <div className="ov-activity-info">
                     <div className="ov-activity-text">
                       <strong>Arjun Singh</strong> shared a template
@@ -537,9 +571,11 @@ export default function Overview() {
                 </div>
 
                 <div className="ov-activity-item">
-                  <div className="ov-activity-avatar" style={{ backgroundColor: '#c7d2fe' }}>
-                    SI
-                  </div>
+                  <img
+                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=faces"
+                    alt="Sneha"
+                    className="ov-activity-photo"
+                  />
                   <div className="ov-activity-info">
                     <div className="ov-activity-text">
                       <strong>Sneha Iyer</strong> commented on your board
@@ -578,9 +614,15 @@ export default function Overview() {
           ───────────────────────────────────────────────────────────── */}
       <aside className="ov-right-panel">
         {/* Widget 1: Your Workspace */}
-        <div className="ov-widget-card" onClick={handleCopyInvite} style={{ cursor: 'pointer' }}>
+        <div
+          className="ov-widget-card"
+          onClick={handleCopyInvite}
+          style={{ cursor: 'pointer' }}
+        >
           <div className="ov-widget-header">
-            <div className="ov-widget-icon ov-widget-icon--blue">🗂️</div>
+            <div className="ov-widget-icon ov-widget-icon--blue">
+              <IconWorkspaceBoard />
+            </div>
             <div className="ov-widget-title-col">
               <div className="ov-widget-title-row">
                 <span className="ov-widget-title">Your Workspace</span>
@@ -592,11 +634,27 @@ export default function Overview() {
           </div>
 
           <div className="ov-ws-avatars-row">
-            <div className="ov-ws-avatar-dot" style={{ backgroundColor: '#bfdbfe' }} title="Priya">P</div>
-            <div className="ov-ws-avatar-dot" style={{ backgroundColor: '#fbcfe8' }} title="Kavya">K</div>
-            <div className="ov-ws-avatar-dot" style={{ backgroundColor: '#fed7aa' }} title="Arjun">A</div>
-            <div className="ov-ws-avatar-dot" style={{ backgroundColor: '#c7d2fe' }} title="Sneha">S</div>
-            <div className="ov-ws-avatar-dot" style={{ backgroundColor: '#e2e8f0' }} title="Alex">AM</div>
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop&crop=faces"
+              alt="Priya"
+              className="ov-ws-avatar-dot"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=64&h=64&fit=crop&crop=faces"
+              alt="Kavya"
+              className="ov-ws-avatar-dot"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=faces"
+              alt="Arjun"
+              className="ov-ws-avatar-dot"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=faces"
+              alt="Sneha"
+              className="ov-ws-avatar-dot"
+            />
+            <div className="ov-ws-avatar-dot ov-ws-avatar-dot--me">AM</div>
             <span className="ov-ws-avatar-more">+3</span>
           </div>
         </div>
@@ -604,7 +662,9 @@ export default function Overview() {
         {/* Widget 2: Voice & Video */}
         <div className="ov-widget-card">
           <div className="ov-widget-header">
-            <div className="ov-widget-icon ov-widget-icon--cyan">📹</div>
+            <div className="ov-widget-icon ov-widget-icon--cyan">
+              <IconVideoCall />
+            </div>
             <div className="ov-widget-title-col">
               <div className="ov-widget-title-row">
                 <span className="ov-widget-title">Voice & Video</span>
@@ -660,7 +720,9 @@ export default function Overview() {
         {/* Widget 3: Quick Actions (2x2 Grid) */}
         <div className="ov-widget-card">
           <div className="ov-widget-header">
-            <div className="ov-widget-icon ov-widget-icon--indigo">⚡</div>
+            <div className="ov-widget-icon ov-widget-icon--indigo">
+              <IconSparkle />
+            </div>
             <span className="ov-widget-title">Quick Actions</span>
           </div>
 
@@ -709,11 +771,11 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* Widget 4: Inspirational Gradient Card */}
+        {/* Widget 4: Inspirational Gradient Card with Glowing 3D Glass Spheres */}
         <div className="ov-inspire-card">
           <div className="ov-inspire-spheres">
-            <span className="ov-sphere ov-sphere--1" />
-            <span className="ov-sphere ov-sphere--2" />
+            <div className="ov-3d-glass-sphere ov-3d-glass-sphere--1" />
+            <div className="ov-3d-glass-sphere ov-3d-glass-sphere--2" />
           </div>
           <div className="ov-inspire-content">
             <h4 className="ov-inspire-title">Great things happen here.</h4>
