@@ -4,6 +4,7 @@ import Canvas from '../components/Canvas/Canvas'
 import Toolbar from '../components/Toolbar/Toolbar'
 import { useBoardState } from '../hooks/useBoardState'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
+import { useTheme } from '../context/useTheme'
 import type { HexColor, Tool } from '../types/canvas'
 import './Board.css'
 
@@ -18,12 +19,15 @@ const MODES = [
 ]
 
 export default function Board() {
+  const { theme } = useTheme()
   const [searchParams] = useSearchParams()
   const boardName = searchParams.get('title') || 'Untitled Board'
 
   // ── Toolbar state ─────────────────────────────────────────
   const [tool, setTool] = useState<Tool>('pen')
-  const [color, setColor] = useState<HexColor>('#ffffff')
+  // userColor is null if using theme default, or a specific hex chosen by the user
+  const [userColor, setUserColor] = useState<HexColor | null>(null)
+  const color = userColor ?? (theme === 'light' ? '#0f172a' : '#ffffff')
   const [strokeWidth, setStrokeWidth] = useState(2)
 
   // ── Board / elements state ────────────────────────────────
@@ -105,7 +109,7 @@ export default function Board() {
           canRedo={canRedo}
           boardName={boardName}
           onToolChange={setTool}
-          onColorChange={setColor}
+          onColorChange={setUserColor}
           onStrokeWidthChange={setStrokeWidth}
           onUndo={undo}
           onRedo={redo}

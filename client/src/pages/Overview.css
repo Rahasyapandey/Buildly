@@ -1054,3 +1054,160 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   DARK MODE / NIGHT MODE (Image 1 Dark Theme)
+   ───────────────────────────────────────────────────────────── */
+[data-theme='dark'] .overview-layout {
+  background-color: #0f1117;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .overview-sidebar {
+  background: #161822;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .overview-brand__name {
+  color: #f8fafc;
+}
+
+[data-theme='dark'] .workspace-selector {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .workspace-selector:hover {
+  background: #202434;
+  border-color: #3b82f6;
+}
+
+[data-theme='dark'] .workspace-selector__name {
+  color: #f8fafc;
+}
+
+[data-theme='dark'] .sidebar-item {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .sidebar-item:hover,
+[data-theme='dark'] .sidebar-item--active {
+  background: #202434;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .sidebar-item__badge {
+  background: #2a2e45;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .sidebar-item__badge--soon {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .pro-card {
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+[data-theme='dark'] .pro-card__desc {
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .user-profile-bar {
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .user-profile-bar:hover {
+  background: #1c1f2e;
+}
+
+[data-theme='dark'] .user-meta__name {
+  color: #f8fafc;
+}
+
+[data-theme='dark'] .overview-main {
+  background-color: #0f1117;
+}
+
+[data-theme='dark'] .overview-topbar {
+  background: #161822;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .breadcrumb-current {
+  color: #f8fafc;
+}
+
+[data-theme='dark'] .greeting-heading {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .greeting-subtitle {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .search-boards-input {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .search-boards-input input {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .stat-card {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .stat-card__value {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .mode-banner {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .mode-banner__title {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .section-title {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .blueprint-card {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .blueprint-title {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .recent-board-card {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .recent-board-card__title {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .activity-card {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .activity-body {
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .activity-user {
+  color: #ffffff;
+}

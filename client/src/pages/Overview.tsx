@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
 import './Overview.css'
 
 export default function Overview() {
@@ -208,6 +209,7 @@ export default function Overview() {
             </div>
 
             {/* Quick action buttons */}
+            <ThemeToggle variant="icon" />
             <button className="topbar-icon-btn" title="Search">
               🔍
             </button>

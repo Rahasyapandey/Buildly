@@ -6,12 +6,12 @@
   position: relative;
   flex: 1;
   overflow: hidden;
-  background: var(--color-bg);
-  /* Dot grid pattern matching the design system background */
+  background: var(--canvas-bg);
+  /* Dot grid pattern matching active theme */
   background-image: radial-gradient(
     circle,
-    var(--color-border) 1px,
-    transparent 1px
+    var(--canvas-grid-dot) 1.2px,
+    transparent 1.2px
   );
   background-size: 24px 24px;
 }

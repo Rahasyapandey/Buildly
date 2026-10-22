@@ -835,3 +835,145 @@
     display: none;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   DARK MODE / NIGHT MODE (Landing Page)
+   ───────────────────────────────────────────────────────────── */
+[data-theme='dark'] .landing-container {
+  background: radial-gradient(circle at 50% 0%, #161a2e 0%, #0f1117 60%, #090a0f 100%);
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .landing-hero__title {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .landing-hero__tagline {
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .landing-hero__subtitle {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .cta-secondary {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .cta-secondary:hover {
+  background: #202434;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+[data-theme='dark'] .floating-badge {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #f8fafc;
+}
+
+[data-theme='dark'] .cursor-chip {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #f8fafc;
+}
+
+[data-theme='dark'] .mockup-window {
+  background: #161822;
+  border-color: #2a2e45;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme='dark'] .mockup-topbar {
+  background: #161822;
+  border-color: #202434;
+}
+
+[data-theme='dark'] .mockup-brand {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .mockup-project-picker {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .mockup-sidebar {
+  background: #161822;
+  border-color: #202434;
+}
+
+[data-theme='dark'] .mockup-nav-item {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .mockup-nav-item--active {
+  background: #202434;
+  color: #60a5fa;
+}
+
+[data-theme='dark'] .mockup-toolbar {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .mockup-workspace {
+  background-color: #0d0f17;
+  background-image: radial-gradient(circle, #2a2e45 1.2px, transparent 1.2px);
+}
+
+[data-theme='dark'] .canvas-quadrant-title {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .uml-class-box {
+  background: #1a1e2d;
+  border-color: #3b82f6;
+}
+
+[data-theme='dark'] .uml-class-header {
+  background: #20263b;
+  color: #93c5fd;
+  border-color: #3b82f6;
+}
+
+[data-theme='dark'] .uml-class-section {
+  color: #cbd5e1;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .erd-entity {
+  background: #1a1e2d;
+}
+
+[data-theme='dark'] .erd-entity-body {
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .erd-relation {
+  background: #1a1e2d;
+  border-color: #3b82f6;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .mockup-zoom-bar {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .feature-pill-card {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+}
+
+[data-theme='dark'] .feature-pill-title {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .feature-pill-desc {
+  color: #94a3b8;
+}

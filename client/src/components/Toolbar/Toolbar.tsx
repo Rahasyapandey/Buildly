@@ -1,4 +1,5 @@
 import type { HexColor, Tool } from '../../types/canvas'
+import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import './Toolbar.css'
 
 // ============================================================
@@ -13,16 +14,16 @@ import './Toolbar.css'
 
 // Colour palette — the preset swatches shown in the toolbar.
 const PALETTE: HexColor[] = [
+  '#0f172a', // near-black / dark slate
   '#ffffff', // white
+  '#2563eb', // blue
+  '#7c3aed', // purple
   '#f87171', // red
   '#fb923c', // orange
   '#facc15', // yellow
-  '#4ade80', // green
-  '#60a5fa', // blue
-  '#c084fc', // purple
+  '#10b981', // green
   '#f472b6', // pink
   '#94a3b8', // slate
-  '#0f1117', // near-black
 ]
 
 // Stroke width options: [display size in px (for the dot), actual stroke value]
@@ -170,8 +171,10 @@ export default function Toolbar({
         🗑
       </button>
 
-      {/* ── Board name ───────────────────────────────────── */}
+      {/* ── Board name & Theme Toggle ────────────────────── */}
       <span className="toolbar__board-name">{boardName}</span>
+      <div className="toolbar__divider" />
+      <ThemeToggle variant="icon" />
     </header>
   )
 }

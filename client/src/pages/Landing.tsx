@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
 import './Landing.css'
 
 export default function Landing() {
@@ -42,6 +43,7 @@ export default function Landing() {
           >
             GitHub
           </a>
+          <ThemeToggle variant="pill" />
         </div>
       </header>
 
