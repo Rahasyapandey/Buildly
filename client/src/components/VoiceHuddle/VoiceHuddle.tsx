@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { soundEffects } from '../../utils/soundEffects'
 import './VoiceHuddle.css'
 
 interface Participant {
@@ -158,6 +159,7 @@ export default function VoiceHuddle() {
   }
 
   const handleToggleMute = () => {
+    soundEffects.playTick()
     const nextMute = !isMuted
     setIsMuted(nextMute)
 
@@ -169,6 +171,7 @@ export default function VoiceHuddle() {
   }
 
   const handleToggleDeafen = () => {
+    soundEffects.playTick()
     setIsDeafened(!isDeafened)
   }
 
@@ -194,6 +197,8 @@ export default function VoiceHuddle() {
     )
   }
 
+  const isAnyoneSpeaking = isSpeakingLocal || participants.some((p) => p.isSpeaking)
+
   return (
     <div className="voice-huddle-bar" role="region" aria-label="Voice Huddle Controls">
       {/* Room Badge */}
@@ -203,6 +208,13 @@ export default function VoiceHuddle() {
           <span>Huddle</span>
         </div>
         <span className="voice-call-timer">{formatTime(secondsInCall)}</span>
+        <div className="voice-wave-bars" title="Audio frequency activity">
+          <span className={`voice-wave-bar ${isAnyoneSpeaking ? 'voice-wave-bar--active' : ''}`} />
+          <span className={`voice-wave-bar ${isAnyoneSpeaking ? 'voice-wave-bar--active' : ''}`} />
+          <span className={`voice-wave-bar ${isAnyoneSpeaking ? 'voice-wave-bar--active' : ''}`} />
+          <span className={`voice-wave-bar ${isAnyoneSpeaking ? 'voice-wave-bar--active' : ''}`} />
+        </div>
+        <span className="voice-telemetry-badge">🟢 14ms</span>
       </div>
 
       {/* Participants */}

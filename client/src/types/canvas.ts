@@ -19,6 +19,8 @@ export type Tool =
   | 'line'       // straight line between two points
   | 'rectangle'  // axis-aligned rectangle
   | 'circle'     // circle defined by centre + radius
+  | 'sticky'     // interactive sticky note with text
+  | 'text'       // text annotation
   | 'select'     // click to select / drag to move
   | 'eraser'     // click element to remove it
 
@@ -63,12 +65,41 @@ export interface CircleElement extends BaseElement {
   fill: HexColor | null
 }
 
+export interface StickyElement extends BaseElement {
+  type: 'sticky'
+  x: number
+  y: number
+  width: number
+  height: number
+  text: string
+  noteColor: string
+}
+
+export interface TextElement extends BaseElement {
+  type: 'text'
+  x: number
+  y: number
+  text: string
+  fontSize: number
+}
+
 /** Union of all concrete element types. */
 export type CanvasElement =
   | PenElement
   | LineElement
   | RectElement
   | CircleElement
+  | StickyElement
+  | TextElement
+
+/** Element without id for creating new elements */
+export type NewCanvasElement =
+  | Omit<PenElement, 'id'>
+  | Omit<LineElement, 'id'>
+  | Omit<RectElement, 'id'>
+  | Omit<CircleElement, 'id'>
+  | Omit<StickyElement, 'id'>
+  | Omit<TextElement, 'id'>
 
 // ── Board state ───────────────────────────────────────────────
 

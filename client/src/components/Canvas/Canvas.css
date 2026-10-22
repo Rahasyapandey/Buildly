@@ -55,3 +55,130 @@
   max-width: 220px;
   line-height: 1.5;
 }
+
+/* Floating Action Pill above selected element */
+.canvas-floating-bar {
+  position: absolute;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 12px;
+  padding: 4px 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  user-select: none;
+  backdrop-filter: blur(8px);
+}
+
+.canvas-color-swatches {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.canvas-color-swatch-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 120ms ease;
+}
+
+.canvas-color-swatch-dot:hover {
+  transform: scale(1.2);
+}
+
+.canvas-bar-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--color-border, #e2e8f0);
+  margin: 0 2px;
+}
+
+.canvas-bar-btn {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text, #0f172a);
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.canvas-bar-btn:hover {
+  background: var(--color-surface-2, #f1f5f9);
+}
+
+.canvas-bar-btn--delete:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* Inline Textarea / Input Editor */
+.canvas-inline-editor-wrap {
+  position: absolute;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-inline-textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  border: 2px solid #2563eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  outline: none;
+  resize: both;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.canvas-inline-input {
+  width: 100%;
+  border: 2px solid #2563eb;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 600;
+  background: var(--color-surface, #ffffff);
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.canvas-inline-editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted, #64748b);
+  background: var(--color-surface, #ffffff);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border, #e2e8f0);
+}
+
+.canvas-inline-done-btn {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+

@@ -81,6 +81,15 @@ export default function PlayNavbar({
       </div>
 
       <div className="play-navbar__right">
+        <Link
+          to="/showcase"
+          className="play-showcase-btn"
+          title="Open Generative UI Suite"
+        >
+          <span>✨</span>
+          <span>Showcase</span>
+        </Link>
+
         <ThemeToggle variant="icon" />
 
         <button

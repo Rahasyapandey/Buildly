@@ -72,6 +72,92 @@ export function renderElement(
       ctx.stroke()
       break
     }
+
+    case 'sticky': {
+      const rx = el.x
+      const ry = el.y
+      const rw = el.width
+      const rh = el.height
+      const corner = 10
+
+      // Card shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)'
+      ctx.beginPath()
+      ctx.roundRect(rx + 3, ry + 4, rw, rh, corner)
+      ctx.fill()
+
+      // Card Body
+      ctx.fillStyle = el.noteColor || '#fef08a'
+      ctx.beginPath()
+      ctx.roundRect(rx, ry, rw, rh, corner)
+      ctx.fill()
+
+      // Top decorative stripe
+      ctx.fillStyle = el.color || '#eab308'
+      ctx.beginPath()
+      ctx.roundRect(rx, ry, rw, 8, [corner, corner, 0, 0])
+      ctx.fill()
+
+      // Border outline
+      ctx.strokeStyle = el.color || '#ca8a04'
+      ctx.lineWidth = 1.5
+      ctx.stroke()
+
+      // Card multiline text with auto-wrapping
+      ctx.fillStyle = '#0f172a'
+      ctx.font = '500 13px Inter, system-ui, sans-serif'
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'top'
+
+      const padX = 12
+      const maxLineWidth = rw - padX * 2
+      const rawLines = el.text ? el.text.split('\n') : ['New note...']
+      const wrappedLines: string[] = []
+
+      for (const line of rawLines) {
+        if (!line) {
+          wrappedLines.push('')
+          continue
+        }
+        const words = line.split(' ')
+        let currentLine = ''
+        for (const w of words) {
+          const testLine = currentLine ? `${currentLine} ${w}` : w
+          if (ctx.measureText(testLine).width <= maxLineWidth) {
+            currentLine = testLine
+          } else {
+            if (currentLine) wrappedLines.push(currentLine)
+            currentLine = w
+          }
+        }
+        if (currentLine) wrappedLines.push(currentLine)
+      }
+
+      let lineY = ry + 18
+      const maxLines = Math.floor((rh - 24) / 18)
+
+      for (let i = 0; i < Math.min(wrappedLines.length, maxLines); i++) {
+        ctx.fillText(wrappedLines[i], rx + padX, lineY)
+        lineY += 18
+      }
+      break
+    }
+
+    case 'text': {
+      ctx.fillStyle = el.color || '#0f172a'
+      const fSize = el.fontSize || 16
+      ctx.font = `600 ${fSize}px Inter, system-ui, sans-serif`
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'top'
+
+      const lines = el.text ? el.text.split('\n') : ['']
+      let currentY = el.y
+      for (const line of lines) {
+        ctx.fillText(line, el.x, currentY)
+        currentY += fSize * 1.3
+      }
+      break
+    }
   }
 
   // ── Selection highlight ─────────────────────────────────────
@@ -142,6 +228,17 @@ export function getElementBounds(el: CanvasElement): {
       const r = Math.abs(el.radius)
       return { x: el.cx - r, y: el.cy - r, width: r * 2, height: r * 2 }
     }
+    case 'sticky': {
+      return { x: el.x, y: el.y, width: el.width, height: el.height }
+    }
+    case 'text': {
+      const fSize = el.fontSize || 16
+      const lines = el.text ? el.text.split('\n') : ['']
+      const maxLen = Math.max(...lines.map((l) => l.length), 1)
+      const approxWidth = maxLen * (fSize * 0.6)
+      const approxHeight = lines.length * (fSize * 1.3)
+      return { x: el.x, y: el.y, width: approxWidth, height: approxHeight }
+    }
   }
 }
 
@@ -197,6 +294,24 @@ export function hitTest(
       const dist = Math.hypot(px - el.cx, py - el.cy)
       if (el.fill) return dist <= r
       return Math.abs(dist - r) <= threshold
+    }
+    case 'sticky': {
+      return (
+        px >= el.x - threshold &&
+        px <= el.x + el.width + threshold &&
+        py >= el.y - threshold &&
+        py <= el.y + el.height + threshold
+      )
+    }
+    case 'text': {
+      const bounds = getElementBounds(el)
+      if (!bounds) return false
+      return (
+        px >= bounds.x - threshold &&
+        px <= bounds.x + bounds.width + threshold &&
+        py >= bounds.y - threshold &&
+        py <= bounds.y + bounds.height + threshold
+      )
     }
   }
 }

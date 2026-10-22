@@ -1,5 +1,5 @@
 import { useCallback, useReducer } from 'react'
-import type { CanvasElement, BoardState } from '../types/canvas'
+import type { CanvasElement, BoardState, NewCanvasElement } from '../types/canvas'
 import { nanoid } from '../utils/nanoid'
 
 // ============================================================
@@ -15,6 +15,7 @@ import { nanoid } from '../utils/nanoid'
 
 type Action =
   | { type: 'ADD_ELEMENT'; element: CanvasElement }
+  | { type: 'UPDATE_ELEMENT'; id: string; updates: Partial<CanvasElement> }
   | { type: 'REMOVE_ELEMENT'; id: string }
   | { type: 'CLEAR_ALL' }
   | { type: 'UNDO' }
@@ -45,6 +46,22 @@ function boardReducer(state: BoardState, action: Action): BoardState {
         history,
         historyIndex: history.length - 1,
         selectedId: null,
+      }
+    }
+
+    case 'UPDATE_ELEMENT': {
+      const next = state.elements.map((el) =>
+        el.id === action.id ? ({ ...el, ...action.updates } as CanvasElement) : el,
+      )
+      const history = [
+        ...state.history.slice(0, state.historyIndex + 1),
+        next,
+      ]
+      return {
+        ...state,
+        elements: next,
+        history,
+        historyIndex: history.length - 1,
       }
     }
 
@@ -120,7 +137,7 @@ export function useBoardState() {
   const [state, dispatch] = useReducer(boardReducer, initialState)
 
   const addElement = useCallback(
-    (el: Omit<CanvasElement, 'id'>) => {
+    (el: NewCanvasElement) => {
       dispatch({
         type: 'ADD_ELEMENT',
         element: { ...el, id: nanoid() } as CanvasElement,
@@ -128,6 +145,10 @@ export function useBoardState() {
     },
     [],
   )
+
+  const updateElement = useCallback((id: string, updates: Partial<CanvasElement>) => {
+    dispatch({ type: 'UPDATE_ELEMENT', id, updates })
+  }, [])
 
   const removeElement = useCallback((id: string) => {
     dispatch({ type: 'REMOVE_ELEMENT', id })
@@ -159,6 +180,7 @@ export function useBoardState() {
     canUndo: state.historyIndex > 0,
     canRedo: state.historyIndex < state.history.length - 1,
     addElement,
+    updateElement,
     removeElement,
     clearAll,
     undo,

@@ -57,7 +57,7 @@
 }
 
 .voice-call-timer {
-  font-size: 11.5px;
+  font-size: 12px;
   font-family: var(--font-mono);
   color: var(--color-text-muted);
 }
@@ -83,7 +83,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #ffffff;
   border: 2px solid var(--color-surface);
@@ -205,7 +205,7 @@
 }
 
 .voice-join-sub {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-text-muted);
 }
 
@@ -233,4 +233,45 @@
 @keyframes slideUpHuddle {
   from { opacity: 0; transform: translate(-50%, 15px); }
   to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ── Live Waveform Activity Bars ───────────────────────────── */
+.voice-wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 14px;
+}
+
+.voice-wave-bar {
+  width: 2.5px;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 9999px;
+  transition: height 0.15s ease, background 0.15s ease;
+}
+
+.voice-wave-bar--active {
+  background: #10b981;
+  animation: bounceBar 0.6s infinite ease-in-out alternate;
+}
+
+.voice-wave-bar--active:nth-child(1) { animation-delay: 0.05s; }
+.voice-wave-bar--active:nth-child(2) { animation-delay: 0.2s; }
+.voice-wave-bar--active:nth-child(3) { animation-delay: 0.35s; }
+.voice-wave-bar--active:nth-child(4) { animation-delay: 0.1s; }
+
+@keyframes bounceBar {
+  0% { height: 4px; }
+  100% { height: 14px; }
+}
+
+.voice-telemetry-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
 }

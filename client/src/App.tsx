@@ -5,6 +5,7 @@ import Landing from './pages/Landing'
 import Overview from './pages/Overview'
 import Board from './pages/Board'
 import Play from './pages/Play'
+import Showcase from './pages/Showcase'
 import NotFound from './pages/NotFound'
 
 // App is the root component. Its only job is to set up the router,
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/workspace" element={<Overview />} />
           <Route path="/board" element={<Board />} />
           <Route path="/play" element={<Play />} />
+          <Route path="/showcase" element={<Showcase />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

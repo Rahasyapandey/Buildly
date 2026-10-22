@@ -1,3 +1,5 @@
+import { useState, useRef, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import type { HexColor, Tool } from '../../types/canvas'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import './Toolbar.css'
@@ -36,11 +38,13 @@ const WIDTHS: Array<{ dot: number; value: number; label: string }> = [
 
 // Tool definitions: icon, label, tooltip
 const TOOLS: Array<{ id: Tool; icon: string; label: string; title: string }> = [
+  { id: 'select',    icon: '↖',  label: 'Select', title: 'Select element (S)' },
   { id: 'pen',       icon: '✏️', label: 'Pen',    title: 'Freehand pen (P)' },
   { id: 'line',      icon: '╱',  label: 'Line',   title: 'Straight line (L)' },
   { id: 'rectangle', icon: '▭',  label: 'Rect',   title: 'Rectangle (R)' },
   { id: 'circle',    icon: '○',  label: 'Circle', title: 'Circle (C)' },
-  { id: 'select',    icon: '↖',  label: 'Select', title: 'Select element (S)' },
+  { id: 'sticky',    icon: '📝', label: 'Sticky', title: 'Sticky Note (K)' },
+  { id: 'text',      icon: 'T',  label: 'Text',   title: 'Text Annotation (T)' },
   { id: 'eraser',    icon: '⌫',  label: 'Erase',  title: 'Eraser (E)' },
 ]
 
@@ -58,6 +62,7 @@ interface ToolbarProps {
   onRedo: () => void
   onClear: () => void
   onOpenExport?: () => void
+  onLoadTemplate?: (templateId: string) => void
 }
 
 export default function Toolbar({
@@ -74,7 +79,22 @@ export default function Toolbar({
   onRedo,
   onClear,
   onOpenExport,
+  onLoadTemplate,
 }: ToolbarProps) {
+  const [showTemplates, setShowTemplates] = useState(false)
+  const templateMenuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleOutside = (e: MouseEvent) => {
+      if (templateMenuRef.current && !templateMenuRef.current.contains(e.target as Node)) {
+        setShowTemplates(false)
+      }
+    }
+    if (showTemplates) {
+      document.addEventListener('mousedown', handleOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleOutside)
+  }, [showTemplates])
   return (
     <header className="toolbar" role="toolbar" aria-label="Drawing tools">
 
@@ -175,6 +195,80 @@ export default function Toolbar({
 
       <div className="toolbar__divider" />
 
+      {/* ── Diagram Templates Dropdown ────────────────────── */}
+      <div className="toolbar__template-wrap" ref={templateMenuRef}>
+        <button
+          className={`toolbar__action toolbar__template-btn ${showTemplates ? 'toolbar__action--active' : ''}`}
+          onClick={() => setShowTemplates((prev) => !prev)}
+          title="Insert Engineering Diagram Template"
+          aria-expanded={showTemplates}
+        >
+          <span>📐</span>
+          <span>Templates</span>
+          <span style={{ fontSize: '12px', opacity: 0.7 }}>▾</span>
+        </button>
+
+        {showTemplates && (
+          <div className="toolbar__template-menu" role="menu">
+            <div className="toolbar__template-menu-title">Diagram Presets</div>
+            <button
+              className="toolbar__template-menu-item"
+              onClick={() => {
+                onLoadTemplate?.('system-architecture')
+                setShowTemplates(false)
+              }}
+            >
+              <span className="tb-menu-icon">☁️</span>
+              <div>
+                <div className="tb-menu-label">System Architecture</div>
+                <div className="tb-menu-sub">Client, Gateway, FastAPI, DB</div>
+              </div>
+            </button>
+            <button
+              className="toolbar__template-menu-item"
+              onClick={() => {
+                onLoadTemplate?.('uml-class')
+                setShowTemplates(false)
+              }}
+            >
+              <span className="tb-menu-icon">📦</span>
+              <div>
+                <div className="tb-menu-label">UML Domain Model</div>
+                <div className="tb-menu-sub">User, Board, Classes</div>
+              </div>
+            </button>
+            <button
+              className="toolbar__template-menu-item"
+              onClick={() => {
+                onLoadTemplate?.('erd')
+                setShowTemplates(false)
+              }}
+            >
+              <span className="tb-menu-icon">🗄️</span>
+              <div>
+                <div className="tb-menu-label">Database Schema (ERD)</div>
+                <div className="tb-menu-sub">Postgres Relational Tables</div>
+              </div>
+            </button>
+            <button
+              className="toolbar__template-menu-item"
+              onClick={() => {
+                onLoadTemplate?.('flowchart')
+                setShowTemplates(false)
+              }}
+            >
+              <span className="tb-menu-icon">⚡</span>
+              <div>
+                <div className="tb-menu-label">Auth & Sync Flowchart</div>
+                <div className="tb-menu-sub">Session & Socket Pipeline</div>
+              </div>
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="toolbar__divider" />
+
       {/* ── Export Button ─────────────────────────────────── */}
       <button
         className="toolbar__action"
@@ -186,6 +280,16 @@ export default function Toolbar({
         <span>📥</span>
         <span>Export</span>
       </button>
+
+      {/* ── Generative UI Showcase Launcher ──────────────── */}
+      <Link
+        to="/showcase"
+        className="toolbar__showcase-btn"
+        title="Open Buildly Generative UI Showcase"
+      >
+        <span className="tb-sparkle-dot" />
+        <span>Generative UI</span>
+      </Link>
 
       {/* ── Board name & Theme Toggle ────────────────────── */}
       <span className="toolbar__board-name">{boardName}</span>

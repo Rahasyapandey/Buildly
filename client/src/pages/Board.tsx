@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Canvas from '../components/Canvas/Canvas'
 import Toolbar from '../components/Toolbar/Toolbar'
@@ -7,6 +7,7 @@ import VoiceHuddle from '../components/VoiceHuddle/VoiceHuddle'
 import { useBoardState } from '../hooks/useBoardState'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import { useTheme } from '../context/useTheme'
+import { getTemplateElements } from '../utils/boardTemplates'
 import type { HexColor, Tool } from '../types/canvas'
 import './Board.css'
 
@@ -40,12 +41,37 @@ export default function Board() {
     canUndo,
     canRedo,
     addElement,
+    updateElement,
     removeElement,
     clearAll,
     undo,
     redo,
+    loadElements,
     setSelected,
   } = useBoardState()
+
+  // Load template if specified in query params
+  useEffect(() => {
+    const templateParam = searchParams.get('template')
+    if (templateParam) {
+      const templateData = getTemplateElements(templateParam)
+      if (templateData.length > 0) {
+        loadElements(templateData)
+      }
+      return
+    }
+
+    const lowerTitle = boardName.toLowerCase()
+    if (lowerTitle.includes('system architecture') || lowerTitle.includes('architecture map')) {
+      loadElements(getTemplateElements('system-architecture'))
+    } else if (lowerTitle.includes('uml')) {
+      loadElements(getTemplateElements('uml-class'))
+    } else if (lowerTitle.includes('erd') || lowerTitle.includes('database')) {
+      loadElements(getTemplateElements('erd'))
+    } else if (lowerTitle.includes('flowchart')) {
+      loadElements(getTemplateElements('flowchart'))
+    }
+  }, [searchParams, boardName, loadElements])
 
   // ── Keyboard shortcuts ────────────────────────────────────
   useKeyboardShortcuts({ onToolChange: setTool, onUndo: undo, onRedo: redo })
@@ -153,6 +179,7 @@ export default function Board() {
           onRedo={redo}
           onClear={clearAll}
           onOpenExport={() => setIsExportOpen(true)}
+          onLoadTemplate={(id) => loadElements(getTemplateElements(id))}
         />
 
         {/* Canvas */}
@@ -163,6 +190,7 @@ export default function Board() {
           color={color}
           strokeWidth={strokeWidth}
           onAdd={addElement}
+          onUpdate={updateElement}
           onRemove={removeElement}
           onSelect={setSelected}
         />

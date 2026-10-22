@@ -125,7 +125,7 @@
   border: 1px solid #bfdbfe;
   color: #2563eb;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,7 +161,7 @@
 }
 
 .ov-nav-label {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 800;
   color: #94a3b8;
   letter-spacing: 0.08em;
@@ -297,7 +297,7 @@
 }
 
 .ov-ws-card__sub {
-  font-size: 10.5px;
+  font-size: 12px;
   color: #94a3b8;
 }
 
@@ -306,7 +306,7 @@
   align-items: center;
   gap: 4px;
   color: #94a3b8;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 /* Promo Banner: Build Better Together */
@@ -344,7 +344,7 @@
 }
 
 .ov-promo-sub {
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.75);
   margin-bottom: 12px;
 }
@@ -355,7 +355,7 @@
   border: none;
   border-radius: 8px;
   padding: 6px 12px;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: background 130ms ease;
@@ -392,7 +392,7 @@
   background: #eff6ff;
   color: #2563eb;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -414,7 +414,7 @@
 }
 
 .ov-user-role {
-  font-size: 10px;
+  font-size: 12px;
   color: #94a3b8;
 }
 
@@ -492,7 +492,7 @@
 }
 
 .ov-search-kbd {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   font-family: var(--font-mono);
   background: #f1f5f9;
@@ -542,7 +542,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   color: #475569;
   margin-left: -6px;
@@ -585,7 +585,7 @@
   background: #2563eb;
   color: #ffffff;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -618,7 +618,7 @@
 }
 
 .ov-date-tag {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   color: #94a3b8;
   letter-spacing: 0.08em;
@@ -892,12 +892,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
 }
 
 .ov-metric-title {
-  font-size: 11.5px;
+  font-size: 12px;
   color: #64748b;
   font-weight: 600;
   margin-bottom: 4px;
@@ -916,7 +916,7 @@
 }
 
 .ov-metric-trend {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
   color: #059669;
   display: flex;
@@ -938,7 +938,7 @@
 }
 
 .ov-section-tag {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 800;
   color: #94a3b8;
   letter-spacing: 0.08em;
@@ -1041,7 +1041,7 @@
 }
 
 .ov-template-desc {
-  font-size: 10.5px;
+  font-size: 12px;
   color: #94a3b8;
   white-space: nowrap;
   overflow: hidden;
@@ -1084,7 +1084,7 @@
   background: #f5f3ff;
   color: #7c3aed;
   border: 1px solid #ddd6fe;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   padding: 3px 8px;
   border-radius: 20px;
@@ -1266,7 +1266,7 @@
   padding: 2px 8px;
   display: flex;
   gap: 6px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .ov-play-features-list {
@@ -1282,7 +1282,7 @@
 }
 
 .ov-play-feature-item {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: #64748b;
 }
@@ -1333,7 +1333,7 @@
 .ov-activity-view-all {
   background: transparent;
   border: none;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   color: #2563eb;
   cursor: pointer;
@@ -1383,7 +1383,7 @@
 }
 
 .ov-activity-sub {
-  font-size: 10.5px;
+  font-size: 12px;
   color: #94a3b8;
 }
 
@@ -1427,7 +1427,7 @@
 }
 
 .ov-footer__tagline {
-  font-size: 11.5px;
+  font-size: 12px;
   color: #94a3b8;
   margin-left: 10px;
 }
@@ -1439,7 +1439,7 @@
 }
 
 .ov-footer__links {
-  font-size: 11.5px;
+  font-size: 12px;
   color: #94a3b8;
   font-weight: 600;
 }
@@ -1541,7 +1541,7 @@
 }
 
 .ov-widget-sub {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   color: #475569;
 }
@@ -1551,12 +1551,12 @@
 }
 
 .ov-widget-detail {
-  font-size: 10.5px;
+  font-size: 12px;
   color: #94a3b8;
 }
 
 .ov-widget-desc {
-  font-size: 10.5px;
+  font-size: 12px;
   color: #64748b;
   line-height: 1.35;
   margin-top: 2px;
@@ -1677,7 +1677,7 @@
   border: none;
   padding: 5px 12px;
   border-radius: 12px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -1722,7 +1722,7 @@
 }
 
 .ov-qa-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.25;
@@ -1803,7 +1803,7 @@
 }
 
 .ov-inspire-sub {
-  font-size: 11px;
+  font-size: 12px;
   color: #4338ca;
   font-weight: 700;
   position: relative;
@@ -1813,3 +1813,598 @@
 [data-theme='dark'] .ov-inspire-sub {
   color: #c7d2fe;
 }
+
+/* ============================================================
+   Enhanced Overview Interactive Additions (Buildly 2.0)
+   ============================================================ */
+
+/* ── Workspace Switcher Dropdown ───────────────────────────── */
+.ov-ws-wrap {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.ov-ws-wrap .ov-ws-pill {
+  margin-bottom: 0;
+}
+
+.ov-ws-dropdown {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  padding: 6px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: tbMenuFade 0.15s ease-out;
+}
+
+[data-theme='dark'] .ov-ws-dropdown {
+  background: #181b2a;
+  border-color: #242940;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.ov-ws-dropdown-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #64748b;
+  padding: 6px 8px 4px;
+}
+
+.ov-ws-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.ov-ws-item:hover {
+  background: #f1f5f9;
+}
+
+[data-theme='dark'] .ov-ws-item:hover {
+  background: #20253b;
+}
+
+.ov-ws-item--active {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+[data-theme='dark'] .ov-ws-item--active {
+  background: rgba(37, 99, 235, 0.18);
+}
+
+.ov-ws-item-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ov-ws-item-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+[data-theme='dark'] .ov-ws-item-name {
+  color: #ffffff;
+}
+
+.ov-ws-item-sub {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.ov-ws-check {
+  font-size: 12px;
+  font-weight: 800;
+  color: #2563eb;
+}
+
+/* ── Notification Popover ──────────────────────────────────── */
+.ov-notif-wrap {
+  position: relative;
+}
+
+.ov-notif-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #ffffff;
+}
+
+[data-theme='dark'] .ov-notif-badge {
+  border-color: #12141f;
+}
+
+.ov-notif-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 290px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+  padding: 8px;
+  z-index: 60;
+  animation: tbMenuFade 0.15s ease-out;
+}
+
+[data-theme='dark'] .ov-notif-dropdown {
+  background: #181b2a;
+  border-color: #242940;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+.ov-notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+[data-theme='dark'] .ov-notif-header {
+  border-bottom-color: #242940;
+}
+
+.ov-notif-header-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+[data-theme='dark'] .ov-notif-header-title {
+  color: #ffffff;
+}
+
+.ov-notif-mark-btn {
+  font-size: 12px;
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ov-notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 6px;
+}
+
+.ov-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.ov-notif-item:hover {
+  background: #f1f5f9;
+}
+
+[data-theme='dark'] .ov-notif-item:hover {
+  background: #20253b;
+}
+
+.ov-notif-item--unread {
+  background: rgba(37, 99, 235, 0.05);
+}
+
+[data-theme='dark'] .ov-notif-item--unread {
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.ov-notif-item-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ov-notif-item-body {
+  flex: 1;
+}
+
+.ov-notif-item-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.35;
+}
+
+[data-theme='dark'] .ov-notif-item-title {
+  color: #e2e8f0;
+}
+
+.ov-notif-item-time {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.ov-notif-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2563eb;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Topbar Generative UI Button ───────────────────────────── */
+.ov-topbar-showcase-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(139, 92, 246, 0.18));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #7c3aed;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+[data-theme='dark'] .ov-topbar-showcase-btn {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(139, 92, 246, 0.3));
+  border-color: rgba(139, 92, 246, 0.5);
+  color: #c4b5fd;
+}
+
+.ov-topbar-showcase-btn:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #2563eb, #8b5cf6);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+.ov-sparkle-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  box-shadow: 0 0 8px #8b5cf6;
+  animation: tbPulseDot 1.8s infinite;
+}
+
+/* ── Sidebar Generative UI Item ────────────────────────────── */
+.ov-nav-item--glow {
+  position: relative;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.ov-nav-item--glow:hover {
+  border-color: rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.ov-badge-pill--sparkle {
+  background: linear-gradient(135deg, #2563eb, #8b5cf6);
+  color: #ffffff;
+}
+
+/* ── Hero Quick Actions ────────────────────────────────────── */
+.ov-hero-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.ov-hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+  transition: all 0.15s ease;
+}
+
+.ov-hero-btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.ov-hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+[data-theme='dark'] .ov-hero-btn-secondary {
+  background: #1c1f2e;
+  border-color: #2a2e45;
+  color: #ffffff;
+}
+
+.ov-hero-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.ov-hero-btn-showcase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.15));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #7c3aed;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+[data-theme='dark'] .ov-hero-btn-showcase {
+  color: #c4b5fd;
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.ov-hero-btn-showcase:hover {
+  background: linear-gradient(135deg, #2563eb, #8b5cf6);
+  color: #ffffff;
+}
+
+/* ── Sparklines on Metric Cards ────────────────────────────── */
+.ov-metric-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.ov-sparkline {
+  width: 65px;
+  height: 18px;
+  filter: drop-shadow(0 2px 4px rgba(37, 99, 235, 0.2));
+}
+
+/* ── Template Category Filter Pills ────────────────────────── */
+.ov-category-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ov-cat-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+[data-theme='dark'] .ov-cat-pill {
+  background: #181b2a;
+  border-color: #242940;
+  color: #94a3b8;
+}
+
+.ov-cat-pill:hover {
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+[data-theme='dark'] .ov-cat-pill:hover {
+  color: #ffffff;
+}
+
+.ov-cat-pill--active {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.ov-template-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ov-template-pill-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+[data-theme='dark'] .ov-template-pill-badge {
+  background: rgba(37, 99, 235, 0.2);
+  color: #93c5fd;
+}
+
+/* ── Voice & Video Audio Bouncing Wave ─────────────────────── */
+.ov-voice-active-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin: 10px 0;
+}
+
+[data-theme='dark'] .ov-voice-active-bar {
+  background: #181b2a;
+  border-color: #242940;
+}
+
+.ov-voice-wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 14px;
+}
+
+.ov-vbar {
+  width: 2.5px;
+  height: 4px;
+  background: #cbd5e1;
+  border-radius: 9999px;
+  transition: all 0.15s ease;
+}
+
+[data-theme='dark'] .ov-vbar {
+  background: #334155;
+}
+
+.ov-vbar--active {
+  background: #10b981;
+  animation: bounceBar 0.6s infinite ease-in-out alternate;
+}
+
+.ov-vbar--active:nth-child(1) { animation-delay: 0.05s; }
+.ov-vbar--active:nth-child(2) { animation-delay: 0.2s; }
+.ov-vbar--active:nth-child(3) { animation-delay: 0.35s; }
+.ov-vbar--active:nth-child(4) { animation-delay: 0.1s; }
+.ov-vbar--active:nth-child(5) { animation-delay: 0.25s; }
+
+.ov-voice-status-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #10b981;
+}
+
+/* ── Generative UI Showcase Card (Right Sidebar) ──────────── */
+.ov-showcase-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(139, 92, 246, 0.15) 100%);
+  border: 1.5px solid rgba(139, 92, 246, 0.35);
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .ov-showcase-card {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(139, 92, 246, 0.25) 100%);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.ov-showcase-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+  border-color: #8b5cf6;
+}
+
+.ov-showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.ov-showcase-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #2563eb, #8b5cf6);
+  color: #ffffff;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.ov-showcase-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+[data-theme='dark'] .ov-showcase-title {
+  color: #ffffff;
+}
+
+.ov-showcase-desc {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+[data-theme='dark'] .ov-showcase-desc {
+  color: #94a3b8;
+}
+
+.ov-showcase-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+[data-theme='dark'] .ov-showcase-footer {
+  color: #c4b5fd;
+}
+

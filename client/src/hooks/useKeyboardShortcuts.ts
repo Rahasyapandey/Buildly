@@ -23,6 +23,8 @@ const TOOL_KEYS: Record<string, Tool> = {
   l: 'line',
   r: 'rectangle',
   c: 'circle',
+  k: 'sticky',
+  t: 'text',
   s: 'select',
   e: 'eraser',
 }
