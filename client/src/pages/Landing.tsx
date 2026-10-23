@@ -96,15 +96,13 @@ export default function Landing() {
       <header className="landing-hero">
         {/* Animated Announcement Pill */}
         <div className="landing-announcement" onClick={() => navigate('/overview')}>
-          <span className="landing-announcement__pill">BUILD BETTER. TOGETHER.</span>
-          <span>Collaborative Architecture Whiteboard &amp; Multiplayer Studio</span>
+          <span className="landing-announcement__pill">BUILDLY 2.0</span>
+          <span>Ultra-Responsive Collaborative Canvas &amp; Multiplayer Party Mode</span>
           <span className="landing-announcement__arrow">→</span>
         </div>
 
         <h1 className="landing-hero__title">
-          <span className="hero-title-dark">Think together:</span>
-          <br />
-          <span className="hero-title-gradient">Build together<span className="hero-title-dot">.</span></span>
+          Buildly<span className="hero-title-dot">.</span>
         </h1>
 
         <div className="landing-hero__tagline">
@@ -112,12 +110,14 @@ export default function Landing() {
         </div>
 
         <p className="landing-hero__subtitle">
-          Plan your software, map your ideas, and build with your team — all in one collaborative workspace.
+          The collaborative developer workspace for modern engineering teams.
+          Whiteboard system architecture, UML models, database schemas, and play
+          multiplayer games — all in one place.
         </p>
 
         <div className="landing-hero__cta">
           <Link to="/overview" className="cta-primary">
-            Get started — It's free →
+            Open Workspace Studio →
           </Link>
           <Link to="/board" className="cta-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
             <IconZap size={15} />
@@ -203,9 +203,9 @@ export default function Landing() {
                 <div
                   className="mockup-team-avatar"
                   style={{ backgroundColor: '#8b5cf6' }}
-                  title="Yashasvi"
+                  title="Harsh"
                 >
-                  Y
+                  H
                 </div>
                 <div
                   className="mockup-team-avatar"
@@ -218,7 +218,7 @@ export default function Landing() {
                   className="mockup-team-avatar"
                   style={{ backgroundColor: '#f59e0b', fontSize: '9px' }}
                 >
-                  +4
+                  +2
                 </div>
               </div>
               <button
@@ -258,10 +258,10 @@ export default function Landing() {
               </button>
               <button
                 className="mockup-nav-item"
-                onClick={() => navigate('/play')}
+                onClick={() => navigate('/board?template=system-architecture')}
                 style={{ display: 'flex', alignItems: 'center', gap: 6 }}
               >
-                <IconGamepad size={13} /> Play
+                <IconFolder size={13} /> Design &amp; Plan
               </button>
               <button
                 className="mockup-nav-item"
@@ -687,9 +687,7 @@ export default function Landing() {
               <div className="sticky-note">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Cloud Architecture</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> UML Domain Models</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Database ERD</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Vector PDF Export</div>
-                <div style={{ fontSize: '13px', marginTop: '6px', opacity: 0.8, fontWeight: 600 }}>Ready for review</div>
+                <div style={{ fontSize: '13px', marginTop: '10px', opacity: 0.9, fontWeight: 700 }}>Ready for review</div>
               </div>
             )}
 

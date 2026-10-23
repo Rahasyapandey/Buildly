@@ -243,39 +243,6 @@ export default function LandingBackground3D() {
       {/* ── Layer 6: Smaller Floating Crystal Cubes ────────────────── */}
       <div className="bg-float-element bg-mini-cube bg-mini-cube--1" />
       <div className="bg-float-element bg-mini-cube bg-mini-cube--2" />
-
-      {/* ── Layer 7: Handwritten Doodle Note & Arrow (Image 2) ─────── */}
-      <div className="bg-doodle-quote">
-        <div className="bg-doodle-text">
-          <span>Your ideas</span>
-          <span className="bg-doodle-plus">+</span>
-          <span>Our workspace</span>
-          <span className="bg-doodle-equals">=</span>
-          <span className="bg-doodle-great">Something great</span>
-        </div>
-        <svg
-          className="bg-doodle-arrow-svg"
-          viewBox="0 0 70 80"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M 12 10 C 24 22, 54 36, 42 66"
-            stroke="#4f46e5"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            fill="none"
-          />
-          <path
-            d="M 32 60 L 42 66 L 46 54"
-            stroke="#4f46e5"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-        </svg>
-      </div>
     </div>
   )
 }

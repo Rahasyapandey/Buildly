@@ -206,60 +206,6 @@
   animation-delay: 1.5s;
 }
 
-/* ── Layer 7: Handwritten Doodle Note & Arrow (Image 2) ──────── */
-.bg-doodle-quote {
-  position: absolute;
-  top: 140px;
-  right: max(160px, calc((100% - 1280px) / 2 + 150px));
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
-  color: #4338ca;
-  z-index: 6;
-  pointer-events: none;
-  transform: rotate(4deg);
-}
-
-[data-theme='dark'] .bg-doodle-quote {
-  color: #818cf8;
-}
-
-.bg-doodle-text {
-  font-size: 17.5px;
-  font-weight: 700;
-  line-height: 1.25;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.bg-doodle-plus,
-.bg-doodle-equals {
-  font-size: 14px;
-  opacity: 0.7;
-  margin: 1px 0;
-}
-
-.bg-doodle-great {
-  color: #2563eb;
-  font-size: 19px;
-  font-weight: 800;
-}
-
-[data-theme='dark'] .bg-doodle-great {
-  color: #93c5fd;
-}
-
-.bg-doodle-arrow-svg {
-  width: 50px;
-  height: 60px;
-  margin-top: -6px;
-  margin-right: 18px;
-  transform: rotate(6deg);
-}
-
 /* ── Responsive adjustments ────────────────────────────────── */
 @media (max-width: 1200px) {
   .bg-cube-code-wrap {
@@ -272,15 +218,11 @@
     width: 125px;
     height: 125px;
   }
-  .bg-doodle-quote {
-    right: 110px;
-  }
 }
 
 @media (max-width: 900px) {
   .bg-cube-code-wrap,
   .bg-cube-tree-wrap,
-  .bg-doodle-quote,
   .bg-sphere--right {
     display: none;
   }
