@@ -1,53 +1,27 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
 import UserMenu from '../components/Auth/UserMenu'
 import LandingBackground3D from '../components/Landing/LandingBackground3D'
 import {
-  IconCheck,
   IconCloud,
-  IconDatabase,
   IconDiagram,
   IconDownload,
-  IconFileText,
-  IconFolder,
   IconGamepad,
-  IconInfinity,
-  IconLink,
-  IconMicrophone,
-  IconPackage,
   IconPen,
-  IconScreen,
-  IconSettings,
   IconShare,
   IconShield,
   IconSticky,
-  IconUser,
   IconUsers,
   IconZap,
 } from '../components/Icons/Icons'
 import './Landing.css'
 
 export default function Landing() {
-  const navigate = useNavigate()
-
-  // Interactive Mockup State
-  const [activeTool, setActiveTool] = useState('select')
-  const [activeQuadrant, setActiveQuadrant] = useState<'all' | 'arch' | 'uml' | 'erd' | 'flow'>('all')
-  const [zoomLevel, setZoomLevel] = useState(100)
-  const [interactiveReactions, setInteractiveReactions] = useState<Array<{ id: number; x: number; y: number; emoji: string }>>([])
-
-  // Interactive Diagram Tabs
-  const [diagramTab, setDiagramTab] = useState<'arch' | 'uml' | 'erd' | 'flow'>('arch')
-
-  const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const emojis = ['✨', '💡', '🚀', '🎯', '👍', '❤️']
-    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)]
-    setInteractiveReactions((prev) => [...prev.slice(-8), { id: Date.now(), x, y, emoji: randomEmoji }])
-  }
+  const { isAuthenticated, user, openAuthModal } = useAuth()
+  const [activeCanvasTool, setActiveCanvasTool] = useState<string>('select')
+  const [selectedNode, setSelectedNode] = useState<string>('backend')
 
   return (
     <div className="landing-container">
@@ -55,964 +29,645 @@ export default function Landing() {
       <LandingBackground3D />
 
       {/* ─────────────────────────────────────────────────────────────
-          TOP FLOATING GLASS NAVBAR
+          A. MINIMAL NAVIGATION BAR
           ───────────────────────────────────────────────────────────── */}
-      <nav className="landing-nav">
-        <div className="landing-nav__inner">
-          <Link to="/" className="landing-nav__brand">
-            <img src="/logo.png" alt="Buildly Logo" className="landing-nav__logo" />
-            <span className="landing-nav__title">
-              Buildly<span className="landing-nav__dot">.</span>
+      <header className="landing-nav-header">
+        <nav className="landing-nav-minimal" aria-label="Main Navigation">
+          {/* Brand Logo & Name */}
+          <Link to="/" className="landing-brand" aria-label="Buildly Home">
+            <div className="landing-brand__icon-wrap">
+              <img src="/logo.png" alt="Buildly Logo" className="landing-brand__logo" />
+            </div>
+            <span className="landing-brand__text">
+              Buildly<span className="landing-brand__dot">.</span>
             </span>
           </Link>
 
+          {/* Minimal Links */}
           <div className="landing-nav__links">
-            <Link to="/overview" className="landing-nav__link">Workspace</Link>
-            <Link to="/board" className="landing-nav__link">Whiteboard</Link>
-            <Link to="/play" className="landing-nav__link">Play Mode</Link>
+            <Link to="/workspace" className="landing-nav__link">
+              Workspace
+            </Link>
+            <a href="#features" className="landing-nav__link">
+              Features
+            </a>
+            <a href="#about" className="landing-nav__link">
+              About
+            </a>
+          </div>
+
+          {/* Actions: Theme Toggle, Sign In, Get Started CTA */}
+          <div className="landing-nav__actions">
+            <ThemeToggle variant="pill" className="landing-theme-pill" />
+
+            {isAuthenticated && user ? (
+              <UserMenu variant="compact" />
+            ) : (
+              <button
+                type="button"
+                className="landing-signin-btn"
+                onClick={openAuthModal}
+                title="Sign in with Google or demo"
+              >
+                Sign in
+              </button>
+            )}
+
+            <Link to="/workspace" className="landing-nav-cta">
+              Get started →
+            </Link>
+          </div>
+        </nav>
+      </header>
+
+      {/* ─────────────────────────────────────────────────────────────
+          B & C. HERO SECTION WITH SPLIT WORKSPACE PREVIEW
+          ───────────────────────────────────────────────────────────── */}
+      <main className="landing-main">
+        <section className="landing-hero-section">
+          <div className="landing-hero-split">
+            {/* Left Hero Content */}
+            <div className="hero-content-col">
+              {/* Badge */}
+              <div className="hero-announcement-pill">
+                <span className="hero-pill-sparkle">✦</span>
+                <span>Build Better. Together.</span>
+              </div>
+
+              {/* Headline */}
+              <h1 className="hero-headline">
+                Think together.
+                <span className="hero-headline__accent">Build together.</span>
+              </h1>
+
+              {/* Supporting Text */}
+              <p className="hero-subtitle">
+                Plan your software, map your ideas, and build with your team — all in one
+                collaborative workspace.
+              </p>
+
+              {/* Single Primary CTA */}
+              <div className="hero-cta-wrapper">
+                <Link to="/workspace" className="hero-primary-cta">
+                  Get started — It's free →
+                </Link>
+              </div>
+
+              {/* Micro Trust & Feature Highlights */}
+              <div className="hero-trust-bar">
+                <div className="trust-item">
+                  <span className="trust-indicator" />
+                  <span>Real-time sync</span>
+                </div>
+                <span className="trust-separator">•</span>
+                <div className="trust-item">
+                  <span>No credit card required</span>
+                </div>
+                <span className="trust-separator">•</span>
+                <div className="trust-item">
+                  <span>Free cloud storage</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Workspace Preview Column */}
+            <div className="hero-preview-col">
+              {/* Playful Handwritten Sketch Callout */}
+              <div className="hero-sketch-note" aria-hidden="true">
+                <div className="sketch-text">
+                  Your ideas
+                  <span className="sketch-symbol">+</span>
+                  Our workspace
+                  <span className="sketch-symbol">=</span>
+                  <strong>Something great</strong>
+                </div>
+                <svg
+                  className="sketch-arrow-svg"
+                  width="44"
+                  height="44"
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 10 C 26 12, 38 20, 36 34" />
+                  <path d="M26 34 L 36 35 L 38 25" />
+                </svg>
+              </div>
+
+              {/* Polished SaaS Workspace Preview Card */}
+              <div className="workspace-preview-window">
+                {/* Window Titlebar */}
+                <div className="preview-window__header">
+                  <div className="preview-window__traffic-lights">
+                    <span className="traffic-dot traffic-dot--red" />
+                    <span className="traffic-dot traffic-dot--yellow" />
+                    <span className="traffic-dot traffic-dot--green" />
+                  </div>
+
+                  <div className="preview-window__project-title">
+                    <span className="preview-project-icon">⬡</span>
+                    <span className="preview-project-name">E-commerce Platform</span>
+                    <span className="preview-chevron">▾</span>
+                  </div>
+
+                  <div className="preview-window__header-actions">
+                    {/* Collaborator Avatars */}
+                    <div className="preview-collaborators">
+                      <span className="preview-avatar preview-avatar--1" title="Alex">A</span>
+                      <span className="preview-avatar preview-avatar--2" title="Priya">P</span>
+                      <span className="preview-avatar preview-avatar--3" title="David">D</span>
+                      <span className="preview-avatar preview-avatar--more">+3</span>
+                    </div>
+
+                    <button type="button" className="preview-share-btn">
+                      <IconShare size={12} />
+                      <span>Share</span>
+                    </button>
+                    <span className="preview-menu-dots">•••</span>
+                  </div>
+                </div>
+
+                {/* Window Body: Mini Sidebar + Canvas + Inspector */}
+                <div className="preview-window__body">
+                  {/* Mini Sidebar */}
+                  <aside className="preview-sidebar" aria-label="Mock Workspace Navigation">
+                    <div className="preview-sidebar__brand">
+                      <img src="/logo.png" alt="Buildly" className="preview-sidebar__logo" />
+                      <span className="preview-sidebar__name">Buildly.</span>
+                    </div>
+
+                    <div className="preview-sidebar__nav">
+                      <div className="preview-sidebar__item">
+                        <span className="sidebar-icon">📁</span>
+                        <span>Home</span>
+                      </div>
+                      <div className="preview-sidebar__item preview-sidebar__item--active">
+                        <span className="sidebar-icon">📐</span>
+                        <span>Workspace</span>
+                      </div>
+                      <div className="preview-sidebar__item">
+                        <span className="sidebar-icon">⚙️</span>
+                        <span>Settings</span>
+                      </div>
+                    </div>
+                  </aside>
+
+                  {/* Main Architecture Canvas Area */}
+                  <div className="preview-canvas-wrapper">
+                    {/* Left Canvas Mini-Toolstrip */}
+                    <div className="preview-canvas-tools" role="toolbar" aria-label="Drawing Tools">
+                      <button
+                        type="button"
+                        className={`canvas-tool-btn ${activeCanvasTool === 'select' ? 'active' : ''}`}
+                        onClick={() => setActiveCanvasTool('select')}
+                        title="Select"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M4 2l16 11-7 2-4 7-2-1 4-6-7-2z" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className={`canvas-tool-btn ${activeCanvasTool === 'pan' ? 'active' : ''}`}
+                        onClick={() => setActiveCanvasTool('pan')}
+                        title="Pan"
+                      >
+                        ✋
+                      </button>
+                      <button
+                        type="button"
+                        className={`canvas-tool-btn ${activeCanvasTool === 'pen' ? 'active' : ''}`}
+                        onClick={() => setActiveCanvasTool('pen')}
+                        title="Pen"
+                      >
+                        <IconPen size={13} />
+                      </button>
+                      <button
+                        type="button"
+                        className={`canvas-tool-btn ${activeCanvasTool === 'sticky' ? 'active' : ''}`}
+                        onClick={() => setActiveCanvasTool('sticky')}
+                        title="Sticky Note"
+                      >
+                        <IconSticky size={13} />
+                      </button>
+                      <button
+                        type="button"
+                        className={`canvas-tool-btn ${activeCanvasTool === 'box' ? 'active' : ''}`}
+                        onClick={() => setActiveCanvasTool('box')}
+                        title="Architecture Box"
+                      >
+                        <span style={{ fontSize: 13 }}>▢</span>
+                      </button>
+                    </div>
+
+                    {/* Canvas Stage with Architecture Diagram */}
+                    <div className="preview-canvas-stage">
+                      {/* Top Tier: User Client */}
+                      <div className="diagram-row diagram-row--top">
+                        <div
+                          className={`arch-card arch-card--user ${selectedNode === 'user' ? 'selected' : ''}`}
+                          onClick={() => setSelectedNode('user')}
+                        >
+                          <div className="arch-card__badge arch-card__badge--purple">
+                            <span className="badge-icon">👤</span>
+                            <span>User Client</span>
+                          </div>
+                          <div className="arch-card__meta">Web Browser &amp; Mobile App</div>
+                        </div>
+                      </div>
+
+                      {/* SVG Connectors: User to Microservices */}
+                      <svg className="arch-connector-svg arch-connector-svg--top" viewBox="0 0 540 40" preserveAspectRatio="none">
+                        <path
+                          d="M 270 0 L 270 20 L 90 20 L 90 40"
+                          stroke="rgba(99, 102, 241, 0.45)"
+                          strokeWidth="2"
+                          strokeDasharray="4 3"
+                          fill="none"
+                        />
+                        <path
+                          d="M 270 0 L 270 40"
+                          stroke="rgba(99, 102, 241, 0.6)"
+                          strokeWidth="2"
+                          fill="none"
+                        />
+                        <path
+                          d="M 270 20 L 450 20 L 450 40"
+                          stroke="rgba(99, 102, 241, 0.45)"
+                          strokeWidth="2"
+                          strokeDasharray="4 3"
+                          fill="none"
+                        />
+                      </svg>
+
+                      {/* Middle Tier: Core Microservices */}
+                      <div className="diagram-row diagram-row--middle">
+                        {/* Frontend */}
+                        <div
+                          className={`arch-card arch-card--frontend ${selectedNode === 'frontend' ? 'selected' : ''}`}
+                          onClick={() => setSelectedNode('frontend')}
+                        >
+                          <div className="arch-card__header">
+                            <span className="arch-node-icon blue">💻</span>
+                            <div>
+                              <div className="arch-node-title">Frontend</div>
+                              <div className="arch-node-tech">React 19 / Vite</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bidirectional Sync Indicator */}
+                        <div className="arch-h-connector">
+                          <span className="connector-arrow">⟷</span>
+                        </div>
+
+                        {/* Backend */}
+                        <div
+                          className={`arch-card arch-card--backend ${selectedNode === 'backend' ? 'selected' : ''}`}
+                          onClick={() => setSelectedNode('backend')}
+                        >
+                          <div className="arch-card__header">
+                            <span className="arch-node-icon green">⚡</span>
+                            <div>
+                              <div className="arch-node-title">Backend</div>
+                              <div className="arch-node-tech">FastAPI (Python)</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bidirectional Sync Indicator */}
+                        <div className="arch-h-connector">
+                          <span className="connector-arrow">⟷</span>
+                        </div>
+
+                        {/* Database */}
+                        <div
+                          className={`arch-card arch-card--db ${selectedNode === 'db' ? 'selected' : ''}`}
+                          onClick={() => setSelectedNode('db')}
+                        >
+                          <div className="arch-card__header">
+                            <span className="arch-node-icon purple">🗄️</span>
+                            <div>
+                              <div className="arch-node-title">Database</div>
+                              <div className="arch-node-tech">PostgreSQL 16</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* SVG Connectors: Backend to Subservices */}
+                      <svg className="arch-connector-svg arch-connector-svg--bottom" viewBox="0 0 540 40" preserveAspectRatio="none">
+                        <path
+                          d="M 270 0 L 270 20 L 90 20 L 90 40"
+                          stroke="rgba(99, 102, 241, 0.45)"
+                          strokeWidth="2"
+                          fill="none"
+                        />
+                        <path
+                          d="M 270 0 L 270 40"
+                          stroke="rgba(99, 102, 241, 0.6)"
+                          strokeWidth="2"
+                          fill="none"
+                        />
+                        <path
+                          d="M 270 20 L 450 20 L 450 40"
+                          stroke="rgba(99, 102, 241, 0.45)"
+                          strokeWidth="2"
+                          fill="none"
+                        />
+                      </svg>
+
+                      {/* Bottom Tier: Subservices */}
+                      <div className="diagram-row diagram-row--bottom">
+                        <div
+                          className={`arch-card arch-card--sub arch-card--sub-amber ${selectedNode === 'payment' ? 'selected' : ''}`}
+                          onClick={() => setSelectedNode('payment')}
+                        >
+                          <span className="arch-sub-icon">💳</span>
+                          <div>
+                            <div className="arch-sub-title">Payment Service</div>
+                            <div className="arch-sub-desc">Stripe API</div>
+                          </div>
+                        </div>
+
+                        <div
+                          className={`arch-card arch-card--sub arch-card--sub-cyan ${selectedNode === 'auth' ? 'selected' : ''}`}
+                          onClick={() => setSelectedNode('auth')}
+                        >
+                          <span className="arch-sub-icon">🛡️</span>
+                          <div>
+                            <div className="arch-sub-title">Auth Service</div>
+                            <div className="arch-sub-desc">JWT / OAuth 2.0</div>
+                          </div>
+                        </div>
+
+                        <div
+                          className={`arch-card arch-card--sub arch-card--sub-pink ${selectedNode === 'notify' ? 'selected' : ''}`}
+                          onClick={() => setSelectedNode('notify')}
+                        >
+                          <span className="arch-sub-icon">🔔</span>
+                          <div>
+                            <div className="arch-sub-title">Notification</div>
+                            <div className="arch-sub-desc">Email / SMS Events</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bottom Overlays: Minimap & Zoom Control */}
+                      <div className="preview-canvas__overlays">
+                        <div className="preview-minimap" title="Minimap Radar">
+                          <div className="minimap-grid">
+                            <span className="minimap-node minimap-node--top" />
+                            <span className="minimap-node minimap-node--mid-1" />
+                            <span className="minimap-node minimap-node--mid-2" />
+                            <span className="minimap-node minimap-node--mid-3" />
+                          </div>
+                        </div>
+
+                        <div className="preview-zoom-pill">
+                          <button type="button" className="zoom-btn">−</button>
+                          <span className="zoom-value">100%</span>
+                          <button type="button" className="zoom-btn">+</button>
+                          <span className="zoom-sep">|</span>
+                          <button type="button" className="zoom-btn" title="Fit to Screen">⤢</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Inspector Panel */}
+                  <aside className="preview-inspector">
+                    <div className="preview-inspector__header">
+                      <span className="inspector-title">System Architecture</span>
+                    </div>
+
+                    <div className="preview-inspector__tabs">
+                      <button type="button" className="inspector-tab inspector-tab--active">
+                        Properties
+                      </button>
+                      <button type="button" className="inspector-tab">
+                        Settings
+                      </button>
+                    </div>
+
+                    <div className="preview-inspector__fields">
+                      <div className="inspector-field">
+                        <label className="inspector-label">Title</label>
+                        <div className="inspector-static-input">System Architecture</div>
+                      </div>
+
+                      <div className="inspector-field">
+                        <label className="inspector-label">Description</label>
+                        <div className="inspector-static-textarea">
+                          High-level architecture of our e-commerce platform with microservices.
+                        </div>
+                      </div>
+
+                      <div className="inspector-field">
+                        <label className="inspector-label">Theme</label>
+                        <div className="inspector-static-select">
+                          <span>Light</span>
+                          <span className="select-chevron">▾</span>
+                        </div>
+                      </div>
+
+                      <div className="inspector-actions">
+                        <button type="button" className="inspector-export-btn">
+                          <IconDownload size={13} />
+                          <span>Export</span>
+                        </button>
+                      </div>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Floating Telemetry Metric Ribbon (Directly under preview) */}
+          <div className="landing-telemetry-ribbon">
+            <div className="telemetry-item">
+              <div className="telemetry-icon-wrap zap">
+                <IconZap size={16} />
+              </div>
+              <div className="telemetry-text">
+                <div className="telemetry-value">&lt;15ms</div>
+                <div className="telemetry-label">WebSocket Sync Latency</div>
+              </div>
+            </div>
+
+            <div className="telemetry-item">
+              <div className="telemetry-icon-wrap shield">
+                <IconShield size={16} />
+              </div>
+              <div className="telemetry-text">
+                <div className="telemetry-value">100%</div>
+                <div className="telemetry-label">Vector PDF &amp; SVG Fidelity</div>
+              </div>
+            </div>
+
+            <div className="telemetry-item">
+              <div className="telemetry-icon-wrap game">
+                <IconGamepad size={16} />
+              </div>
+              <div className="telemetry-text">
+                <div className="telemetry-value">WebRTC</div>
+                <div className="telemetry-label">Integrated Voice Huddle</div>
+              </div>
+            </div>
+
+            <div className="telemetry-item">
+              <div className="telemetry-icon-wrap cloud">
+                <IconCloud size={16} />
+              </div>
+              <div className="telemetry-text">
+                <div className="telemetry-value">Infinite</div>
+                <div className="telemetry-label">Spatial Multi-user Canvas</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ─────────────────────────────────────────────────────────────
+            D. KEY FEATURES SECTION
+            Highlighted benefits: PDF Export, Play Mode, Real-time Collaboration,
+            Save & Load, Diagrams & Templates
+            ───────────────────────────────────────────────────────────── */}
+        <section id="features" className="landing-features-section">
+          <div className="features-header">
+            <span className="features-eyebrow">BUILT FOR SPEED &amp; RIGOR</span>
+            <h2 className="features-title">Engineered for modern software development</h2>
+            <p className="features-subtitle">
+              From high-level architectural blueprints to multiplayer team camaraderie, Buildly gives
+              you the essential developer toolkit.
+            </p>
+          </div>
+
+          <div className="landing-features-grid">
+            {/* Feature 1: PDF Export */}
+            <div className="feature-card">
+              <div className="feature-card__icon-wrap feature-card__icon-wrap--blue">
+                <IconDownload size={22} />
+              </div>
+              <span className="feature-card__tag">Publication Ready</span>
+              <h3 className="feature-card__title">PDF Export</h3>
+              <p className="feature-card__desc">
+                Export publication-grade vector PDFs and SVG diagrams with crystal clarity. Share architecture
+                specs, RFC documents, and system designs with your stakeholders.
+              </p>
+            </div>
+
+            {/* Feature 2: Play Mode */}
+            <div className="feature-card">
+              <div className="feature-card__icon-wrap feature-card__icon-wrap--purple">
+                <IconGamepad size={22} />
+              </div>
+              <span className="feature-card__tag">Multiplayer Party</span>
+              <h3 className="feature-card__title">Play Mode</h3>
+              <p className="feature-card__desc">
+                Unwind with your team through interactive drawing games, prompt guessing, and multiplayer
+                rooms powered by low-latency WebRTC stereo voice chat.
+              </p>
+            </div>
+
+            {/* Feature 3: Real-time Collaboration */}
+            <div className="feature-card">
+              <div className="feature-card__icon-wrap feature-card__icon-wrap--indigo">
+                <IconUsers size={22} />
+              </div>
+              <span className="feature-card__tag">Sub-15ms Latency</span>
+              <h3 className="feature-card__title">Real-time Collaboration</h3>
+              <p className="feature-card__desc">
+                Collaborate simultaneously with live multi-cursor presence, instant state synchronization,
+                and conflict-free updates across team members anywhere.
+              </p>
+            </div>
+
+            {/* Feature 4: Save & Load */}
+            <div className="feature-card">
+              <div className="feature-card__icon-wrap feature-card__icon-wrap--emerald">
+                <IconCloud size={22} />
+              </div>
+              <span className="feature-card__tag">Cloud Persistence</span>
+              <h3 className="feature-card__title">Save &amp; Load</h3>
+              <p className="feature-card__desc">
+                Persist and reopen projects instantly with cloud PostgreSQL database storage and local
+                resilient caching. Never lose a diagram or whiteboard brainstorming session.
+              </p>
+            </div>
+
+            {/* Feature 5: Diagrams & Templates */}
+            <div className="feature-card feature-card--span-2">
+              <div className="feature-card__icon-wrap feature-card__icon-wrap--amber">
+                <IconDiagram size={22} />
+              </div>
+              <span className="feature-card__tag">Ready-Made Blueprint Library</span>
+              <h3 className="feature-card__title">Diagrams &amp; Templates</h3>
+              <p className="feature-card__desc">
+                Jumpstart your systems with pre-crafted templates: System Architecture microservices, UML class
+                diagrams, PostgreSQL relational ERDs, and asynchronous WebSocket flowcharts.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ABOUT / CALLOUT BANNER SECTION
+            ───────────────────────────────────────────────────────────── */}
+        <section id="about" className="landing-about-section">
+          <div className="about-card">
+            <div className="about-card__content">
+              <span className="about-card__eyebrow">READY TO BUILD?</span>
+              <h2 className="about-card__title">Think together. Build together.</h2>
+              <p className="about-card__desc">
+                Buildly combines the fluid freedom of an infinite digital whiteboard with the precision of
+                software architecture tooling. Free to start, instant to launch.
+              </p>
+              <div className="about-card__actions">
+                <Link to="/workspace" className="about-primary-btn">
+                  Get started — It's free →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* ─────────────────────────────────────────────────────────────
+          MINIMAL FOOTER
+          ───────────────────────────────────────────────────────────── */}
+      <footer className="landing-footer-minimal">
+        <div className="landing-footer-inner">
+          <div className="footer-brand">
+            <Link to="/" className="footer-brand-link">
+              <img src="/logo.png" alt="Buildly" className="footer-logo" />
+              <span className="footer-name">Buildly.</span>
+            </Link>
+            <p className="footer-copy">© 2026 Buildly, Inc. All rights reserved.</p>
+          </div>
+
+          <div className="footer-links">
+            <Link to="/workspace" className="footer-link">
+              Workspace
+            </Link>
+            <Link to="/board" className="footer-link">
+              Whiteboard
+            </Link>
+            <Link to="/play" className="footer-link">
+              Play Mode
+            </Link>
             <a
               href="https://github.com/Rahasyapandey/Buildly"
               target="_blank"
               rel="noreferrer"
-              className="landing-nav__link"
+              className="footer-link"
             >
               GitHub
             </a>
           </div>
-
-          <div className="landing-nav__actions">
-            <ThemeToggle variant="pill" />
-            <UserMenu />
-            <Link to="/overview" className="landing-nav__cta">
-              Launch Studio →
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      {/* ─────────────────────────────────────────────────────────────
-          HERO HEADER
-          ───────────────────────────────────────────────────────────── */}
-      <header className="landing-hero">
-        {/* Animated Announcement Pill */}
-        <div className="landing-announcement" onClick={() => navigate('/overview')}>
-          <span className="landing-announcement__pill">BUILDLY 2.0</span>
-          <span>Ultra-Responsive Collaborative Canvas &amp; Multiplayer Party Mode</span>
-          <span className="landing-announcement__arrow">→</span>
-        </div>
-
-        <h1 className="landing-hero__title">
-          Buildly<span className="hero-title-dot">.</span>
-        </h1>
-
-        <div className="landing-hero__tagline">
-          Plan &nbsp;·&nbsp; Design &nbsp;·&nbsp; Build &nbsp;·&nbsp; Together
-        </div>
-
-        <p className="landing-hero__subtitle">
-          The collaborative developer workspace for modern engineering teams.
-          Whiteboard system architecture, UML models, database schemas, and play
-          multiplayer games — all in one place.
-        </p>
-
-        <div className="landing-hero__cta">
-          <Link to="/overview" className="cta-primary">
-            Open Workspace Studio →
-          </Link>
-          <Link to="/board" className="cta-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-            <IconZap size={15} />
-            <span>Quick Whiteboard</span>
-          </Link>
-          <button
-            onClick={() => navigate('/play')}
-            className="cta-secondary cta-play"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}
-          >
-            <IconGamepad size={15} />
-            <span>Play Mode (Live)</span>
-          </button>
-        </div>
-      </header>
-
-      {/* ─────────────────────────────────────────────────────────────
-          HERO STAGE: DOODLES, CURSORS & INTERACTIVE MOCKUP WINDOW
-          ───────────────────────────────────────────────────────────── */}
-      <div className="hero-stage">
-        {/* ── Mockup Window Interactive Preview ─────────────────── */}
-        <div className="mockup-window">
-          {/* Window Top Bar */}
-          <div className="mockup-topbar">
-            <div className="mockup-topbar__left">
-              <Link to="/overview" className="mockup-brand">
-                <img
-                  src="/logo.png"
-                  alt="Buildly"
-                  className="mockup-brand__logo"
-                />
-                <span>Buildly<span style={{ color: '#2563eb' }}>.</span></span>
-              </Link>
-              <div className="mockup-project-picker">
-                <span>Production Architecture Suite</span>
-                <span style={{ fontSize: '12px', color: '#94a3b8' }}>⌄</span>
-              </div>
-            </div>
-
-            {/* Quadrant Focus Tabs */}
-            <div className="mockup-quadrant-tabs">
-              <button
-                className={`mockup-q-tab ${activeQuadrant === 'all' ? 'mockup-q-tab--active' : ''}`}
-                onClick={() => setActiveQuadrant('all')}
-              >
-                All (4 Quadrants)
-              </button>
-              <button
-                className={`mockup-q-tab ${activeQuadrant === 'arch' ? 'mockup-q-tab--active' : ''}`}
-                onClick={() => setActiveQuadrant('arch')}
-              >
-                Architecture
-              </button>
-              <button
-                className={`mockup-q-tab ${activeQuadrant === 'uml' ? 'mockup-q-tab--active' : ''}`}
-                onClick={() => setActiveQuadrant('uml')}
-              >
-                UML Class
-              </button>
-              <button
-                className={`mockup-q-tab ${activeQuadrant === 'erd' ? 'mockup-q-tab--active' : ''}`}
-                onClick={() => setActiveQuadrant('erd')}
-              >
-                ERD
-              </button>
-              <button
-                className={`mockup-q-tab ${activeQuadrant === 'flow' ? 'mockup-q-tab--active' : ''}`}
-                onClick={() => setActiveQuadrant('flow')}
-              >
-                Flowchart
-              </button>
-            </div>
-
-            <div className="mockup-topbar__right">
-              <div className="mockup-team-avatars">
-                <div
-                  className="mockup-team-avatar"
-                  style={{ backgroundColor: '#3b82f6' }}
-                  title="Aarav"
-                >
-                  A
-                </div>
-                <div
-                  className="mockup-team-avatar"
-                  style={{ backgroundColor: '#8b5cf6' }}
-                  title="Harsh"
-                >
-                  H
-                </div>
-                <div
-                  className="mockup-team-avatar"
-                  style={{ backgroundColor: '#10b981' }}
-                  title="Rahasya"
-                >
-                  R
-                </div>
-                <div
-                  className="mockup-team-avatar"
-                  style={{ backgroundColor: '#f59e0b', fontSize: '9px' }}
-                >
-                  +2
-                </div>
-              </div>
-              <button
-                className="mockup-btn-share"
-                onClick={() => alert('Invite link copied! Share with your team.')}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}
-              >
-                <IconShare size={12} />
-                <span>Share</span>
-              </button>
-              <button
-                className="mockup-btn-launch"
-                onClick={() => navigate('/board?template=system-architecture')}
-              >
-                Launch Board →
-              </button>
-            </div>
-          </div>
-
-          {/* Window Canvas Workspace */}
-          <div className="mockup-workspace">
-            {/* Left Mini Nav */}
-            <aside className="mockup-sidebar">
-              <Link
-                to="/overview"
-                className="mockup-nav-item"
-                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}
-              >
-                <IconFolder size={13} /> Home
-              </Link>
-              <button
-                className="mockup-nav-item mockup-nav-item--active"
-                onClick={() => navigate('/board')}
-                style={{ display: 'flex', alignItems: 'center', gap: 6 }}
-              >
-                <IconFileText size={13} /> Boards
-              </button>
-              <button
-                className="mockup-nav-item"
-                onClick={() => navigate('/board?template=system-architecture')}
-                style={{ display: 'flex', alignItems: 'center', gap: 6 }}
-              >
-                <IconFolder size={13} /> Design &amp; Plan
-              </button>
-              <button
-                className="mockup-nav-item"
-                onClick={() => navigate('/overview')}
-                style={{ display: 'flex', alignItems: 'center', gap: 6 }}
-              >
-                <IconSettings size={13} /> Settings
-              </button>
-            </aside>
-
-            {/* Floating Vertical Tool Palette (Interactive) */}
-            <div className="mockup-toolbar">
-              {[
-                { id: 'select', icon: '↖', label: 'Select' },
-                { id: 'rect', icon: '▭', label: 'Rectangle' },
-                { id: 'pen', icon: <IconPen size={13} />, label: 'Freehand' },
-                { id: 'text', icon: 'T', label: 'Text' },
-                { id: 'sticky', icon: <IconSticky size={13} />, label: 'Sticky' },
-                { id: 'grid', icon: '田', label: 'Grid' },
-                { id: 'laser', icon: <IconZap size={13} />, label: 'Vector' },
-                { id: 'link', icon: <IconLink size={13} />, label: 'Connect' },
-              ].map((t) => (
-                <button
-                  key={t.id}
-                  className={`mockup-tool-btn ${activeTool === t.id ? 'mockup-tool-btn--active' : ''}`}
-                  onClick={() => setActiveTool(t.id)}
-                  title={t.label}
-                >
-                  {t.icon}
-                </button>
-              ))}
-            </div>
-
-            {/* Canvas Quadrant Diagrams */}
-            <div
-              className={`mockup-canvas-content mockup-canvas-content--${activeQuadrant}`}
-              onClick={handleCanvasClick}
-              title="Click anywhere to stamp live reactions!"
-            >
-              {/* Stamp reactions */}
-              {interactiveReactions.map((r) => (
-                <span
-                  key={r.id}
-                  className="mockup-reaction-stamp"
-                  style={{ left: r.x - 10, top: r.y - 10 }}
-                >
-                  {r.emoji}
-                </span>
-              ))}
-
-              {/* View A: Single Architecture with Properties Panel (Image 2 Reference) */}
-              {activeQuadrant === 'arch' && (
-                <div className="mockup-single-arch-layout">
-                  <div className="single-arch-canvas-area">
-                    {/* User Root Node */}
-                    <div className="arch-tree-user">
-                      <div className="arch-tree-user-pill">
-                        <IconUser size={15} />
-                        <span>User</span>
-                      </div>
-                    </div>
-
-                    <div className="arch-tree-stem-v" />
-
-                    {/* Middle Microservices Tier */}
-                    <div className="arch-tree-row arch-tree-row--primary">
-                      <div className="arch-tree-card arch-tree-card--frontend">
-                        <div className="arch-card-icon"><IconScreen size={16} /></div>
-                        <div>
-                          <div className="arch-card-title">Frontend</div>
-                          <div className="arch-card-tech">(React)</div>
-                        </div>
-                      </div>
-
-                      <div className="arch-tree-conn-h">↔</div>
-
-                      <div className="arch-tree-card arch-tree-card--backend">
-                        <div className="arch-card-icon"><IconPackage size={16} /></div>
-                        <div>
-                          <div className="arch-card-title">Backend</div>
-                          <div className="arch-card-tech">(FastAPI)</div>
-                        </div>
-                      </div>
-
-                      <div className="arch-tree-conn-h">↔</div>
-
-                      <div className="arch-tree-card arch-tree-card--db">
-                        <div className="arch-card-icon"><IconDatabase size={16} /></div>
-                        <div>
-                          <div className="arch-card-title">Database</div>
-                          <div className="arch-card-tech">(PostgreSQL)</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="arch-tree-stem-v" />
-
-                    {/* Lower Services Tier */}
-                    <div className="arch-tree-row arch-tree-row--secondary">
-                      <div className="arch-tree-card arch-tree-card--payment">
-                        <div className="arch-card-bullet" style={{ backgroundColor: '#f59e0b' }} />
-                        <div>
-                          <div className="arch-card-title">Payment Service</div>
-                          <div className="arch-card-tech">(Stripe)</div>
-                        </div>
-                      </div>
-
-                      <div className="arch-tree-card arch-tree-card--auth">
-                        <div className="arch-card-bullet" style={{ backgroundColor: '#3b82f6' }} />
-                        <div>
-                          <div className="arch-card-title">Auth Service</div>
-                          <div className="arch-card-tech">(JWT)</div>
-                        </div>
-                      </div>
-
-                      <div className="arch-tree-card arch-tree-card--notify">
-                        <div className="arch-card-bullet" style={{ backgroundColor: '#ec4899' }} />
-                        <div>
-                          <div className="arch-card-title">Notification Service</div>
-                          <div className="arch-card-tech">(Email/SMS)</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Minimap preview in bottom-left */}
-                    <div className="mockup-minimap-box">
-                      <div className="minimap-grid-dot" />
-                      <div className="minimap-skeleton-tree">
-                        <div className="minimap-node minimap-node--top" />
-                        <div className="minimap-row">
-                          <span className="minimap-bar" />
-                          <span className="minimap-bar" />
-                          <span className="minimap-bar" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Inspector Sidebar (Matching Image 2 Reference) */}
-                  <aside className="mockup-inspector-sidebar">
-                    <div className="inspector-header">
-                      <h4 className="inspector-heading">System Architecture</h4>
-                    </div>
-
-                    <div className="inspector-tabs-row">
-                      <button className="inspector-tab-btn inspector-tab-btn--active">Properties</button>
-                      <button className="inspector-tab-btn">Settings</button>
-                    </div>
-
-                    <div className="inspector-group">
-                      <label className="inspector-label">Title</label>
-                      <input
-                        type="text"
-                        readOnly
-                        value="System Architecture"
-                        className="inspector-input"
-                      />
-                    </div>
-
-                    <div className="inspector-group">
-                      <label className="inspector-label">Description</label>
-                      <textarea
-                        readOnly
-                        value="High-level architecture of our e-commerce platform with microservices."
-                        className="inspector-textarea"
-                        rows={3}
-                      />
-                    </div>
-
-                    <div className="inspector-group">
-                      <label className="inspector-label">Theme</label>
-                      <div className="inspector-select-box">
-                        <span>Light</span>
-                        <span style={{ fontSize: '11px', opacity: 0.6 }}>▾</span>
-                      </div>
-                    </div>
-
-                    <button
-                      className="inspector-export-action-btn"
-                      onClick={() => navigate('/board?template=system-architecture')}
-                    >
-                      <IconDownload size={14} />
-                      <span>Export</span>
-                    </button>
-                  </aside>
-                </div>
-              )}
-
-              {/* View B: Quadrant 1 (in 4-quadrant layout, Image 1 Reference) */}
-              {activeQuadrant === 'all' && (
-                <div className="mockup-quad-box">
-                  <div className="canvas-quadrant-title">
-                    <span>System Architecture</span>
-                    <button
-                      className="canvas-quadrant-btn"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigate('/board?template=system-architecture&title=System Architecture')
-                      }}
-                    >
-                      Open in Canvas ↗
-                    </button>
-                  </div>
-                  <div className="arch-diagram">
-                    <div className="arch-row">
-                      <div className="arch-node arch-node--react">
-                        Frontend
-                        <br />
-                        <span style={{ fontSize: '12px', opacity: 0.8 }}>
-                          (React 19)
-                        </span>
-                      </div>
-                      <span className="arch-arrow">→</span>
-                      <div className="arch-node arch-node--fastapi">
-                        Backend
-                        <br />
-                        <span style={{ fontSize: '12px', opacity: 0.8 }}>
-                          (FastAPI)
-                        </span>
-                      </div>
-                      <span className="arch-arrow">→</span>
-                      <div className="arch-node arch-node--postgres">
-                        Database
-                        <br />
-                        <span style={{ fontSize: '12px', opacity: 0.8 }}>
-                          (PostgreSQL 16)
-                        </span>
-                      </div>
-                    </div>
-                    <div className="arch-node arch-node--redis">
-                      Redis
-                      <br />
-                      <span style={{ fontSize: '12px', opacity: 0.8 }}>
-                        (Cache &amp; PubSub)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Quadrant 2: UML Class Diagram */}
-              {(activeQuadrant === 'all' || activeQuadrant === 'uml') && (
-                <div className="mockup-quad-box">
-                  <div className="canvas-quadrant-title">
-                    <span>UML Class Diagram</span>
-                    <button
-                      className="canvas-quadrant-btn"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigate('/board?template=uml-class&title=UML Class Diagram')
-                      }}
-                    >
-                      Open in Canvas ↗
-                    </button>
-                  </div>
-                  <div className="uml-diagram">
-                    {/* User Class */}
-                    <div className="uml-class-box">
-                      <div className="uml-class-header">User</div>
-                      <div className="uml-class-section">
-                        + id: UUID
-                        <br />
-                        + name: string
-                        <br />+ email: string
-                      </div>
-                      <div className="uml-class-section">
-                        + login(): Token
-                        <br />+ logout(): void
-                      </div>
-                    </div>
-
-                    <span
-                      style={{
-                        alignSelf: 'center',
-                        color: '#94a3b8',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                      }}
-                    >
-                      1 ── * owns
-                    </span>
-
-                    {/* Board Class */}
-                    <div className="uml-class-box">
-                      <div className="uml-class-header">Board</div>
-                      <div className="uml-class-section">
-                        + id: UUID
-                        <br />
-                        + title: string
-                        <br />+ elements: Element[]
-                      </div>
-                      <div className="uml-class-section">
-                        + exportPdf(): Promise
-                        <br />+ syncDelta(): void
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Quadrant 3: ERD (Entity Relationship Diagram) */}
-              {(activeQuadrant === 'all' || activeQuadrant === 'erd') && (
-                <div className="mockup-quad-box">
-                  <div className="canvas-quadrant-title">
-                    <span>Relational Database (ERD)</span>
-                    <button
-                      className="canvas-quadrant-btn"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigate('/board?template=erd&title=Relational ERD')
-                      }}
-                    >
-                      Open in Canvas ↗
-                    </button>
-                  </div>
-                  <div className="erd-diagram">
-                    {/* User Entity */}
-                    <div className="erd-entity erd-entity--purple">
-                      <div className="erd-entity-header erd-entity-header--purple">
-                        User
-                      </div>
-                      <div className="erd-entity-body">
-                        id (PK)
-                        <br />
-                        name
-                        <br />
-                        email
-                      </div>
-                    </div>
-
-                    <div className="erd-relation">
-                      <span>creates</span>
-                    </div>
-
-                    {/* Project Entity */}
-                    <div className="erd-entity erd-entity--green">
-                      <div className="erd-entity-header erd-entity-header--green">
-                        Project
-                      </div>
-                      <div className="erd-entity-body">
-                        id (PK)
-                        <br />
-                        name
-                        <br />
-                        ownerId (FK)
-                      </div>
-                    </div>
-
-                    <div className="erd-relation">
-                      <span>has</span>
-                    </div>
-
-                    {/* Board Entity */}
-                    <div className="erd-entity erd-entity--blue">
-                      <div className="erd-entity-header erd-entity-header--blue">
-                        Board
-                      </div>
-                      <div className="erd-entity-body">
-                        id (PK)
-                        <br />
-                        title
-                        <br />
-                        projectId (FK)
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mockup-quad-footer">
-                    <div className="canvas-user-pill-tag">
-                      <span className="user-pill-avatar" style={{ backgroundColor: '#2563eb' }}>A</span>
-                      <span>Aarav is designing the architecture...</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Quadrant 4: Flowchart */}
-              {(activeQuadrant === 'all' || activeQuadrant === 'flow') && (
-                <div className="mockup-quad-box">
-                  <div className="canvas-quadrant-title">
-                    <span>Real-time Auth &amp; Sync Flowchart</span>
-                    <button
-                      className="canvas-quadrant-btn"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigate('/board?template=flowchart&title=Auth Flowchart')
-                      }}
-                    >
-                      Open in Canvas ↗
-                    </button>
-                  </div>
-                  <div className="flowchart-diagram">
-                    <div className="flowchart-node flowchart-node--start">
-                      Start
-                    </div>
-                    <span style={{ color: '#94a3b8', fontSize: '12px' }}>↓</span>
-                    <div className="flowchart-node flowchart-node--login">
-                      Validate JWT
-                    </div>
-                    <span style={{ color: '#94a3b8', fontSize: '12px' }}>↓</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <div className="flowchart-node--valid">
-                        <span>Valid?</span>
-                      </div>
-                      <span style={{ fontSize: '12px', color: '#10b981', fontWeight: 700 }}>
-                        Yes →
-                      </span>
-                      <div className="flowchart-node flowchart-node--dashboard">
-                        Live WebRTC Canvas
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mockup-quad-footer" style={{ justifyContent: 'flex-end' }}>
-                    <div className="flowchart-cta-badge">
-                      <span>&lt;/&gt; Build Together</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Sticky Note (Only in 4-quadrant / UML view, matches Image 1) */}
-            {(activeQuadrant === 'all' || activeQuadrant === 'uml') && (
-              <div className="sticky-note">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Cloud Architecture</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> UML Domain Models</div>
-                <div style={{ fontSize: '13px', marginTop: '10px', opacity: 0.9, fontWeight: 700 }}>Ready for review</div>
-              </div>
-            )}
-
-            {/* Bottom Right Zoom Control */}
-            <div className={`mockup-zoom-bar ${activeQuadrant === 'arch' ? 'mockup-zoom-bar--with-inspector' : ''}`}>
-              <button
-                onClick={() => setZoomLevel((z) => Math.max(50, z - 10))}
-                style={{ border: 'none', background: 'none', cursor: 'pointer' }}
-              >
-                -
-              </button>
-              <span>{zoomLevel}%</span>
-              <button
-                onClick={() => setZoomLevel((z) => Math.min(200, z + 10))}
-                style={{ border: 'none', background: 'none', cursor: 'pointer' }}
-              >
-                +
-              </button>
-              <button
-                onClick={() => setZoomLevel(100)}
-                style={{ border: 'none', background: 'none', cursor: 'pointer' }}
-                title="Reset 100%"
-              >
-                ⛶
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          ENGINE STATS & TELEMETRY BANNER
-          ───────────────────────────────────────────────────────────── */}
-      <section className="landing-stats-bar">
-        <div className="landing-stat-card">
-          <div className="landing-stat-icon-wrap">
-            <IconZap size={18} />
-          </div>
-          <div className="landing-stat-meta">
-            <div className="landing-stat-val">&lt;15ms</div>
-            <div className="landing-stat-label">WebSocket Sync Latency</div>
-          </div>
-        </div>
-
-        <div className="landing-stat-card">
-          <div className="landing-stat-icon-wrap">
-            <IconShield size={18} />
-          </div>
-          <div className="landing-stat-meta">
-            <div className="landing-stat-val">100%</div>
-            <div className="landing-stat-label">Vector PDF &amp; SVG Fidelity</div>
-          </div>
-        </div>
-
-        <div className="landing-stat-card">
-          <div className="landing-stat-icon-wrap">
-            <IconMicrophone size={18} />
-          </div>
-          <div className="landing-stat-meta">
-            <div className="landing-stat-val">WebRTC</div>
-            <div className="landing-stat-label">Integrated Stereo Voice Huddle</div>
-          </div>
-        </div>
-
-        <div className="landing-stat-card">
-          <div className="landing-stat-icon-wrap">
-            <IconInfinity size={18} />
-          </div>
-          <div className="landing-stat-meta">
-            <div className="landing-stat-val">Infinite</div>
-            <div className="landing-stat-label">Spatial Multi-user Canvas</div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          INTERACTIVE ENGINEERING DIAGRAMS SECTION
-          ───────────────────────────────────────────────────────────── */}
-      <section className="diagram-deepdive-section">
-        <div className="deepdive-header">
-          <span className="deepdive-badge">ENGINEERING DIAGRAMS</span>
-          <h2 className="deepdive-title">Four Essential Diagrams, Zero Friction</h2>
-          <p className="deepdive-desc">
-            Toggle between specialized templates designed for production software engineering teams.
-          </p>
-
-          <div className="deepdive-tabs">
-            <button
-              className={`deepdive-tab ${diagramTab === 'arch' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setDiagramTab('arch')}
-            >
-              <IconCloud size={15} style={{ marginRight: 6 }} /> Cloud Architecture
-            </button>
-            <button
-              className={`deepdive-tab ${diagramTab === 'uml' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setDiagramTab('uml')}
-            >
-              <IconPackage size={15} style={{ marginRight: 6 }} /> UML Domain Model
-            </button>
-            <button
-              className={`deepdive-tab ${diagramTab === 'erd' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setDiagramTab('erd')}
-            >
-              <IconDatabase size={15} style={{ marginRight: 6 }} /> Database ERD
-            </button>
-            <button
-              className={`deepdive-tab ${diagramTab === 'flow' ? 'deepdive-tab--active' : ''}`}
-              onClick={() => setDiagramTab('flow')}
-            >
-              <IconZap size={15} style={{ marginRight: 6 }} /> Auth Flowchart
-            </button>
-          </div>
-        </div>
-
-        <div className="deepdive-content-card">
-          {diagramTab === 'arch' && (
-            <div className="deepdive-grid">
-              <div className="deepdive-info">
-                <h3>Cloud Microservices Topology</h3>
-                <p>
-                  Map distributed systems with API Gateways, FastAPI services, Redis caches, and PostgreSQL clusters.
-                  Export directly to high-resolution vector PDF for architectural review boards.
-                </p>
-                <ul className="deepdive-bullets">
-                  <li>✓ Service boundary mapping &amp; port connectors</li>
-                  <li>✓ Low-latency Redis pub/sub caches</li>
-                  <li>✓ Instant 2x/4x vector PDF export</li>
-                </ul>
-                <button
-                  className="deepdive-launch-btn"
-                  onClick={() => navigate('/board?template=system-architecture&title=Cloud Architecture')}
-                >
-                  Load Architecture Template on Board →
-                </button>
-              </div>
-              <div className="deepdive-preview-box">
-                <div className="deepdive-mock-nodes">
-                  <div className="dd-node dd-node--blue">React 19 Client</div>
-                  <span className="dd-arrow">──&gt;</span>
-                  <div className="dd-node dd-node--purple">API Gateway (NGINX)</div>
-                  <span className="dd-arrow">──&gt;</span>
-                  <div className="dd-node dd-node--green">FastAPI Microservice</div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {diagramTab === 'uml' && (
-            <div className="deepdive-grid">
-              <div className="deepdive-info">
-                <h3>Object-Oriented Domain Models</h3>
-                <p>
-                  Design UML class hierarchies with attributes, methods, visibility indicators (+, -, #), and 1:N cardinality relationships.
-                </p>
-                <ul className="deepdive-bullets">
-                  <li>✓ Standard UML 2.5 class syntax</li>
-                  <li>✓ Inheritance and association connectors</li>
-                  <li>✓ Clean dark and light mode contrast</li>
-                </ul>
-                <button
-                  className="deepdive-launch-btn"
-                  onClick={() => navigate('/board?template=uml-class&title=UML Domain Model')}
-                >
-                  Load UML Class Template on Board →
-                </button>
-              </div>
-              <div className="deepdive-preview-box">
-                <div className="deepdive-mock-uml">
-                  <div className="dd-uml-box">
-                    <div className="dd-uml-head">«User»</div>
-                    <div className="dd-uml-body">+ id: UUID<br />+ email: string</div>
-                    <div className="dd-uml-foot">+ login(): Token</div>
-                  </div>
-                  <span className="dd-arrow">1 ──── *</span>
-                  <div className="dd-uml-box">
-                    <div className="dd-uml-head">«Board»</div>
-                    <div className="dd-uml-body">+ id: UUID<br />+ elements: Element[]</div>
-                    <div className="dd-uml-foot">+ exportPdf(): void</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {diagramTab === 'erd' && (
-            <div className="deepdive-grid">
-              <div className="deepdive-info">
-                <h3>Relational Database Schema (ERD)</h3>
-                <p>
-                  Visualize PostgreSQL tables, foreign key constraints, column data types, and primary index mappings with crystal clarity.
-                </p>
-                <ul className="deepdive-bullets">
-                  <li>✓ Column types: UUID, JSONB, TIMESTAMPTZ, BIGINT</li>
-                  <li>✓ Primary Key (PK) &amp; Foreign Key (FK) flags</li>
-                  <li>✓ 1-to-many and many-to-many relationship lines</li>
-                </ul>
-                <button
-                  className="deepdive-launch-btn"
-                  onClick={() => navigate('/board?template=erd&title=Relational ERD Schema')}
-                >
-                  Load Database ERD Template on Board →
-                </button>
-              </div>
-              <div className="deepdive-preview-box">
-                <div className="deepdive-mock-erd">
-                  <div className="dd-erd-table">
-                    <div className="dd-erd-th">users (PK)</div>
-                    <div className="dd-erd-td">id: uuid (PK)<br />email: varchar(255)<br />created_at: timestamp</div>
-                  </div>
-                  <span className="dd-arrow">1:N ──&gt;</span>
-                  <div className="dd-erd-table">
-                    <div className="dd-erd-th" style={{ background: '#059669' }}>boards</div>
-                    <div className="dd-erd-td">id: uuid (PK)<br />owner_id: uuid (FK)<br />elements: jsonb</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {diagramTab === 'flow' && (
-            <div className="deepdive-grid">
-              <div className="deepdive-info">
-                <h3>Production Auth &amp; Logic Flowcharts</h3>
-                <p>
-                  Illustrate async workflows, decision diamonds, terminal stages, and OAuth retry policies.
-                </p>
-                <ul className="deepdive-bullets">
-                  <li>✓ Process boxes &amp; decision nodes</li>
-                  <li>✓ Directional flow paths with labels</li>
-                  <li>✓ Sticky notes for architectural context</li>
-                </ul>
-                <button
-                  className="deepdive-launch-btn"
-                  onClick={() => navigate('/board?template=flowchart&title=Auth Flowchart')}
-                >
-                  Load Flowchart Template on Board →
-                </button>
-              </div>
-              <div className="deepdive-preview-box">
-                <div className="deepdive-mock-flow">
-                  <div className="dd-flow-pill">Start</div>
-                  <span className="dd-arrow">↓</span>
-                  <div className="dd-flow-box">Validate JWT &amp; Role</div>
-                  <span className="dd-arrow">↓</span>
-                  <div className="dd-flow-box" style={{ borderColor: '#10b981', color: '#10b981' }}>Connect WebRTC Canvas</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          BOTTOM 6-PHASE FEATURE CARDS MATRIX
-          ───────────────────────────────────────────────────────────── */}
-      <section className="features-matrix">
-        <Link to="/board" className="feature-pill-card">
-          <div className="feature-pill-icon feature-pill-icon--blue"><IconPen size={20} /></div>
-          <div>
-            <div className="feature-pill-title">Drawing Canvas</div>
-            <div className="feature-pill-desc">Freehand pen, shapes, sticky notes &amp; text</div>
-          </div>
-        </Link>
-
-        <Link to="/board?template=system-architecture" className="feature-pill-card">
-          <div className="feature-pill-icon feature-pill-icon--green"><IconDiagram size={20} /></div>
-          <div>
-            <div className="feature-pill-title">Diagramming</div>
-            <div className="feature-pill-desc">UML, ERD, flowcharts &amp; architecture</div>
-          </div>
-        </Link>
-
-        <Link to="/board" className="feature-pill-card">
-          <div className="feature-pill-icon feature-pill-icon--pink"><IconUsers size={20} /></div>
-          <div>
-            <div className="feature-pill-title">Real-time Collaboration</div>
-            <div className="feature-pill-desc">Multi-user cursors &amp; instant vector sync</div>
-          </div>
-        </Link>
-
-        <div
-          className="feature-pill-card"
-          onClick={() => navigate('/board?mode=connect')}
-          style={{ cursor: 'pointer' }}
-        >
-          <div className="feature-pill-icon feature-pill-icon--cyan"><IconMicrophone size={20} /></div>
-          <div>
-            <div className="feature-pill-title">Connect Mode (Voice)</div>
-            <div className="feature-pill-desc">Low-latency WebRTC stereo huddle</div>
-          </div>
-        </div>
-
-        <div
-          className="feature-pill-card"
-          onClick={() => navigate('/play')}
-          style={{ cursor: 'pointer' }}
-        >
-          <div className="feature-pill-icon feature-pill-icon--orange"><IconGamepad size={20} /></div>
-          <div>
-            <div className="feature-pill-title">Play Mode (Live)</div>
-            <div className="feature-pill-desc">Draw &amp; guess multiplayer game with bots</div>
-          </div>
-        </div>
-
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          FOOTER
-          ───────────────────────────────────────────────────────────── */}
-      <footer className="landing-footer">
-        <div className="landing-footer__left">
-          <img src="/logo.png" alt="Buildly" className="landing-footer__logo" />
-          <span className="landing-footer__brand">
-            Buildly<span style={{ color: '#2563eb' }}>.</span>
-          </span>
-          <span className="landing-footer__copy">
-            © 2026 Buildly. The collaborative developer workspace.
-          </span>
-        </div>
-
-        <div className="landing-footer__right">
-          <span className="landing-footer__status">● All systems operational</span>
-          <Link to="/overview" className="landing-footer__link">Workspace</Link>
-          <Link to="/board" className="landing-footer__link">Whiteboard</Link>
-          <Link to="/play" className="landing-footer__link">Play Mode</Link>
         </div>
       </footer>
     </div>
