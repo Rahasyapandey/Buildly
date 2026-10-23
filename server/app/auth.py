@@ -49,7 +49,7 @@ def decode_access_token(token: str) -> Optional[dict]:
 
 def verify_google_credential(credential: str) -> dict:
     """
-    Verify a Google ID Token (credential) using Google's public tokeninfo endpoint.
+    Verify a Google ID Token or Access Token using Google's public endpoints.
     Also gracefully supports development / testing tokens.
     """
     # 1. Dev / Mock token handler
@@ -64,7 +64,7 @@ def verify_google_credential(credential: str) -> dict:
             "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&h=128&fit=crop",
         }
 
-    # 2. Verify with Google OAuth2 TokenInfo endpoint
+    # 2. Verify with Google OAuth2 TokenInfo endpoint (ID Token)
     url = f"https://oauth2.googleapis.com/tokeninfo?id_token={credential}"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Buildly-Server"})
@@ -72,18 +72,38 @@ def verify_google_credential(credential: str) -> dict:
             if response.status == 200:
                 body = json.loads(response.read().decode("utf-8"))
                 email = body.get("email")
-                if not email:
-                    raise ValueError("No email address provided by Google")
-                return {
-                    "email": email,
-                    "name": body.get("name", email.split("@")[0]),
-                    "google_id": body.get("sub", ""),
-                    "picture": body.get("picture", ""),
-                }
+                if email:
+                    return {
+                        "email": email,
+                        "name": body.get("name", email.split("@")[0]),
+                        "google_id": body.get("sub", ""),
+                        "picture": body.get("picture", ""),
+                    }
     except Exception as exc:
-        logger.warning("Google token verification online request failed (%s). Attempting local JWT parse.", exc)
+        logger.debug("Google tokeninfo check failed (%s). Trying UserInfo endpoint.", exc)
 
-    # 3. Fallback: Parse unverified JWT claims if token is a standard JWT structure (useful for offline / air-gapped dev)
+    # 3. Verify with Google UserInfo endpoint (Access Token)
+    userinfo_url = "https://www.googleapis.com/oauth2/v3/userinfo"
+    try:
+        req = urllib.request.Request(
+            userinfo_url,
+            headers={"User-Agent": "Buildly-Server", "Authorization": f"Bearer {credential}"},
+        )
+        with urllib.request.urlopen(req, timeout=5.0) as response:
+            if response.status == 200:
+                body = json.loads(response.read().decode("utf-8"))
+                email = body.get("email")
+                if email:
+                    return {
+                        "email": email,
+                        "name": body.get("name", email.split("@")[0]),
+                        "google_id": body.get("sub", ""),
+                        "picture": body.get("picture", ""),
+                    }
+    except Exception as exc:
+        logger.debug("Google userinfo check failed (%s).", exc)
+
+    # 4. Fallback: Parse unverified JWT claims if token is a standard JWT structure (useful for offline / air-gapped dev)
     try:
         unverified_claims = jwt.get_unverified_claims(credential)
         if "email" in unverified_claims:
@@ -99,6 +119,55 @@ def verify_google_credential(credential: str) -> dict:
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid Google OAuth credential",
+    )
+
+
+def exchange_google_code(
+    code: str,
+    redirect_uri: str,
+    client_id: Optional[str] = None,
+    client_secret: Optional[str] = None,
+) -> dict:
+    """Exchange a Google OAuth 2.0 authorization code for tokens and user profile."""
+    import urllib.parse
+
+    token_url = "https://oauth2.googleapis.com/token"
+    effective_client_id = client_id or settings.google_client_id
+    effective_client_secret = client_secret or settings.google_client_secret
+
+    data = {
+        "code": code,
+        "client_id": effective_client_id,
+        "redirect_uri": redirect_uri,
+        "grant_type": "authorization_code",
+    }
+    if effective_client_secret:
+        data["client_secret"] = effective_client_secret
+
+    encoded = urllib.parse.urlencode(data).encode("utf-8")
+    req = urllib.request.Request(
+        token_url,
+        data=encoded,
+        headers={
+            "User-Agent": "Buildly-Server",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=5.0) as response:
+            if response.status == 200:
+                body = json.loads(response.read().decode("utf-8"))
+                if "id_token" in body:
+                    return verify_google_credential(body["id_token"])
+                if "access_token" in body:
+                    return verify_google_credential(body["access_token"])
+    except Exception as exc:
+        logger.warning("Failed to exchange Google OAuth code: %s", exc)
+
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Failed to exchange authorization code with Google",
     )
 
 

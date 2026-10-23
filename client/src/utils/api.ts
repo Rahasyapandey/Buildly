@@ -12,7 +12,7 @@
 import type { CanvasElement } from '../types/canvas'
 import type { AuthResponse, User } from '../types/auth'
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8008'
 
 export function getAuthToken(): string | null {
   return localStorage.getItem('buildly_auth_token')
@@ -138,11 +138,23 @@ export const api = {
   },
 
   auth: {
-    /** Authenticate with Google ID credential token */
+    /** Authenticate with Google ID credential token or access token */
     google(credential: string, clientId?: string): Promise<AuthResponse> {
       return request('/api/auth/google', {
         method: 'POST',
         body: JSON.stringify({ credential, client_id: clientId }),
+      })
+    },
+
+    /** Authenticate with Google OAuth 2.0 authorization code */
+    googleCode(code: string, redirectUri?: string, clientId?: string): Promise<AuthResponse> {
+      return request('/api/auth/google', {
+        method: 'POST',
+        body: JSON.stringify({
+          code,
+          redirect_uri: redirectUri || window.location.origin,
+          client_id: clientId,
+        }),
       })
     },
 

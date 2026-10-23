@@ -10,7 +10,12 @@ import uuid
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.auth import create_access_token, get_current_user, verify_google_credential
+from app.auth import (
+    create_access_token,
+    exchange_google_code,
+    get_current_user,
+    verify_google_credential,
+)
 from app.database import get_db
 from app.models import User
 from app.schemas import DemoLoginRequest, GoogleAuthRequest, TokenResponse, UserRead
@@ -26,11 +31,25 @@ async def google_login(
     db: Session = Depends(get_db),
 ) -> TokenResponse:
     """
-    Authenticate a user using a Google OAuth ID token (credential).
+    Authenticate a user using a Google OAuth ID/Access token (credential)
+    or authorization code (code).
     Finds existing user by email or creates a new account.
     Returns a signed JWT access token and user profile.
     """
-    profile = verify_google_credential(payload.credential)
+    if payload.code:
+        profile = exchange_google_code(
+            code=payload.code,
+            redirect_uri=payload.redirect_uri or "http://localhost:5173",
+            client_id=payload.client_id,
+        )
+    elif payload.credential:
+        profile = verify_google_credential(payload.credential)
+    else:
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Either 'credential' or 'code' must be provided.",
+        )
     email = profile["email"].lower().strip()
     name = profile.get("name") or email.split("@")[0]
     picture = profile.get("picture")

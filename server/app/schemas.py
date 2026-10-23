@@ -38,8 +38,10 @@ class UserRead(_ORMBase):
 
 
 class GoogleAuthRequest(BaseModel):
-    """Payload received from Google Sign-In on client."""
-    credential: str
+    """Payload received from Google Sign-In on client (credential token or authorization code)."""
+    credential: Optional[str] = None
+    code: Optional[str] = None
+    redirect_uri: Optional[str] = None
     client_id: Optional[str] = None
 
 

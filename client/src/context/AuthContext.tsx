@@ -52,6 +52,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  const loginWithGoogleCode = useCallback(async (code: string, redirectUri?: string) => {
+    setIsLoading(true)
+    try {
+      const res = await api.auth.googleCode(code, redirectUri)
+      setAuthToken(res.access_token)
+      setTokenState(res.access_token)
+      setUser({
+        id: res.user.id,
+        email: res.user.email,
+        name: res.user.name,
+        avatarUrl: res.user.avatar_url,
+        googleId: res.user.google_id,
+        createdAt: res.user.created_at,
+        lastLogin: res.user.last_login,
+      })
+      setIsAuthModalOpen(false)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
   const loginAsDemo = useCallback(async (email?: string, name?: string) => {
     setIsLoading(true)
     try {
@@ -99,6 +120,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         openAuthModal,
         closeAuthModal,
         loginWithGoogle,
+        loginWithGoogleCode,
         loginAsDemo,
         logout,
       }}

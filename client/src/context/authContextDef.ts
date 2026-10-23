@@ -10,6 +10,7 @@ export interface AuthContextType {
   openAuthModal: () => void
   closeAuthModal: () => void
   loginWithGoogle: (credential: string) => Promise<void>
+  loginWithGoogleCode: (code: string, redirectUri?: string) => Promise<void>
   loginAsDemo: (email?: string, name?: string) => Promise<void>
   logout: () => Promise<void>
 }

@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import GoogleSignInButton from './GoogleSignInButton'
 import './AuthModal.css'
 
 export default function AuthModal() {
   const { isAuthModalOpen, closeAuthModal, loginAsDemo, isLoading } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -17,6 +20,23 @@ export default function AuthModal() {
   }, [isAuthModalOpen, closeAuthModal])
 
   if (!isAuthModalOpen) return null
+
+  const handleSuccess = () => {
+    closeAuthModal()
+    // If the user signed in from the landing page, smoothly transition to the studio overview
+    if (location.pathname === '/' || location.pathname === '') {
+      navigate('/overview')
+    }
+  }
+
+  const handleDemoSignIn = async () => {
+    try {
+      await loginAsDemo('dev.lead@buildly.dev', 'Alex Developer')
+      handleSuccess()
+    } catch (e) {
+      console.error('Demo sign in failed:', e)
+    }
+  }
 
   return (
     <div className="auth-modal-backdrop" onClick={closeAuthModal}>
@@ -47,7 +67,7 @@ export default function AuthModal() {
         </div>
 
         <div className="auth-modal-body">
-          <GoogleSignInButton onSuccess={closeAuthModal} text="Continue with Google" />
+          <GoogleSignInButton onSuccess={handleSuccess} text="Continue with Google" />
 
           <div className="auth-modal-divider">
             <span>or instant developer access</span>
@@ -57,7 +77,7 @@ export default function AuthModal() {
             type="button"
             className="auth-demo-quick-btn"
             disabled={isLoading}
-            onClick={() => loginAsDemo('dev.lead@buildly.dev', 'Alex Developer')}
+            onClick={handleDemoSignIn}
           >
             <span className="auth-demo-icon">⚡</span>
             <span>Instant Demo Sign-In (Alex Developer)</span>

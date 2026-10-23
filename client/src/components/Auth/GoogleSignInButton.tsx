@@ -45,11 +45,13 @@ export default function GoogleSignInButton({
   const [showDemoChooser, setShowDemoChooser] = useState(false)
   const [customEmail, setCustomEmail] = useState('')
   const [customName, setCustomName] = useState('')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [isGsiLoaded, setIsGsiLoaded] = useState(false)
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
+  // 1. Load Google Identity Services SDK when client ID is available
   useEffect(() => {
-    // If real Google Client ID is configured, load Google Identity Services SDK
     if (!googleClientId) return
 
     const loadGsiScript = () => {
@@ -62,7 +64,13 @@ export default function GoogleSignInButton({
       script.src = 'https://accounts.google.com/gsi/client'
       script.async = true
       script.defer = true
-      script.onload = initGoogleButton
+      script.onload = () => {
+        setIsGsiLoaded(true)
+        initGoogleButton()
+      }
+      script.onerror = () => {
+        console.warn('Google GSI script could not be loaded.')
+      }
       document.body.appendChild(script)
     }
 
@@ -74,21 +82,26 @@ export default function GoogleSignInButton({
           client_id: googleClientId,
           callback: async (response) => {
             try {
+              setErrorMessage(null)
               await loginWithGoogle(response.credential)
               onSuccess?.()
             } catch (err) {
+              const msg = (err as Error).message || 'Google authentication failed'
+              setErrorMessage(msg)
               onError?.(err as Error)
             }
           },
         })
 
+        // Render official Google button
         window.google.accounts.id.renderButton(googleBtnContainerRef.current, {
           theme: 'outline',
           size: 'large',
           text: 'continue_with',
           shape: 'pill',
-          width: 280,
+          width: 320,
         })
+        setIsGsiLoaded(true)
       } catch (e) {
         console.warn('Google GSI button initialization error:', e)
       }
@@ -96,6 +109,64 @@ export default function GoogleSignInButton({
 
     loadGsiScript()
   }, [googleClientId, loginWithGoogle, onSuccess, onError])
+
+  // 2. Listen for messages from OAuth popup if opened
+  useEffect(() => {
+    const handlePopupMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return
+      if (event.data?.type === 'BUILDLY_GOOGLE_AUTH' && event.data?.token) {
+        try {
+          setErrorMessage(null)
+          await loginWithGoogle(event.data.token)
+          onSuccess?.()
+        } catch (err) {
+          const msg = (err as Error).message || 'Google authentication failed'
+          setErrorMessage(msg)
+          onError?.(err as Error)
+        }
+      }
+    }
+
+    window.addEventListener('message', handlePopupMessage)
+    return () => window.removeEventListener('message', handlePopupMessage)
+  }, [loginWithGoogle, onSuccess, onError])
+
+  // 3. Fallback / Direct Google OAuth flow (opens Google consent screen)
+  const handleDirectOAuth = () => {
+    setErrorMessage(null)
+    if (!googleClientId) {
+      setShowDemoChooser((prev) => !prev)
+      return
+    }
+
+    const redirectUri = window.location.origin
+    const oauthUrl =
+      `https://accounts.google.com/o/oauth2/v2/auth?` +
+      new URLSearchParams({
+        client_id: googleClientId,
+        redirect_uri: redirectUri,
+        response_type: 'token id_token',
+        scope: 'openid email profile',
+        nonce: Math.random().toString(36).substring(2),
+        prompt: 'select_account',
+      }).toString()
+
+    const width = 500
+    const height = 620
+    const left = window.screenX + (window.outerWidth - width) / 2
+    const top = window.screenY + (window.outerHeight - height) / 2.5
+
+    const popup = window.open(
+      oauthUrl,
+      'BuildlyGoogleAuth',
+      `width=${width},height=${height},left=${left},top=${top},status=no,toolbar=no,menubar=no`,
+    )
+
+    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      // Popup was blocked by browser -> fallback to direct redirect
+      window.location.href = oauthUrl
+    }
+  }
 
   const handleCustomSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -112,22 +183,31 @@ export default function GoogleSignInButton({
 
   return (
     <div className="google-auth-wrapper">
-      {/* If Google Client ID is set and rendered, show the official SDK button */}
-      {googleClientId && <div ref={googleBtnContainerRef} className="google-sdk-btn-slot" />}
+      {errorMessage && (
+        <div className="google-auth-error-banner">
+          <span className="error-icon">⚠️</span>
+          <div className="error-text">
+            <strong>Authentication Notice</strong>
+            <span>{errorMessage}</span>
+          </div>
+        </div>
+      )}
 
-      {/* Primary Google Button (always active & accessible) */}
+      {/* Official Google Identity Services SDK button slot */}
+      {googleClientId && (
+        <div
+          ref={googleBtnContainerRef}
+          className="google-sdk-btn-slot"
+          style={{ minHeight: isGsiLoaded ? '44px' : '0' }}
+        />
+      )}
+
+      {/* Custom Primary Google Button */}
       <button
         type="button"
         className="google-signin-btn"
-        onClick={() => {
-          if (googleClientId && window.google?.accounts?.id) {
-            window.google.accounts.id.prompt()
-          } else {
-            setShowDemoChooser((prev) => !prev)
-          }
-        }}
+        onClick={handleDirectOAuth}
       >
-        {/* Official Google 4-Color 'G' SVG Logo */}
         <svg className="google-icon" viewBox="0 0 24 24" width="20" height="20">
           <path
             fill="#4285F4"
@@ -149,8 +229,8 @@ export default function GoogleSignInButton({
         <span className="google-btn-text">{text}</span>
       </button>
 
-      {/* Developer / Demo Profile Chooser (visible when testing without GCP credentials) */}
-      {showDemoChooser && !googleClientId && (
+      {/* Developer / Demo Profile Chooser */}
+      {showDemoChooser && (
         <div className="google-demo-chooser">
           <div className="google-demo-title">
             <span>✨ One-Click Google Testing</span>
@@ -199,7 +279,7 @@ export default function GoogleSignInButton({
           <form onSubmit={handleCustomSubmit} className="google-custom-form">
             <input
               type="email"
-              placeholder="Or enter your Google email..."
+              placeholder="Or enter custom test email..."
               value={customEmail}
               onChange={(e) => setCustomEmail(e.target.value)}
               className="google-custom-input"
@@ -207,13 +287,13 @@ export default function GoogleSignInButton({
             />
             <input
               type="text"
-              placeholder="Your full name"
+              placeholder="Your name"
               value={customName}
               onChange={(e) => setCustomName(e.target.value)}
               className="google-custom-input"
             />
             <button type="submit" className="google-custom-submit-btn">
-              Sign In as this User →
+              Sign In as Test User →
             </button>
           </form>
         </div>
