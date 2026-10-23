@@ -2,21 +2,27 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
 import UserMenu from '../components/Auth/UserMenu'
+import LandingBackground3D from '../components/Landing/LandingBackground3D'
 import {
   IconCheck,
   IconCloud,
   IconDatabase,
   IconDiagram,
+  IconDownload,
   IconFileText,
   IconFolder,
   IconGamepad,
+  IconInfinity,
   IconLink,
   IconMicrophone,
   IconPackage,
   IconPen,
+  IconScreen,
   IconSettings,
   IconShare,
+  IconShield,
   IconSticky,
+  IconUser,
   IconUsers,
   IconZap,
 } from '../components/Icons/Icons'
@@ -45,6 +51,9 @@ export default function Landing() {
 
   return (
     <div className="landing-container">
+      {/* ── 3D Flowing Ribbons & Frosted Elements Background ──── */}
+      <LandingBackground3D />
+
       {/* ─────────────────────────────────────────────────────────────
           TOP FLOATING GLASS NAVBAR
           ───────────────────────────────────────────────────────────── */}
@@ -87,35 +96,28 @@ export default function Landing() {
       <header className="landing-hero">
         {/* Animated Announcement Pill */}
         <div className="landing-announcement" onClick={() => navigate('/overview')}>
-          <span className="landing-announcement__pill">BUILDLY 2.0</span>
-          <span>Ultra-Responsive Collaborative Canvas &amp; Multiplayer Party Mode</span>
+          <span className="landing-announcement__pill">BUILD BETTER. TOGETHER.</span>
+          <span>Collaborative Architecture Whiteboard &amp; Multiplayer Studio</span>
           <span className="landing-announcement__arrow">→</span>
         </div>
 
-        <div className="landing-hero__brand">
-          <img
-            src="/logo.png"
-            alt="Buildly Logo"
-            className="landing-hero__logo"
-          />
-          <h1 className="landing-hero__title">
-            Buildly<span className="landing-hero__dot">.</span>
-          </h1>
-        </div>
+        <h1 className="landing-hero__title">
+          <span className="hero-title-dark">Think together:</span>
+          <br />
+          <span className="hero-title-gradient">Build together<span className="hero-title-dot">.</span></span>
+        </h1>
 
         <div className="landing-hero__tagline">
           Plan &nbsp;·&nbsp; Design &nbsp;·&nbsp; Build &nbsp;·&nbsp; Together
         </div>
 
         <p className="landing-hero__subtitle">
-          The collaborative developer workspace for modern engineering teams.
-          <br />
-          Whiteboard system architecture, UML models, database schemas, and play multiplayer games — all in one place.
+          Plan your software, map your ideas, and build with your team — all in one collaborative workspace.
         </p>
 
         <div className="landing-hero__cta">
           <Link to="/overview" className="cta-primary">
-            Open Workspace Studio →
+            Get started — It's free →
           </Link>
           <Link to="/board" className="cta-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
             <IconZap size={15} />
@@ -136,71 +138,6 @@ export default function Landing() {
           HERO STAGE: DOODLES, CURSORS & INTERACTIVE MOCKUP WINDOW
           ───────────────────────────────────────────────────────────── */}
       <div className="hero-stage">
-        {/* Doodles */}
-        <div className="doodle-note doodle-note--left">
-          <span>From ideas...</span>
-          <svg className="doodle-arrow" viewBox="0 0 40 40">
-            <path
-              d="M 10 10 Q 25 15 28 32 M 22 28 L 28 32 L 32 24"
-              stroke="#4f46e5"
-              strokeWidth="2.2"
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-
-        <div className="doodle-note doodle-note--right">
-          <span>Better systems together</span>
-          <svg className="doodle-arrow" viewBox="0 0 40 40">
-            <path
-              d="M 30 10 Q 15 15 12 32 M 18 28 L 12 32 L 8 24"
-              stroke="#4f46e5"
-              strokeWidth="2.2"
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-
-        {/* Floating Card Badges */}
-        <div className="floating-badge floating-badge--left">
-          <span className="floating-badge__icon">🖼️</span>
-          <span>Design &amp; Plan</span>
-        </div>
-
-        <div className="floating-badge floating-badge--right">
-          <span className="floating-badge__icon">&lt;/&gt;</span>
-          <span>Build Together</span>
-        </div>
-
-        {/* Live User Cursor Chips */}
-        <div className="cursor-chip cursor-chip--aarav">
-          <svg className="cursor-pointer-icon" viewBox="0 0 24 24">
-            <path d="M4 2 L18 10 L11 12 L8 19 Z" />
-          </svg>
-          <div className="cursor-avatar cursor-avatar--aarav">
-            A
-            <span className="cursor-avatar__status cursor-avatar__status--green" />
-          </div>
-          <span>
-            <strong>Aarav</strong> is designing the architecture...
-          </span>
-        </div>
-
-        <div className="cursor-chip cursor-chip--yashasvi">
-          <svg className="cursor-pointer-icon" viewBox="0 0 24 24">
-            <path d="M4 2 L18 10 L11 12 L8 19 Z" />
-          </svg>
-          <div className="cursor-avatar cursor-avatar--yashasvi">
-            Y
-            <span className="cursor-avatar__status cursor-avatar__status--purple" />
-          </div>
-          <span>
-            <strong>Yashasvi</strong> updated database ERD
-          </span>
-        </div>
-
         {/* ── Mockup Window Interactive Preview ─────────────────── */}
         <div className="mockup-window">
           {/* Window Top Bar */}
@@ -375,8 +312,146 @@ export default function Landing() {
                 </span>
               ))}
 
-              {/* Quadrant 1: System Architecture */}
-              {(activeQuadrant === 'all' || activeQuadrant === 'arch') && (
+              {/* View A: Single Architecture with Properties Panel (Image 2 Reference) */}
+              {activeQuadrant === 'arch' && (
+                <div className="mockup-single-arch-layout">
+                  <div className="single-arch-canvas-area">
+                    {/* User Root Node */}
+                    <div className="arch-tree-user">
+                      <div className="arch-tree-user-pill">
+                        <IconUser size={15} />
+                        <span>User</span>
+                      </div>
+                    </div>
+
+                    <div className="arch-tree-stem-v" />
+
+                    {/* Middle Microservices Tier */}
+                    <div className="arch-tree-row arch-tree-row--primary">
+                      <div className="arch-tree-card arch-tree-card--frontend">
+                        <div className="arch-card-icon"><IconScreen size={16} /></div>
+                        <div>
+                          <div className="arch-card-title">Frontend</div>
+                          <div className="arch-card-tech">(React)</div>
+                        </div>
+                      </div>
+
+                      <div className="arch-tree-conn-h">↔</div>
+
+                      <div className="arch-tree-card arch-tree-card--backend">
+                        <div className="arch-card-icon"><IconPackage size={16} /></div>
+                        <div>
+                          <div className="arch-card-title">Backend</div>
+                          <div className="arch-card-tech">(FastAPI)</div>
+                        </div>
+                      </div>
+
+                      <div className="arch-tree-conn-h">↔</div>
+
+                      <div className="arch-tree-card arch-tree-card--db">
+                        <div className="arch-card-icon"><IconDatabase size={16} /></div>
+                        <div>
+                          <div className="arch-card-title">Database</div>
+                          <div className="arch-card-tech">(PostgreSQL)</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="arch-tree-stem-v" />
+
+                    {/* Lower Services Tier */}
+                    <div className="arch-tree-row arch-tree-row--secondary">
+                      <div className="arch-tree-card arch-tree-card--payment">
+                        <div className="arch-card-bullet" style={{ backgroundColor: '#f59e0b' }} />
+                        <div>
+                          <div className="arch-card-title">Payment Service</div>
+                          <div className="arch-card-tech">(Stripe)</div>
+                        </div>
+                      </div>
+
+                      <div className="arch-tree-card arch-tree-card--auth">
+                        <div className="arch-card-bullet" style={{ backgroundColor: '#3b82f6' }} />
+                        <div>
+                          <div className="arch-card-title">Auth Service</div>
+                          <div className="arch-card-tech">(JWT)</div>
+                        </div>
+                      </div>
+
+                      <div className="arch-tree-card arch-tree-card--notify">
+                        <div className="arch-card-bullet" style={{ backgroundColor: '#ec4899' }} />
+                        <div>
+                          <div className="arch-card-title">Notification Service</div>
+                          <div className="arch-card-tech">(Email/SMS)</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Minimap preview in bottom-left */}
+                    <div className="mockup-minimap-box">
+                      <div className="minimap-grid-dot" />
+                      <div className="minimap-skeleton-tree">
+                        <div className="minimap-node minimap-node--top" />
+                        <div className="minimap-row">
+                          <span className="minimap-bar" />
+                          <span className="minimap-bar" />
+                          <span className="minimap-bar" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Inspector Sidebar (Matching Image 2 Reference) */}
+                  <aside className="mockup-inspector-sidebar">
+                    <div className="inspector-header">
+                      <h4 className="inspector-heading">System Architecture</h4>
+                    </div>
+
+                    <div className="inspector-tabs-row">
+                      <button className="inspector-tab-btn inspector-tab-btn--active">Properties</button>
+                      <button className="inspector-tab-btn">Settings</button>
+                    </div>
+
+                    <div className="inspector-group">
+                      <label className="inspector-label">Title</label>
+                      <input
+                        type="text"
+                        readOnly
+                        value="System Architecture"
+                        className="inspector-input"
+                      />
+                    </div>
+
+                    <div className="inspector-group">
+                      <label className="inspector-label">Description</label>
+                      <textarea
+                        readOnly
+                        value="High-level architecture of our e-commerce platform with microservices."
+                        className="inspector-textarea"
+                        rows={3}
+                      />
+                    </div>
+
+                    <div className="inspector-group">
+                      <label className="inspector-label">Theme</label>
+                      <div className="inspector-select-box">
+                        <span>Light</span>
+                        <span style={{ fontSize: '11px', opacity: 0.6 }}>▾</span>
+                      </div>
+                    </div>
+
+                    <button
+                      className="inspector-export-action-btn"
+                      onClick={() => navigate('/board?template=system-architecture')}
+                    >
+                      <IconDownload size={14} />
+                      <span>Export</span>
+                    </button>
+                  </aside>
+                </div>
+              )}
+
+              {/* View B: Quadrant 1 (in 4-quadrant layout, Image 1 Reference) */}
+              {activeQuadrant === 'all' && (
                 <div className="mockup-quad-box">
                   <div className="canvas-quadrant-title">
                     <span>System Architecture</span>
@@ -553,6 +628,12 @@ export default function Landing() {
                       </div>
                     </div>
                   </div>
+                  <div className="mockup-quad-footer">
+                    <div className="canvas-user-pill-tag">
+                      <span className="user-pill-avatar" style={{ backgroundColor: '#2563eb' }}>A</span>
+                      <span>Aarav is designing the architecture...</span>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -592,21 +673,28 @@ export default function Landing() {
                       </div>
                     </div>
                   </div>
+                  <div className="mockup-quad-footer" style={{ justifyContent: 'flex-end' }}>
+                    <div className="flowchart-cta-badge">
+                      <span>&lt;/&gt; Build Together</span>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Sticky Note */}
-            <div className="sticky-note">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Cloud Architecture</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> UML Domain Models</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Database ERD</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Vector PDF Export</div>
-              <div style={{ fontSize: '13px', marginTop: '6px', opacity: 0.8, fontWeight: 600 }}>Ready for review</div>
-            </div>
+            {/* Sticky Note (Only in 4-quadrant / UML view, matches Image 1) */}
+            {(activeQuadrant === 'all' || activeQuadrant === 'uml') && (
+              <div className="sticky-note">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Cloud Architecture</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> UML Domain Models</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Database ERD</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Vector PDF Export</div>
+                <div style={{ fontSize: '13px', marginTop: '6px', opacity: 0.8, fontWeight: 600 }}>Ready for review</div>
+              </div>
+            )}
 
             {/* Bottom Right Zoom Control */}
-            <div className="mockup-zoom-bar">
+            <div className={`mockup-zoom-bar ${activeQuadrant === 'arch' ? 'mockup-zoom-bar--with-inspector' : ''}`}>
               <button
                 onClick={() => setZoomLevel((z) => Math.max(50, z - 10))}
                 style={{ border: 'none', background: 'none', cursor: 'pointer' }}
@@ -636,24 +724,44 @@ export default function Landing() {
           ENGINE STATS & TELEMETRY BANNER
           ───────────────────────────────────────────────────────────── */}
       <section className="landing-stats-bar">
-        <div className="landing-stat-item">
-          <div className="landing-stat-val">&lt;15ms</div>
-          <div className="landing-stat-label">WebSocket Sync Latency</div>
+        <div className="landing-stat-card">
+          <div className="landing-stat-icon-wrap">
+            <IconZap size={18} />
+          </div>
+          <div className="landing-stat-meta">
+            <div className="landing-stat-val">&lt;15ms</div>
+            <div className="landing-stat-label">WebSocket Sync Latency</div>
+          </div>
         </div>
-        <div className="landing-stat-divider" />
-        <div className="landing-stat-item">
-          <div className="landing-stat-val">100%</div>
-          <div className="landing-stat-label">Vector PDF &amp; SVG Fidelity</div>
+
+        <div className="landing-stat-card">
+          <div className="landing-stat-icon-wrap">
+            <IconShield size={18} />
+          </div>
+          <div className="landing-stat-meta">
+            <div className="landing-stat-val">100%</div>
+            <div className="landing-stat-label">Vector PDF &amp; SVG Fidelity</div>
+          </div>
         </div>
-        <div className="landing-stat-divider" />
-        <div className="landing-stat-item">
-          <div className="landing-stat-val">WebRTC</div>
-          <div className="landing-stat-label">Integrated Stereo Voice Huddle</div>
+
+        <div className="landing-stat-card">
+          <div className="landing-stat-icon-wrap">
+            <IconMicrophone size={18} />
+          </div>
+          <div className="landing-stat-meta">
+            <div className="landing-stat-val">WebRTC</div>
+            <div className="landing-stat-label">Integrated Stereo Voice Huddle</div>
+          </div>
         </div>
-        <div className="landing-stat-divider" />
-        <div className="landing-stat-item">
-          <div className="landing-stat-val">Infinite</div>
-          <div className="landing-stat-label">Spatial Multi-user Canvas</div>
+
+        <div className="landing-stat-card">
+          <div className="landing-stat-icon-wrap">
+            <IconInfinity size={18} />
+          </div>
+          <div className="landing-stat-meta">
+            <div className="landing-stat-val">Infinite</div>
+            <div className="landing-stat-label">Spatial Multi-user Canvas</div>
+          </div>
         </div>
       </section>
 

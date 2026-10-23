@@ -1,0 +1,287 @@
+/* ============================================================
+   LandingBackground3D.css — 3D Flowing Ribbons & Frosted Elements
+   ============================================================ */
+
+.landing-bg-3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Layer 1: Ambient Mesh Light Glows ─────────────────────── */
+.bg-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.bg-glow-orb--top-left {
+  top: -80px;
+  left: -80px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(129, 140, 248, 0.28) 0%, rgba(99, 102, 241, 0.08) 60%, transparent 80%);
+}
+
+.bg-glow-orb--top-right {
+  top: 40px;
+  right: -100px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.24) 0%, rgba(168, 85, 247, 0.06) 60%, transparent 80%);
+}
+
+.bg-glow-orb--center {
+  top: 360px;
+  left: 20%;
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.16) 0%, rgba(129, 140, 248, 0.05) 60%, transparent 80%);
+}
+
+.bg-glow-orb--bottom-right {
+  top: 600px;
+  right: 5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(147, 197, 253, 0.2) 0%, rgba(196, 181, 253, 0.08) 60%, transparent 80%);
+}
+
+[data-theme='dark'] .bg-glow-orb--top-left {
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.25) 0%, rgba(67, 56, 202, 0.06) 60%, transparent 80%);
+}
+
+[data-theme='dark'] .bg-glow-orb--top-right {
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.2) 0%, rgba(126, 34, 206, 0.05) 60%, transparent 80%);
+}
+
+/* ── Layer 2: 3D Ribbon SVG ────────────────────────────────── */
+.bg-ribbon-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1200px;
+  opacity: 0.9;
+  filter: drop-shadow(0 15px 30px rgba(99, 102, 241, 0.06));
+}
+
+[data-theme='dark'] .bg-ribbon-svg {
+  opacity: 0.45;
+}
+
+/* ── Floating Keyframe Animations ──────────────────────────── */
+@keyframes floatGentle {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(1.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes floatGentleReverse {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(12px) rotate(-1.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes floatSphere {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-16px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* ── Layer 3: 3D Frosted Glass Cube with </> (Top Left) ─────── */
+.bg-cube-code-wrap {
+  position: absolute;
+  top: 110px;
+  left: max(16px, calc((100% - 1380px) / 2 + 10px));
+  width: 150px;
+  height: 150px;
+  z-index: 2;
+  animation: floatGentle 7s ease-in-out infinite;
+  filter: drop-shadow(0 20px 30px rgba(79, 70, 229, 0.18));
+}
+
+.bg-3d-cube-svg--code {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Layer 4: 3D Frosted Glass Cube with Tree (Right Side) ──── */
+.bg-cube-tree-wrap {
+  position: absolute;
+  top: 180px;
+  right: max(16px, calc((100% - 1400px) / 2 + 12px));
+  width: 160px;
+  height: 160px;
+  z-index: 2;
+  animation: floatGentleReverse 8.5s ease-in-out infinite;
+  filter: drop-shadow(0 24px 34px rgba(37, 99, 235, 0.16));
+}
+
+.bg-3d-cube-svg--tree {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Layer 5: Floating Glossy 3D Purple/Violet Spheres ──────── */
+.bg-sphere {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 2;
+  animation: floatSphere 6s ease-in-out infinite;
+}
+
+/* Right big glossy purple sphere (just like the image) */
+.bg-sphere--right {
+  top: 360px;
+  right: max(40px, calc((100% - 1360px) / 2 + 45px));
+  width: 62px;
+  height: 62px;
+  background: radial-gradient(circle at 35% 32%, #e9d5ff 0%, #c084fc 25%, #818cf8 55%, #4f46e5 80%, #312e81 100%);
+  box-shadow: 0 16px 32px rgba(79, 70, 229, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 -4px 8px rgba(0, 0, 0, 0.25);
+  animation-delay: 1s;
+}
+
+/* Left small soft lavender sphere */
+.bg-sphere--left {
+  top: 480px;
+  left: max(30px, calc((100% - 1380px) / 2 + 35px));
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #ddd6fe 35%, #a78bfa 75%, #6d28d9 100%);
+  box-shadow: 0 8px 18px rgba(109, 40, 217, 0.24);
+  animation-delay: 2.5s;
+}
+
+/* ── Layer 6: Smaller Floating Crystal Cubes ─────────────────── */
+.bg-mini-cube {
+  position: absolute;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(199, 210, 254, 0.45) 50%, rgba(129, 140, 248, 0.35) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+  z-index: 2;
+  transform: rotate(22deg) skewX(-10deg);
+}
+
+.bg-mini-cube--1 {
+  top: 290px;
+  left: max(60px, calc((100% - 1340px) / 2 + 75px));
+  width: 36px;
+  height: 36px;
+  animation: floatGentleReverse 6.5s ease-in-out infinite;
+}
+
+.bg-mini-cube--2 {
+  top: 720px;
+  left: max(30px, calc((100% - 1380px) / 2 + 25px));
+  width: 30px;
+  height: 30px;
+  animation: floatGentle 8s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* ── Layer 7: Handwritten Doodle Note & Arrow (Image 2) ──────── */
+.bg-doodle-quote {
+  position: absolute;
+  top: 140px;
+  right: max(160px, calc((100% - 1280px) / 2 + 150px));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: 'Caveat', 'Patrick Hand', 'Comic Sans MS', cursive, sans-serif;
+  color: #4338ca;
+  z-index: 6;
+  pointer-events: none;
+  transform: rotate(4deg);
+}
+
+[data-theme='dark'] .bg-doodle-quote {
+  color: #818cf8;
+}
+
+.bg-doodle-text {
+  font-size: 17.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.bg-doodle-plus,
+.bg-doodle-equals {
+  font-size: 14px;
+  opacity: 0.7;
+  margin: 1px 0;
+}
+
+.bg-doodle-great {
+  color: #2563eb;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+[data-theme='dark'] .bg-doodle-great {
+  color: #93c5fd;
+}
+
+.bg-doodle-arrow-svg {
+  width: 50px;
+  height: 60px;
+  margin-top: -6px;
+  margin-right: 18px;
+  transform: rotate(6deg);
+}
+
+/* ── Responsive adjustments ────────────────────────────────── */
+@media (max-width: 1200px) {
+  .bg-cube-code-wrap {
+    left: 10px;
+    width: 120px;
+    height: 120px;
+  }
+  .bg-cube-tree-wrap {
+    right: 10px;
+    width: 125px;
+    height: 125px;
+  }
+  .bg-doodle-quote {
+    right: 110px;
+  }
+}
+
+@media (max-width: 900px) {
+  .bg-cube-code-wrap,
+  .bg-cube-tree-wrap,
+  .bg-doodle-quote,
+  .bg-sphere--right {
+    display: none;
+  }
+}
