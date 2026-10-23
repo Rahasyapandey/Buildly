@@ -1,4 +1,5 @@
 import { useTheme } from '../../context/useTheme'
+import { IconMoon, IconSun } from '../Icons/Icons'
 import './ThemeToggle.css'
 
 interface ThemeToggleProps {
@@ -23,7 +24,7 @@ export default function ThemeToggle({
       aria-label={isDark ? 'Switch to Light Mode' : 'Switch to Night / Dark Mode'}
     >
       <span className="theme-toggle-icon">
-        {isDark ? '☀️' : '🌙'}
+        {isDark ? <IconSun size={15} /> : <IconMoon size={15} />}
       </span>
       {variant === 'pill' && (
         <span>{isDark ? 'Light' : 'Night'}</span>

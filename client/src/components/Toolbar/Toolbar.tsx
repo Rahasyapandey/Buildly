@@ -2,6 +2,19 @@ import { useState, useRef, useEffect } from 'react'
 import type { HexColor, Tool } from '../../types/canvas'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import UserMenu from '../Auth/UserMenu'
+import {
+  IconCloud,
+  IconCloudUpload,
+  IconDatabase,
+  IconDiagram,
+  IconDownload,
+  IconPackage,
+  IconPen,
+  IconSticky,
+  IconTrash,
+  IconZap,
+  StatusDot,
+} from '../Icons/Icons'
 import './Toolbar.css'
 
 // ============================================================
@@ -37,13 +50,13 @@ const WIDTHS: Array<{ dot: number; value: number; label: string }> = [
 ]
 
 // Tool definitions: icon, label, tooltip
-const TOOLS: Array<{ id: Tool; icon: string; label: string; title: string }> = [
+const TOOLS: Array<{ id: Tool; icon: React.ReactNode; label: string; title: string }> = [
   { id: 'select',    icon: '↖',  label: 'Select', title: 'Select element (S)' },
-  { id: 'pen',       icon: '✏️', label: 'Pen',    title: 'Freehand pen (P)' },
+  { id: 'pen',       icon: <IconPen size={15} />, label: 'Pen',    title: 'Freehand pen (P)' },
   { id: 'line',      icon: '╱',  label: 'Line',   title: 'Straight line (L)' },
   { id: 'rectangle', icon: '▭',  label: 'Rect',   title: 'Rectangle (R)' },
   { id: 'circle',    icon: '○',  label: 'Circle', title: 'Circle (C)' },
-  { id: 'sticky',    icon: '📝', label: 'Sticky', title: 'Sticky Note (K)' },
+  { id: 'sticky',    icon: <IconSticky size={15} />, label: 'Sticky', title: 'Sticky Note (K)' },
   { id: 'text',      icon: 'T',  label: 'Text',   title: 'Text Annotation (T)' },
   { id: 'eraser',    icon: '⌫',  label: 'Erase',  title: 'Eraser (E)' },
 ]
@@ -198,7 +211,7 @@ export default function Toolbar({
         title="Clear canvas"
         aria-label="Clear all"
       >
-        🗑
+        <IconTrash size={15} />
       </button>
 
       <div className="toolbar__divider" />
@@ -211,7 +224,7 @@ export default function Toolbar({
           title="Insert Engineering Diagram Template"
           aria-expanded={showTemplates}
         >
-          <span>📐</span>
+          <IconDiagram size={15} />
           <span>Templates</span>
           <span style={{ fontSize: '12px', opacity: 0.7 }}>▾</span>
         </button>
@@ -226,7 +239,7 @@ export default function Toolbar({
                 setShowTemplates(false)
               }}
             >
-              <span className="tb-menu-icon">☁️</span>
+              <span className="tb-menu-icon"><IconCloud size={17} /></span>
               <div>
                 <div className="tb-menu-label">System Architecture</div>
                 <div className="tb-menu-sub">Client, Gateway, FastAPI, DB</div>
@@ -239,7 +252,7 @@ export default function Toolbar({
                 setShowTemplates(false)
               }}
             >
-              <span className="tb-menu-icon">📦</span>
+              <span className="tb-menu-icon"><IconPackage size={17} /></span>
               <div>
                 <div className="tb-menu-label">UML Domain Model</div>
                 <div className="tb-menu-sub">User, Board, Classes</div>
@@ -252,7 +265,7 @@ export default function Toolbar({
                 setShowTemplates(false)
               }}
             >
-              <span className="tb-menu-icon">🗄️</span>
+              <span className="tb-menu-icon"><IconDatabase size={17} /></span>
               <div>
                 <div className="tb-menu-label">Database Schema (ERD)</div>
                 <div className="tb-menu-sub">Postgres Relational Tables</div>
@@ -265,7 +278,7 @@ export default function Toolbar({
                 setShowTemplates(false)
               }}
             >
-              <span className="tb-menu-icon">⚡</span>
+              <span className="tb-menu-icon"><IconZap size={17} /></span>
               <div>
                 <div className="tb-menu-label">Auth & Sync Flowchart</div>
                 <div className="tb-menu-sub">Session & Socket Pipeline</div>
@@ -280,7 +293,7 @@ export default function Toolbar({
       {/* ── Cloud Sync Status / Action ───────────────────── */}
       {isCloudSynced ? (
         <div className={`toolbar__sync-badge ${isSaving ? 'toolbar__sync-badge--saving' : 'toolbar__sync-badge--synced'}`} title={isLiveConnected ? "Real-time WebSocket & Cloud DB Connected" : "PostgreSQL Cloud DB Synced"}>
-          <span className="tb-sync-dot" />
+          <StatusDot status={isSaving ? 'syncing' : 'online'} pulse={true} />
           <span>{isSaving ? 'Saving...' : (isLiveConnected ? 'Live Sync' : 'Cloud Synced')}</span>
         </div>
       ) : (
@@ -290,7 +303,7 @@ export default function Toolbar({
             onClick={onSaveToCloud}
             title="Save board to cloud database for cross-device access"
           >
-            <span>☁️</span>
+            <IconCloudUpload size={14} />
             <span>Save Cloud</span>
           </button>
         )
@@ -302,9 +315,9 @@ export default function Toolbar({
         onClick={onOpenExport}
         title="Download Diagram (PDF, PNG, SVG, JSON)"
         aria-label="Export Diagram"
-        style={{ width: 'auto', padding: '0 10px', gap: '5px', fontSize: '13px', fontWeight: 600 }}
+        style={{ width: 'auto', padding: '0 10px', gap: '6px', fontSize: '13px', fontWeight: 600 }}
       >
-        <span>📥</span>
+        <IconDownload size={14} />
         <span>Export</span>
       </button>
 

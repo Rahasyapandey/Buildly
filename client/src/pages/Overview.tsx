@@ -2,6 +2,17 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
 import UserMenu from '../components/Auth/UserMenu'
+import {
+  IconActivity,
+  IconCheck,
+  IconDiagram,
+  IconMicOff,
+  IconMicrophone as IconMicSvg,
+  IconScreen,
+  IconSparkles,
+  IconUsers,
+  IconVideo,
+} from '../components/Icons/Icons'
 import { useAuth } from '../hooks/useAuth'
 import { api, type BoardRead } from '../utils/api'
 import {
@@ -804,19 +815,19 @@ export default function Overview() {
 
                   {/* Bottom mock voice controls */}
                   <div className="ov-mock-voice-pill">
-                    <span>🎙️ Active</span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><IconMicSvg size={13} /> Active</span>
                     <span style={{ fontSize: '12px', color: '#10b981' }}>● 12ms</span>
-                    <span>💬</span>
+                    <span style={{ fontSize: '11px', opacity: 0.8 }}>Opus</span>
                   </div>
                 </div>
               </div>
 
               {/* Bottom 4 Feature Tags */}
               <div className="ov-play-features-list">
-                <span className="ov-play-feature-item">🎮 Real-time Canvas</span>
-                <span className="ov-play-feature-item">🎙️ WebRTC Voice</span>
-                <span className="ov-play-feature-item">🔒 Code Rooms</span>
-                <span className="ov-play-feature-item">🏆 Global Leaderboard</span>
+                <span className="ov-play-feature-item"><IconDiagram size={13} style={{ marginRight: 4 }} /> Real-time Canvas</span>
+                <span className="ov-play-feature-item"><IconMicSvg size={13} style={{ marginRight: 4 }} /> WebRTC Voice</span>
+                <span className="ov-play-feature-item"><IconUsers size={13} style={{ marginRight: 4 }} /> Code Rooms</span>
+                <span className="ov-play-feature-item"><IconSparkles size={13} style={{ marginRight: 4 }} /> Global Leaderboard</span>
               </div>
             </div>
 
@@ -824,7 +835,7 @@ export default function Overview() {
             <div className="ov-activity-card">
               <div className="ov-activity-header">
                 <div className="ov-activity-title-row">
-                  <span className="ov-activity-icon">📊</span>
+                  <span className="ov-activity-icon"><IconActivity size={16} /></span>
                   <h3 className="ov-activity-title">Live Workspace Activity</h3>
                 </div>
                 <button
@@ -1005,7 +1016,7 @@ export default function Overview() {
               onClick={() => setIsMicMuted((prev) => !prev)}
               title={isMicMuted ? 'Unmute Mic' : 'Mute Mic'}
             >
-              {isMicMuted ? '🔇' : '🎙️'}
+              {isMicMuted ? <IconMicOff size={16} /> : <IconMicSvg size={16} />}
             </button>
 
             <button
@@ -1013,7 +1024,7 @@ export default function Overview() {
               onClick={() => setIsCamOn((prev) => !prev)}
               title={isCamOn ? 'Turn Camera Off' : 'Turn Camera On'}
             >
-              📹
+              <IconVideo size={16} />
             </button>
 
             <button
@@ -1021,7 +1032,7 @@ export default function Overview() {
               onClick={() => navigate('/play')}
               title="Open Chat"
             >
-              💬
+              <IconDiagram size={16} />
             </button>
 
             <button
@@ -1056,9 +1067,15 @@ export default function Overview() {
               className="ov-quick-action-btn"
               onClick={handleCopyInvite}
             >
-              <span className="ov-qa-icon">👥</span>
+              <span className="ov-qa-icon"><IconUsers size={17} /></span>
               <span className="ov-qa-title">
-                {copiedInvite ? '✓ Link Copied' : 'Invite Teammates'}
+                {copiedInvite ? (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                    <IconCheck size={12} /> Link Copied
+                  </span>
+                ) : (
+                  'Invite Teammates'
+                )}
               </span>
               <span className="ov-qa-sub">Build together</span>
             </button>
@@ -1068,7 +1085,7 @@ export default function Overview() {
               className="ov-quick-action-btn"
               onClick={() => navigate('/play')}
             >
-              <span className="ov-qa-icon">🎮</span>
+              <span className="ov-qa-icon"><IconGamepad size={17} /></span>
               <span className="ov-qa-title">Create Room</span>
               <span className="ov-qa-sub">Play with friends</span>
             </button>
@@ -1078,7 +1095,7 @@ export default function Overview() {
               className="ov-quick-action-btn"
               onClick={() => handleOpenBoard('Cloud Architecture')}
             >
-              <span className="ov-qa-icon">📐</span>
+              <span className="ov-qa-icon"><IconDiagram size={17} /></span>
               <span className="ov-qa-title">Diagrams</span>
               <span className="ov-qa-sub">UML & Architecture</span>
             </button>
@@ -1088,7 +1105,7 @@ export default function Overview() {
               className="ov-quick-action-btn"
               onClick={() => handleOpenBoard('Screen Share Session')}
             >
-              <span className="ov-qa-icon">🖥️</span>
+              <span className="ov-qa-icon"><IconScreen size={17} /></span>
               <span className="ov-qa-title">Screen Share</span>
               <span className="ov-qa-sub">Share your screen</span>
             </button>

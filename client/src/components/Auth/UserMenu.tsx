@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
+import { IconFolder, IconGamepad, IconLogOut, IconPen } from '../Icons/Icons'
 import './UserMenu.css'
 
 interface UserMenuProps {
@@ -97,7 +98,7 @@ export default function UserMenu({ variant = 'full' }: UserMenuProps) {
               className="user-dropdown-item"
               onClick={() => setIsOpen(false)}
             >
-              <span>📂</span>
+              <IconFolder size={15} />
               <span>Workspace Studio</span>
             </Link>
             <Link
@@ -105,7 +106,7 @@ export default function UserMenu({ variant = 'full' }: UserMenuProps) {
               className="user-dropdown-item"
               onClick={() => setIsOpen(false)}
             >
-              <span>✏️</span>
+              <IconPen size={15} />
               <span>Whiteboard Canvas</span>
             </Link>
             <Link
@@ -113,7 +114,7 @@ export default function UserMenu({ variant = 'full' }: UserMenuProps) {
               className="user-dropdown-item"
               onClick={() => setIsOpen(false)}
             >
-              <span>🎮</span>
+              <IconGamepad size={15} />
               <span>Play Mode Rooms</span>
             </Link>
           </nav>
@@ -128,7 +129,7 @@ export default function UserMenu({ variant = 'full' }: UserMenuProps) {
               logout()
             }}
           >
-            <span>🚪</span>
+            <IconLogOut size={15} />
             <span>Sign Out</span>
           </button>
         </div>

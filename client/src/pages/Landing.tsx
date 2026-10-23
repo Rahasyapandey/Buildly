@@ -2,6 +2,24 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle'
 import UserMenu from '../components/Auth/UserMenu'
+import {
+  IconCheck,
+  IconCloud,
+  IconDatabase,
+  IconDiagram,
+  IconFileText,
+  IconFolder,
+  IconGamepad,
+  IconLink,
+  IconMicrophone,
+  IconPackage,
+  IconPen,
+  IconSettings,
+  IconShare,
+  IconSticky,
+  IconUsers,
+  IconZap,
+} from '../components/Icons/Icons'
 import './Landing.css'
 
 export default function Landing() {
@@ -99,14 +117,17 @@ export default function Landing() {
           <Link to="/overview" className="cta-primary">
             Open Workspace Studio →
           </Link>
-          <Link to="/board" className="cta-secondary">
-            ⚡ Quick Whiteboard
+          <Link to="/board" className="cta-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+            <IconZap size={15} />
+            <span>Quick Whiteboard</span>
           </Link>
           <button
             onClick={() => navigate('/play')}
             className="cta-secondary cta-play"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}
           >
-            🎮 Play Mode (Live)
+            <IconGamepad size={15} />
+            <span>Play Mode (Live)</span>
           </button>
         </div>
       </header>
@@ -266,8 +287,10 @@ export default function Landing() {
               <button
                 className="mockup-btn-share"
                 onClick={() => alert('Invite link copied! Share with your team.')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}
               >
-                🔗 Share
+                <IconShare size={12} />
+                <span>Share</span>
               </button>
               <button
                 className="mockup-btn-launch"
@@ -285,21 +308,30 @@ export default function Landing() {
               <Link
                 to="/overview"
                 className="mockup-nav-item"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}
               >
-                <span>🏠</span> Home
+                <IconFolder size={13} /> Home
               </Link>
               <button
                 className="mockup-nav-item mockup-nav-item--active"
                 onClick={() => navigate('/board')}
+                style={{ display: 'flex', alignItems: 'center', gap: 6 }}
               >
-                <span>📄</span> Boards
+                <IconFileText size={13} /> Boards
               </button>
-              <button className="mockup-nav-item" onClick={() => navigate('/play')}>
-                <span>🎮</span> Play
+              <button
+                className="mockup-nav-item"
+                onClick={() => navigate('/play')}
+                style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+              >
+                <IconGamepad size={13} /> Play
               </button>
-              <button className="mockup-nav-item" onClick={() => navigate('/overview')}>
-                <span>⚙</span> Settings
+              <button
+                className="mockup-nav-item"
+                onClick={() => navigate('/overview')}
+                style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+              >
+                <IconSettings size={13} /> Settings
               </button>
             </aside>
 
@@ -308,12 +340,12 @@ export default function Landing() {
               {[
                 { id: 'select', icon: '↖', label: 'Select' },
                 { id: 'rect', icon: '▭', label: 'Rectangle' },
-                { id: 'pen', icon: '✏️', label: 'Freehand' },
+                { id: 'pen', icon: <IconPen size={13} />, label: 'Freehand' },
                 { id: 'text', icon: 'T', label: 'Text' },
-                { id: 'sticky', icon: '📝', label: 'Sticky' },
+                { id: 'sticky', icon: <IconSticky size={13} />, label: 'Sticky' },
                 { id: 'grid', icon: '田', label: 'Grid' },
-                { id: 'laser', icon: '✒️', label: 'Vector' },
-                { id: 'link', icon: '🔗', label: 'Connect' },
+                { id: 'laser', icon: <IconZap size={13} />, label: 'Vector' },
+                { id: 'link', icon: <IconLink size={13} />, label: 'Connect' },
               ].map((t) => (
                 <button
                   key={t.id}
@@ -566,11 +598,11 @@ export default function Landing() {
 
             {/* Sticky Note */}
             <div className="sticky-note">
-              <div>☑ Cloud Architecture</div>
-              <div>☑ UML Domain Models</div>
-              <div>☑ Database ERD</div>
-              <div>☑ Vector PDF Export</div>
-              <div style={{ fontSize: '16px', marginTop: '4px' }}>🚀</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Cloud Architecture</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> UML Domain Models</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Database ERD</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><IconCheck size={12} /> Vector PDF Export</div>
+              <div style={{ fontSize: '13px', marginTop: '6px', opacity: 0.8, fontWeight: 600 }}>Ready for review</div>
             </div>
 
             {/* Bottom Right Zoom Control */}
@@ -641,25 +673,25 @@ export default function Landing() {
               className={`deepdive-tab ${diagramTab === 'arch' ? 'deepdive-tab--active' : ''}`}
               onClick={() => setDiagramTab('arch')}
             >
-              ☁️ Cloud Architecture
+              <IconCloud size={15} style={{ marginRight: 6 }} /> Cloud Architecture
             </button>
             <button
               className={`deepdive-tab ${diagramTab === 'uml' ? 'deepdive-tab--active' : ''}`}
               onClick={() => setDiagramTab('uml')}
             >
-              📦 UML Domain Model
+              <IconPackage size={15} style={{ marginRight: 6 }} /> UML Domain Model
             </button>
             <button
               className={`deepdive-tab ${diagramTab === 'erd' ? 'deepdive-tab--active' : ''}`}
               onClick={() => setDiagramTab('erd')}
             >
-              🗄️ Database ERD
+              <IconDatabase size={15} style={{ marginRight: 6 }} /> Database ERD
             </button>
             <button
               className={`deepdive-tab ${diagramTab === 'flow' ? 'deepdive-tab--active' : ''}`}
               onClick={() => setDiagramTab('flow')}
             >
-              ⚡ Auth Flowchart
+              <IconZap size={15} style={{ marginRight: 6 }} /> Auth Flowchart
             </button>
           </div>
         </div>
@@ -807,7 +839,7 @@ export default function Landing() {
           ───────────────────────────────────────────────────────────── */}
       <section className="features-matrix">
         <Link to="/board" className="feature-pill-card">
-          <div className="feature-pill-icon feature-pill-icon--blue">✏️</div>
+          <div className="feature-pill-icon feature-pill-icon--blue"><IconPen size={20} /></div>
           <div>
             <div className="feature-pill-title">Drawing Canvas</div>
             <div className="feature-pill-desc">Freehand pen, shapes, sticky notes &amp; text</div>
@@ -815,7 +847,7 @@ export default function Landing() {
         </Link>
 
         <Link to="/board?template=system-architecture" className="feature-pill-card">
-          <div className="feature-pill-icon feature-pill-icon--green">⬡</div>
+          <div className="feature-pill-icon feature-pill-icon--green"><IconDiagram size={20} /></div>
           <div>
             <div className="feature-pill-title">Diagramming</div>
             <div className="feature-pill-desc">UML, ERD, flowcharts &amp; architecture</div>
@@ -823,7 +855,7 @@ export default function Landing() {
         </Link>
 
         <Link to="/board" className="feature-pill-card">
-          <div className="feature-pill-icon feature-pill-icon--pink">👥</div>
+          <div className="feature-pill-icon feature-pill-icon--pink"><IconUsers size={20} /></div>
           <div>
             <div className="feature-pill-title">Real-time Collaboration</div>
             <div className="feature-pill-desc">Multi-user cursors &amp; instant vector sync</div>
@@ -835,7 +867,7 @@ export default function Landing() {
           onClick={() => navigate('/board?mode=connect')}
           style={{ cursor: 'pointer' }}
         >
-          <div className="feature-pill-icon feature-pill-icon--cyan">🎙️</div>
+          <div className="feature-pill-icon feature-pill-icon--cyan"><IconMicrophone size={20} /></div>
           <div>
             <div className="feature-pill-title">Connect Mode (Voice)</div>
             <div className="feature-pill-desc">Low-latency WebRTC stereo huddle</div>
@@ -847,7 +879,7 @@ export default function Landing() {
           onClick={() => navigate('/play')}
           style={{ cursor: 'pointer' }}
         >
-          <div className="feature-pill-icon feature-pill-icon--orange">🎮</div>
+          <div className="feature-pill-icon feature-pill-icon--orange"><IconGamepad size={20} /></div>
           <div>
             <div className="feature-pill-title">Play Mode (Live)</div>
             <div className="feature-pill-desc">Draw &amp; guess multiplayer game with bots</div>

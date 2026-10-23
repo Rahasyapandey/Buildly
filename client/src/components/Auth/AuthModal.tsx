@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
+import { IconZap } from '../Icons/Icons'
 import GoogleSignInButton from './GoogleSignInButton'
 import './AuthModal.css'
 
@@ -79,7 +80,7 @@ export default function AuthModal() {
             disabled={isLoading}
             onClick={handleDemoSignIn}
           >
-            <span className="auth-demo-icon">⚡</span>
+            <IconZap size={15} className="auth-demo-icon" />
             <span>Instant Demo Sign-In (Alex Developer)</span>
           </button>
         </div>

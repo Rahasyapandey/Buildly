@@ -12,6 +12,16 @@ import {
   type PdfThemeMode,
 } from '../../utils/exportBoard'
 import { renderElement } from '../../utils/renderElement'
+import {
+  IconCheck,
+  IconDatabase,
+  IconDiagram,
+  IconDownload,
+  IconFileText,
+  IconImage,
+  IconScreen,
+  IconShare,
+} from '../Icons/Icons'
 import './ExportModal.css'
 
 interface ExportModalProps {
@@ -162,7 +172,7 @@ export default function ExportModal({
       >
         <div className="export-modal__header">
           <div className="export-modal__title-row">
-            <span className="export-modal__icon">📥</span>
+            <span className="export-modal__icon"><IconDownload size={18} /></span>
             <div>
               <h3 id="export-modal-title" className="export-modal__title">
                 Export Workspace Diagram
@@ -210,7 +220,7 @@ export default function ExportModal({
             onClick={() => setSelectedFormat('pdf')}
           >
             <div className="export-format-left">
-              <div className="export-format-icon">📄</div>
+              <div className="export-format-icon"><IconFileText size={18} /></div>
               <div>
                 <div className="export-format-name">
                   <span>PDF Document</span>
@@ -236,7 +246,7 @@ export default function ExportModal({
                   className={`export-pdf-pill ${pdfLayout === 'report' ? 'export-pdf-pill--active' : ''}`}
                   onClick={() => setPdfLayout('report')}
                 >
-                  <span className="export-pdf-pill__icon">📑</span>
+                  <span className="export-pdf-pill__icon"><IconFileText size={15} /></span>
                   <div>
                     <div className="export-pdf-pill__name">Executive Report</div>
                     <div className="export-pdf-pill__desc">3-Page Doc with cover &amp; inventory</div>
@@ -248,7 +258,7 @@ export default function ExportModal({
                   className={`export-pdf-pill ${pdfLayout === 'presentation' ? 'export-pdf-pill--active' : ''}`}
                   onClick={() => setPdfLayout('presentation')}
                 >
-                  <span className="export-pdf-pill__icon">🖥️</span>
+                  <span className="export-pdf-pill__icon"><IconScreen size={15} /></span>
                   <div>
                     <div className="export-pdf-pill__name">Presentation (16:9)</div>
                     <div className="export-pdf-pill__desc">Widescreen slide deck</div>
@@ -260,7 +270,7 @@ export default function ExportModal({
                   className={`export-pdf-pill ${pdfLayout === 'fit' ? 'export-pdf-pill--active' : ''}`}
                   onClick={() => setPdfLayout('fit')}
                 >
-                  <span className="export-pdf-pill__icon">📄</span>
+                  <span className="export-pdf-pill__icon"><IconFileText size={15} /></span>
                   <div>
                     <div className="export-pdf-pill__name">Single Page</div>
                     <div className="export-pdf-pill__desc">Smart auto-fit diagram</div>
@@ -272,7 +282,7 @@ export default function ExportModal({
                   className={`export-pdf-pill ${pdfLayout === 'grid' ? 'export-pdf-pill--active' : ''}`}
                   onClick={() => setPdfLayout('grid')}
                 >
-                  <span className="export-pdf-pill__icon">📐</span>
+                  <span className="export-pdf-pill__icon"><IconDiagram size={15} /></span>
                   <div>
                     <div className="export-pdf-pill__name">Poster Grid (2×2)</div>
                     <div className="export-pdf-pill__desc">4-Page tiled print sheets</div>
@@ -332,7 +342,7 @@ export default function ExportModal({
             onClick={() => setSelectedFormat('png')}
           >
             <div className="export-format-left">
-              <div className="export-format-icon">🖼️</div>
+              <div className="export-format-icon"><IconImage size={18} /></div>
               <div>
                 <div className="export-format-name">High-Res PNG Image</div>
                 <div className="export-format-ext">
@@ -353,7 +363,7 @@ export default function ExportModal({
             onClick={() => setSelectedFormat('svg')}
           >
             <div className="export-format-left">
-              <div className="export-format-icon">📐</div>
+              <div className="export-format-icon"><IconDiagram size={18} /></div>
               <div>
                 <div className="export-format-name">Scalable Vector Graphic</div>
                 <div className="export-format-ext">
@@ -374,7 +384,7 @@ export default function ExportModal({
             onClick={() => setSelectedFormat('json')}
           >
             <div className="export-format-left">
-              <div className="export-format-icon">🗄️</div>
+              <div className="export-format-icon"><IconDatabase size={18} /></div>
               <div>
                 <div className="export-format-name">Buildly Workspace JSON</div>
                 <div className="export-format-ext">
@@ -394,7 +404,15 @@ export default function ExportModal({
             onClick={handleCopyClipboard}
             title="Copy high-res image directly to clipboard"
           >
-            {copied ? '✓ Image Copied!' : '📋 Copy Image'}
+            {copied ? (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <IconCheck size={14} /> Image Copied!
+              </span>
+            ) : (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <IconShare size={14} /> Copy Image
+              </span>
+            )}
           </button>
           <button className="btn-export-cancel" onClick={onClose}>
             Cancel

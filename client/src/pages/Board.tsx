@@ -4,6 +4,14 @@ import Canvas from '../components/Canvas/Canvas'
 import Toolbar from '../components/Toolbar/Toolbar'
 import ExportModal from '../components/ExportModal/ExportModal'
 import VoiceHuddle from '../components/VoiceHuddle/VoiceHuddle'
+import {
+  IconDownload,
+  IconFileText,
+  IconGamepad,
+  IconLayout,
+  IconMicrophone,
+  StatusDot,
+} from '../components/Icons/Icons'
 import { useBoardState } from '../hooks/useBoardState'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import { useTheme } from '../context/useTheme'
@@ -197,7 +205,7 @@ export default function Board() {
 
   interface ModeItem {
     id: string
-    icon: string
+    icon: React.ReactNode
     label: string
     active: boolean
     subtitle?: string
@@ -205,9 +213,9 @@ export default function Board() {
   }
 
   const modes: ModeItem[] = [
-    { id: 'build',   icon: '🏗️', label: 'Build',   active: activeMode === 'build'   },
-    { id: 'connect', icon: '🎙️', label: 'Connect', active: activeMode === 'connect', subtitle: 'Voice Only' },
-    { id: 'play',    icon: '🎮', label: 'Play',    active: false, subtitle: 'Game Room' },
+    { id: 'build',   icon: <IconLayout size={15} />, label: 'Build',   active: activeMode === 'build'   },
+    { id: 'connect', icon: <IconMicrophone size={15} />, label: 'Connect', active: activeMode === 'connect', subtitle: 'Voice Only' },
+    { id: 'play',    icon: <IconGamepad size={15} />, label: 'Play',    active: false, subtitle: 'Game Room' },
   ]
 
   return (
@@ -261,14 +269,15 @@ export default function Board() {
         <span className="sidebar__section-label">Current Board</span>
         <div className="sidebar__boards">
           <button className="sidebar__board-item">
-            📄 {boardName}
+            <IconFileText size={14} style={{ marginRight: 6, opacity: 0.8 }} />
+            <span>{boardName}</span>
           </button>
           <button
             className="sidebar__mode"
             style={{ marginTop: '8px', cursor: 'pointer' }}
             onClick={() => setIsExportOpen(true)}
           >
-            <span className="sidebar__mode-icon">📥</span>
+            <span className="sidebar__mode-icon"><IconDownload size={14} /></span>
             <span>Export Board (PDF)</span>
           </button>
           <Link
@@ -284,12 +293,19 @@ export default function Board() {
         <div className="sidebar__footer">
           <p className="sidebar__footer-text">
             {cloudBoardId ? (
-              <span>☁️ Cloud Board: <strong>Active</strong></span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <StatusDot status="online" /> Cloud Board: <strong>Active</strong>
+              </span>
             ) : (
-              <span>💾 Local Workspace</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <StatusDot status="offline" pulse={false} /> Local Workspace
+              </span>
             )}
             <br />
-            Connect Mode: 🎙️ Voice Huddle active<br />
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+              <StatusDot status="syncing" /> Voice Huddle active
+            </span>
+            <br />
             <span style={{ opacity: 0.7 }}>Audio-only low latency</span>
           </p>
         </div>

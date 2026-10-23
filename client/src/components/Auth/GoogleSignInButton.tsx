@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
+import { IconAlertCircle, IconSparkles } from '../Icons/Icons'
 import './AuthModal.css'
 
 interface GoogleSignInButtonProps {
@@ -185,7 +186,7 @@ export default function GoogleSignInButton({
     <div className="google-auth-wrapper">
       {errorMessage && (
         <div className="google-auth-error-banner">
-          <span className="error-icon">⚠️</span>
+          <IconAlertCircle size={16} className="error-icon" />
           <div className="error-text">
             <strong>Authentication Notice</strong>
             <span>{errorMessage}</span>
@@ -233,7 +234,9 @@ export default function GoogleSignInButton({
       {showDemoChooser && (
         <div className="google-demo-chooser">
           <div className="google-demo-title">
-            <span>✨ One-Click Google Testing</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <IconSparkles size={14} /> One-Click Google Testing
+            </span>
             <span className="google-demo-badge">DEV</span>
           </div>
           <p className="google-demo-desc">
